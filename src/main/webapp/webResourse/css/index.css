@@ -50,13 +50,18 @@ ol, ul {
 	color: #fff;
 }
 
-#menu {
-	/* 	position: fixed; */
-	/* 	top: 0; */
-	/* 	left: 0; */
-	/* 	height: 40px; */
-	/* 	width: 100%; */
-	/* 	padding: 0; */
-	/* 	margin: 0; */
-	
+#newsPage {
+	background: url("../images/logo_b.jpg") no-repeat center;
+	background-size: 20%;
+	opacity: 0.2;
+	height: 100%;
+	width: 100%;
+	opacity: 0.2;
+	display: table;
+	table-layout: fixed;
+}
+
+#newsContent {
+	display: table-cell;
+	vertical-align: middle;
 }
