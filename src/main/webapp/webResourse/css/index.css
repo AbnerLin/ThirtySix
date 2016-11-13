@@ -65,3 +65,34 @@ ol, ul {
 	display: table-cell;
 	vertical-align: middle;
 }
+
+.card-img-top {
+	width: 100%;
+	height: auto;
+}
+
+#productionPage {
+	
+}
+
+#productionPage .pageBg {
+	/* 	background: url("../images/healthy.png") no-repeat; */
+	
+}
+
+.pageBg {
+	margin: -150px 0 0 180px;
+	display: none;
+}
+
+/* .card-deck { */
+/* 	display: flex; */
+/* 	justify-content: flex-start; */
+/* 	flex-flow: row wrap; */
+/* 	align-items: stretch; */
+/* } */
+
+/* .card-deck .card { */
+/* 	display: block; */
+/* 	flex-basis: 33.3%; change this value for each breakpoint */
+/* } */
