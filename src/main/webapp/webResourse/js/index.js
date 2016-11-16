@@ -1,9 +1,13 @@
 $(document).ready(function() {
+
+	// one page scroll
 	$('#fullpage').fullpage({
 		anchors : [ 'intro', 'news', 'production', 'location', 'question' ],
 		menu : '#myMenu',
 		afterLoad : function(anchorLink, index) {
 			var loadedSection = $(this);
+
+			console.log(anchorLink);
 
 			// using anchorLink
 			if (anchorLink == 'production') {
@@ -20,4 +24,5 @@ $(document).ready(function() {
 
 		}
 	});
+	
 });
