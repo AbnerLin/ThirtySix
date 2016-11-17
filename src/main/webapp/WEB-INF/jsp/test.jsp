@@ -3,6 +3,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width; initial-scale=1; maximum-scale=2;">
 <link type="text/css" href="<c:url value="/css/style.css" />" rel="stylesheet">
 <link type="text/css" href="<c:url value="/css/slicknav.min.css" />" rel="stylesheet">
 <script src="<c:url value="/js/jquery-2.1.4.js" />"></script>

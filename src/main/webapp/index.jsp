@@ -3,20 +3,18 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="viewport" content="width=device-width; initial-scale=1; maximum-scale=2;">
 <link type="text/css" href="<c:url value="/css/bootstrap3/bootstrap-theme.min.css" />" rel="stylesheet">
 <link type="text/css" href="<c:url value="/css/bootstrap3/bootstrap.min.css" />" rel="stylesheet">
 <link type="text/css" href="<c:url value="/css/bootstrap4.min.css" />" rel="stylesheet">
 <link type="text/css" href="<c:url value="/css/jquery-ui/jquery-ui.min.css" />" rel="stylesheet">
 <link type="text/css" href="<c:url value="/css/jquery-ui/jquery-ui.structure.min.css" />" rel="stylesheet">
 <link type="text/css" href="<c:url value="/css/jquery-ui/jquery-ui.theme.min.css" />" rel="stylesheet">
-<link type="text/css" href="<c:url value="/css/fullPage.css" />" rel="stylesheet">
 <link rel="stylesheet" href="http://www.w3schools.com/lib/w3.css">
 <link type="text/css" href="<c:url value="/css/index.css" />" rel="stylesheet">
 
 <script src="<c:url value="/js/jquery-2.1.4.js" />"></script>
 <script src="<c:url value="/js/jquery-ui/jquery-ui.min.js" />"></script>
-<script src="<c:url value="/js/fullPage.min.js" />"></script>
 <script src="<c:url value="/js/bootstrap3/bootstrap.min.js" />"></script>
 <script src="<c:url value="/js/index.js" />"></script>
 </head>
@@ -50,27 +48,33 @@
 			</div>
 		</header>
 
-		<div id="fullpage">
-			<div class="section">
-				<%@ include file="/WEB-INF/jsp/intro.jsp"%>
-			</div>
+		<section id="firstView" class="bg01">
+			<img src="images/healthy.png" id="healthy" class="storyTopic"/>
+		</section>
 
-			<div class="section">
-				<%@ include file="/WEB-INF/jsp/news.jsp"%>
-			</div>
+		<section id="secondView"></section>
 
-			<div class="section">
-				<%@ include file="/WEB-INF/jsp/production.jsp"%>
-			</div>
+		<!-- 		<div id="fullpage"> -->
+		<!-- 			<div class="section"> -->
+		<%-- 				<%@ include file="/WEB-INF/jsp/intro.jsp"%> --%>
+		<!-- 			</div> -->
 
-			<div class="section">
-				<%@ include file="/WEB-INF/jsp/location.jsp"%>
-			</div>
+		<!-- 			<div class="section"> -->
+		<%-- 				<%@ include file="/WEB-INF/jsp/news.jsp"%> --%>
+		<!-- 			</div> -->
 
-			<div class="section">
-				<%@ include file="/WEB-INF/jsp/question.jsp"%>
-			</div>
-		</div>
+		<!-- 			<div class="section"> -->
+		<%-- 				<%@ include file="/WEB-INF/jsp/production.jsp"%> --%>
+		<!-- 			</div> -->
+
+		<!-- 			<div class="section"> -->
+		<%-- 				<%@ include file="/WEB-INF/jsp/location.jsp"%> --%>
+		<!-- 			</div> -->
+
+		<!-- 			<div class="section"> -->
+		<%-- 				<%@ include file="/WEB-INF/jsp/question.jsp"%> --%>
+		<!-- 			</div> -->
+		<!-- 		</div> -->
 	</div>
 </body>
 </html>

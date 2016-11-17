@@ -1,13 +1,14 @@
 <div id="productionPage">
-	<div class="text-center">
-		<div class="slide" id="slide1">
-			<div id="section01">
-				<div class="innerImg">
-					<img class="pageBg" src="images/healthy.png" id="firstSlideBG">
-				</div>
+	<!-- 	<div class="text-center"> -->
+	<div class="slide" id="slide1">
+		<section>
+			123123
+			<div class="innerImg">
+				<img class="pageBg" src="images/healthy.png" id="firstSlideBG">
 			</div>
-		</div>
+		</section>
 	</div>
+	<!-- 	</div> -->
 
 	<div class="slide" id="slide2">
 		<div class="row">
