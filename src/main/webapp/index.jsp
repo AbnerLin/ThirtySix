@@ -3,7 +3,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width; initial-scale=1; maximum-scale=2;">
+<meta name="viewport" content="width=device-width initial-scale=1 maximum-scale=2">
 <link type="text/css" href="<c:url value="/css/bootstrap3/bootstrap-theme.min.css" />" rel="stylesheet">
 <link type="text/css" href="<c:url value="/css/bootstrap3/bootstrap.min.css" />" rel="stylesheet">
 <link type="text/css" href="<c:url value="/css/bootstrap4.min.css" />" rel="stylesheet">
@@ -19,6 +19,14 @@
 <script src="<c:url value="/js/index.js" />"></script>
 </head>
 <body>
+
+	<button onclick="getDiningCustomer();"> getDiningCustomer </button>
+	<div id="diningCustomerList">
+		
+	</div>
+	
+	<button onclick="customerCheckIn();"> customerCheckIn </button>
+	
 	<nav class="w3-sidenav w3-white" style="width: 200px; display: none;" id="sideNav">
 		<ul class="myMenu">
 			<li data-menuanchor="intro" class="active"><a href="#intro">INTRODUCTION</a></li>

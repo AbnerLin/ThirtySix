@@ -1,18 +1,44 @@
-function w3_open() {
-	// document.getElementById("sideNav").style.display = "block";
-	$('#sideNav').show();
-	$('#main').css({
-		"margin-left" : "200px"
-	});
+var appUrl = "/thirtySix/";
+
+/**
+ * 取得目前在用餐的顧客資訊
+ */
+function getDiningCustomer() {
+	var action = "getDiningCustomer";
+
+	$.ajax({
+		url : appUrl + action,
+		async : true,
+		dataType : "json",
+		success : function(data, status, jqXHR) {
+			$('#diningCustomerList').html(JSON.stringify(data));
+		}
+	})
 }
-function w3_close() {
-	// document.getElementById("sideNav").style.display = "none";
-	$('#sideNav').hide();$('#main').css({
-		"margin-left" : "0px"
-	});
+
+/**
+ * 新增顧客
+ */
+function customerCheckIn() {
+	var action = "customerCheckIn";
+
+	$.ajax({
+		url : appUrl + action,
+		async : true,
+		method : "POST",
+		data : {
+			customerName : "ShaoYang, Lin",
+			deskNumber : "A8",
+			phoneNumber : "0911491788",
+			peopleCount : 8
+		},
+		success : function(data, status, jqXHR) {
+//			alert("success !!!");
+			alert(JSON.stringify(data));
+		}
+	})
 }
 
 $(document).ready(function() {
-	$('#healthy').show('blind', 1500);
 	
 });

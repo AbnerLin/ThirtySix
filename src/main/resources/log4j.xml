@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE log4j:configuration SYSTEM "log4j.dtd">
+<log4j:configuration xmlns:log4j="http://jakarta.apache.org/log4j/">
+
+	<!-- ROOT ROLLING FILE APPENDER -->
+	<appender class="org.apache.log4j.RollingFileAppender" name="file_root">
+		<param name="MaxFileSize" value="20000KB" />
+		<param name="MaxBackupIndex" value="10" />
+		<param name="File" value="${catalina.home}/logs/thirtySix/thirtySix.log" />
+		<param name="Append" value="true" />
+		<layout class="org.apache.log4j.PatternLayout">
+			<param name="ConversionPattern" value="%d{MM-dd HH:mm:ss} %C{1}.%M:%L %-5p - %m%n" />
+		</layout>
+	</appender>
+
+	<!-- CONSOLE APPENDER -->
+	<appender class="org.apache.log4j.ConsoleAppender" name="console">
+		<layout class="org.apache.log4j.PatternLayout">
+			<param value="%p %m%n" name="ConversionPattern" />
+		</layout>
+	</appender>
+
+	<root>
+		<level value="info" />
+		<appender-ref ref="file_root" />
+		<appender-ref ref="console" />
+	</root>
+
+</log4j:configuration>

@@ -1,77 +1,61 @@
-package com.thirtySix.po;
+package com.thirtySix.dto;
 
+import java.io.Serializable;
 import java.sql.Timestamp;
 import java.util.List;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
+import com.thirtySix.po.Booking;
 
-import org.hibernate.annotations.GenericGenerator;
+public class CustomerDTO implements Serializable {
 
-@Entity
-@Table(name = "CUSTOMER")
-public class Customer {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -8633191169307671028L;
 
 	/**
 	 * 顧客編號
 	 */
-	@Id
-	@GeneratedValue(generator = "UUID")
-	@GenericGenerator(name = "UUID", strategy = "org.hibernate.id.UUIDGenerator")
-	@Column(name = "CUSTOMERID")
 	private String customerID;
 
 	/**
 	 * 桌號
 	 */
-	@Column(name = "DESKNUMBER")
 	private String deskNumber;
 
 	/**
 	 * 進場時間
 	 */
-	@Column(name = "CHECKINTIME")
 	private Timestamp checkInTime;
 
 	/**
 	 * 出場時間
 	 */
-	@Column(name = "CHECKOUTTIME")
 	private Timestamp checkOutTime;
 
 	/**
 	 * 顧客名稱
 	 */
-	@Column(name = "NAME")
 	private String customerName;
 
 	/**
 	 * 顧客電話
 	 */
-	@Column(name = "PHONE")
 	private String phoneNumber;
 
 	/**
 	 * 人頭數
 	 */
-	@Column(name = "PEOPLECOUNT")
 	private Integer peopleCount;
 
 	/**
 	 * 顧客備註
 	 */
-	@Column(name = "REMARK")
 	private String remark;
 
 	/**
 	 * 訂單列表
 	 */
-	@OneToMany(fetch = FetchType.EAGER, mappedBy = "customer")
 	private List<Booking> bookingList;
 
 	/**
@@ -227,4 +211,17 @@ public class Customer {
 		return bookingList;
 	}
 
+	@Override
+	public String toString() {
+		String result = "";
+
+		result += "ID: " + this.customerID + "\n" + "NAME: "
+				+ this.customerName + "\n" + "CheckInTime: " + this.checkInTime
+				+ "\n" + "CheckOutTime: " + this.checkOutTime + "\n"
+				+ "DeskNumber: " + this.deskNumber + "\n" + "PeopleCount:"
+				+ this.peopleCount + "\n" + "Remark: " + this.remark + "\n"
+				+ "PhoneNumber: " + this.phoneNumber + "\n";
+
+		return result;
+	}
 }
