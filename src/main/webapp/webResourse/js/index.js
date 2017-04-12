@@ -11,23 +11,35 @@ function getDiningCustomer() {
 		async : true,
 		dataType : "json",
 		success : function(response, status, jqXHR) {
-			// $('#diningCustomerList').html(JSON.stringify(response));
-			// console.log(JSON.stringify(response));
-			// console.log(Object.keys(data).length);
-			// console.log(Object.keys(data));
-
 			var data = response.data;
-			var customerList = "";
-			for (var key in data) {
-				if (data.hasOwnProperty(key)) {
-					var jsonObj = data.get(key);
-					customerList += "顧客編號: " + key + " 桌號： " + jsonObj.deskNumber + " 人數：" + jsonObj.peopleCount + " 入場時間：" + jsonObj.checkInTime;
-				}
-			}
-			$('#diningCustomerList').html(customerList);
-			
+			updateDiningCustomerList(data);
+			console.log(data.length);
+			console.log(data.length);
+			console.log(data.length);
+			console.log(data.length);
+			console.log(data.length);
+			console.log(data.length);
+			console.log(data.length);
+			console.log(data.length);
 		}
 	})
+}
+
+/**
+ * 更新用餐中顧客列表
+ */
+function updateDiningCustomerList(data) {
+	var customerList = "";
+	for ( var key in data) {
+		if (data.hasOwnProperty(key)) {
+			var jsonObj = data[key];
+			customerList += "顧客編號: " + key + " 桌號： "
+					+ jsonObj.deskNumber + " 人數：" + jsonObj.peopleCount
+					+ " 入場時間：" + jsonObj.checkInTime;
+			customerList += "<br>";
+		}
+	}
+	$('#diningCustomerList').html(customerList);
 }
 
 /**
@@ -62,8 +74,8 @@ function subscribeWebSocket() {
 	stompClient.connect({}, function(frame) {
 		console.log('Connected: ' + frame);
 		stompClient.subscribe('/topic/customerUpdate', function(data) {
-			// showGreeting(JSON.parse(greeting.body).content);
-			alert(JSON.stringify(data));
+			var jsonObj = JSON.parse(data.body);
+			updateDiningCustomerList(jsonObj);
 		});
 
 		/** server time listener */

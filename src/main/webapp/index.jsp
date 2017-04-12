@@ -1,4 +1,5 @@
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ page contentType="text/html; charset=UTF-8" %>
 <!doctype html>
 <html>
 <head>
@@ -30,11 +31,11 @@
 	</div>
 	
 	<button onclick="customerCheckIn();"> customerCheckIn </button>
-	
+	中文測試
 	<nav class="w3-sidenav w3-white" style="width: 200px; display: none;" id="sideNav">
 		<ul class="myMenu">
 			<li data-menuanchor="intro" class="active"><a href="#intro">INTRODUCTION</a></li>
-			<li data-menuanchor="news"><a href="#news">NEWS</a></li>
+			<li data-menuanchor="news"><a href="#news">中文測試</a></li>
 			<li data-menuanchor="production"><a href="#production">PRODUCTION</a></li>
 			<li data-menuanchor="location"><a href="#location">LOCATION</a></li>
 			<li data-menuanchor="question"><a href="#question">Q&A</a></li>
