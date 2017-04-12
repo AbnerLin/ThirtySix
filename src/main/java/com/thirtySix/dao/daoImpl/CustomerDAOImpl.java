@@ -26,7 +26,7 @@ public class CustomerDAOImpl extends GenericDAOImpl<Customer> implements
 			result = criteria.list();
 
 		} catch (Exception e) {
-			logger.error("¨ú±o¥ÎÀ\¤¤«È¤á¸ê®Æµo¥Í¿ù»~¡C", e);
+			logger.error("å–å¾—ç”¨é¤ä¸­é¡§å®¢ç™¼ç”ŸéŒ¯èª¤ã€‚", e);
 		}
 
 		return result;

@@ -7,7 +7,9 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -33,6 +35,11 @@ public class IndexController {
 	@Autowired
 	private ObjectConverter objConverter = null;
 
+	@Autowired
+	private SimpMessagingTemplate messageTemplate = null;
+
+	private Logger logger = Logger.getLogger(this.getClass());
+
 	@RequestMapping(value = { "/1" })
 	public ModelAndView index(HttpServletRequest request,
 			HttpServletResponse response) {
@@ -40,7 +47,7 @@ public class IndexController {
 	}
 
 	/**
-	 * ¨ú±o¥ÎÀ\¤¤ªºÅU«È
+	 * å–å¾—ç”¨é¤ä¸­é¡§å®¢
 	 * 
 	 * @param request
 	 * @param response
@@ -50,11 +57,8 @@ public class IndexController {
 	@RequestMapping(value = { "/getDiningCustomer" })
 	public AjaxDTO getDiningCustomer(HttpServletRequest request,
 			HttpServletResponse response) {
-		// TODO rdto ? jsonResult ?
 		AjaxDTO result = new AjaxDTO();
-
 		Map<String, Customer> diningCustomer = buffer.getDiningCustomer();
-
 		result.setStatusOK();
 		result.setData(diningCustomer);
 
@@ -68,25 +72,34 @@ public class IndexController {
 			@ModelAttribute CustomerDTO customerDTO) {
 		AjaxDTO result = new AjaxDTO();
 
-		/** ³]©w¶i³õ®É¶¡ */
+		/** è¨­å®šé€²å ´æ™‚é–“ */
 		Date now = new Date();
 		Timestamp time = new Timestamp(now.getTime());
 		customerDTO.setCheckInTime(time);
 
-		System.out.println(customerDTO.toString());
-
-		/** Àx¦s¸ê®Æ®w */
+		/** æ–°å¢è³‡æ–™åº« */
 		Customer po = objConverter.customerDTOtoPO(customerDTO);
 		dbManager.insertCustomer(po);
 
-		/** §ó·sbuffer */
-		buffer.getDiningCustomer().put(po.getCustomerID(), po);
+		/** æ›´æ–°buffer */
+		Map<String, Customer> bufferMap = buffer.getDiningCustomer();
+		bufferMap.put(po.getCustomerID(), po);
 
 		/** push socket to every client */
-		// TODO
+		this.diningCustomerUpdate(bufferMap);
 
 		result.setStatusOK();
 		result.setData(po);
 		return result;
+	}
+
+	/**
+	 * ç”¨é¤ä¸­é¡§å®¢ æ›´æ–°(ç™¼å¸ƒsocket topic)
+	 * 
+	 * @return
+	 */
+	public void diningCustomerUpdate(Map<String, Customer> bufferMap) {
+		logger.info("ç”¨é¤ä¸­é¡§å®¢æ›´æ–°ï¼Œç™¼ä½ˆWebSocket");
+		this.messageTemplate.convertAndSend("/topic/customerUpdate", bufferMap);
 	}
 }

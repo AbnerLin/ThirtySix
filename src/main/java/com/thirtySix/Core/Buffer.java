@@ -1,10 +1,10 @@
 package com.thirtySix.Core;
 
-import java.io.Serializable;
-import java.sql.Timestamp;
-import java.util.Date;
+import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
 import javax.annotation.PostConstruct;
@@ -23,33 +23,33 @@ public class Buffer {
 
 	private Logger logger = Logger.getLogger(this.getClass());
 
-	/** ¥ÎÀ\¤¤ÅU«ÈBuffer <customerId, po> */
+	/** ç”¨é¤ä¸­é¡§å®¢Buffer <customerId, po> */
 	private Map<String, Customer> diningCustomerBuffer = new ConcurrentHashMap<String, Customer>();
 
 	@PostConstruct
 	public void init() {
-		/** ¸ü¤J¥ÎÀ\¤¤ªºÅU«È */
+		/** è¼‰å…¥ç”¨é¤ä¸­é¡§å®¢ */
 		this.loadDiningCustomer();
 	}
 
 	/**
-	 * ¨ú±o¥ÎÀ\¤¤ªºÅU«È
+	 * è¼‰å…¥ç”¨é¤ä¸­é¡§å®¢
 	 */
 	private void loadDiningCustomer() {
 		List<Customer> diningCustomerList = dbManager.getDiningCustomer();
-		logger.info("¸ü¤J¥ÎÀ\¤¤ÅU«È..");
+		logger.info("è¼‰å…¥ç”¨é¤ä¸­é¡§å®¢...");
 		int count = 0;
 		for (Customer customer : diningCustomerList) {
 			String id = customer.getCustomerID();
 			this.diningCustomerBuffer.put(id, customer);
 			count++;
-			logger.info("ÅU«È½s¸¹¡G" + id + " ¶i³õ®É¶¡¡G" + customer.getCheckInTime());
+			logger.info("é¡§å®¢ç·¨è™Ÿ" + id + "é€²å ´æ™‚é–“" + customer.getCheckInTime());
 		}
-		logger.info("¥Ø«e¦@ " + count + "²Õ«È¤H¥ÎÀ\¤¤¡C");
+		logger.info("ç”¨é¤ä¸­é¡§å®¢å…±" + count + "çµ„ã€‚");
 	}
 
 	/**
-	 * ¨ú±o¥ÎÀ\¤¤ªºÅU«È
+	 * å–å¾—ç”¨é¤ä¸­é¡§å®¢Buffer
 	 * 
 	 * @return
 	 */
@@ -58,14 +58,24 @@ public class Buffer {
 	}
 
 	/**
-	 * ¨ú±o¨Ï¥Î¤¤ªº®à¸¹
+	 * å–å¾—ä½¿ç”¨ä¸­æ¡Œè™Ÿ
 	 * 
 	 * @return
 	 */
-	public List<String> getDiningDesk() {
-		// TODO
-
-		return null;
+	@SuppressWarnings("rawtypes")
+	public Set<String> getDiningDesk() {
+		Set<String> desk = new HashSet<String>();
+		
+		Iterator iter = this.diningCustomerBuffer.entrySet().iterator();
+		while(iter.hasNext()) {
+			Map.Entry pair = (Map.Entry) iter.next();
+			Customer customer = (Customer) pair.getValue();
+			String deskNumber = customer.getDeskNumber();
+			
+			desk.add(deskNumber);
+		}
+		
+		return desk;
 	}
 
 }

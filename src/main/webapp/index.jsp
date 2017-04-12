@@ -14,12 +14,16 @@
 <link type="text/css" href="<c:url value="/css/index.css" />" rel="stylesheet">
 
 <script src="<c:url value="/js/jquery-2.1.4.js" />"></script>
+<script src="<c:url value="/js/socket/sockjs-1.1.1.js" />"></script>
+<script src="<c:url value="/js/socket/stomp.min.js" />"></script>
 <script src="<c:url value="/js/jquery-ui/jquery-ui.min.js" />"></script>
 <script src="<c:url value="/js/bootstrap3/bootstrap.min.js" />"></script>
 <script src="<c:url value="/js/index.js" />"></script>
 </head>
 <body>
-
+	
+	<div id="serverTime">123</div>
+	
 	<button onclick="getDiningCustomer();"> getDiningCustomer </button>
 	<div id="diningCustomerList">
 		
