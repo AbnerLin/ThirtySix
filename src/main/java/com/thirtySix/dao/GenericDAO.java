@@ -6,21 +6,21 @@ import java.io.Serializable;
 public interface GenericDAO<T> {
 
 	/**
-	 * 新增
+	 * INSERT
 	 * 
 	 * @param po
 	 */
 	public Serializable insert(T po);
 
 	/**
-	 * 更新
+	 * UPDATE
 	 * 
 	 * @param po
 	 */
 	public void update(T po);
 
 	/**
-	 * 刪除
+	 * DELETE
 	 * 
 	 * @param po
 	 */

@@ -7,7 +7,7 @@ import com.thirtySix.po.Customer;
 public interface CustomerDAO extends GenericDAO<Customer> {
 
 	/**
-	 * ¨ú±o¥ÎÀ\¤¤ªºÅU«È
+	 * å–å¾—ç”¨é¤ä¸­é¡§å®¢
 	 */
 	public List<Customer> getDiningCustomer();
 

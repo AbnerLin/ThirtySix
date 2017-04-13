@@ -17,7 +17,7 @@ import org.hibernate.annotations.GenericGenerator;
 public class Booking {
 
 	/**
-	 * ­q³æ½s¸¹
+	 * è¨‚å–®ç·¨è™Ÿ
 	 */
 	@Id
 	@GeneratedValue(generator = "UUID")
@@ -26,33 +26,33 @@ public class Booking {
 	private String bookingID;
 
 	/**
-	 * ­q³æ®É¶¡
+	 * è¨‚å–®æ™‚é–“
 	 */
 	@Column(name = "TIME")
 	private Timestamp time;
 
 	/**
-	 * «È¤á½s¸¹
+	 * é¡§å®¢è³‡è¨Š
 	 */
 	@ManyToOne
 	@JoinColumn(name = "CUSTOMERID", referencedColumnName = "CUSTOMERID", nullable = false)
 	private Customer customer;
 
 	/**
-	 * ¶µ¥Ø½s¸¹
+	 * é …ç›®è³‡è¨Š
 	 */
 	@ManyToOne
 	@JoinColumn(name = "ITEMID", referencedColumnName = "ITEMID", nullable = false)
 	private Item item;
 
 	/**
-	 * ¶µ¥Ø¶q
+	 * é …ç›® é‡
 	 */
 	@Column(name = "VOLUME")
 	private int volume;
 
 	/**
-	 * ¨ú±o­q³æ½s¸¹
+	 * å–å¾—è¨‚å–®ç·¨è™Ÿ
 	 * 
 	 * @return
 	 */
@@ -61,7 +61,7 @@ public class Booking {
 	}
 
 	/**
-	 * ¨ú±o­q³æ®É¶¡
+	 * å–å¾—è¨‚å–®æ™‚é–“
 	 * 
 	 * @return
 	 */
@@ -70,7 +70,7 @@ public class Booking {
 	}
 
 	/**
-	 * ³]©w­q³æ®É¶¡
+	 * è¨­å®šè¨‚å–®æ™‚é–“
 	 * 
 	 * @param time
 	 */
@@ -79,7 +79,7 @@ public class Booking {
 	}
 
 	/**
-	 * ¨ú±oÅU«È¸ê°T
+	 * å–å¾—é¡§å®¢è³‡è¨Š
 	 * 
 	 * @return
 	 */
@@ -88,7 +88,7 @@ public class Booking {
 	}
 
 	/**
-	 * ³]©wÅU«È½s¸¹
+	 * è¨­å®šé¡§å®¢è³‡è¨Š
 	 * 
 	 * @param customer
 	 */
@@ -97,7 +97,7 @@ public class Booking {
 	}
 
 	/**
-	 * ¨ú±o¶µ¥Ø¸ê°T
+	 * å–å¾—é …ç›®è³‡è¨Š
 	 * 
 	 * @return
 	 */
@@ -106,7 +106,7 @@ public class Booking {
 	}
 
 	/**
-	 * ³]©w¶µ¥Ø¸ê°T
+	 * è¨­å®šé …ç›®è³‡è¨Š
 	 * 
 	 * @param item
 	 */
@@ -115,7 +115,7 @@ public class Booking {
 	}
 
 	/**
-	 * ¨ú±o¶µ¥Ø ¶q
+	 * å–å¾— é‡
 	 * 
 	 * @return
 	 */
@@ -124,7 +124,7 @@ public class Booking {
 	}
 
 	/**
-	 * ³]©w¶µ¥Ø ¶q
+	 * è¨­å®š é‡
 	 * 
 	 * @param volume
 	 */

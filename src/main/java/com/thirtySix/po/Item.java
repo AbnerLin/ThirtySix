@@ -17,7 +17,7 @@ import org.hibernate.annotations.GenericGenerator;
 public class Item {
 
 	/**
-	 * ¶µ¥Ø½s¸¹
+	 * é …ç›®ç·¨è™Ÿ
 	 */
 	@Id
 	@GeneratedValue(generator = "UUID")
@@ -26,52 +26,52 @@ public class Item {
 	private String itemID;
 
 	/**
-	 * ¶µ¥Ø¦WºÙ
+	 * é …ç›®åç¨±
 	 */
 	@Column(name = "NAME")
 	private String name;
 
 	/**
-	 * ¶µ¥Ø¹ÏÀÉ¦ì¸m
+	 * åœ–æª”è·¯å¾‘
 	 */
 	@Column(name = "IMAGEPATH")
 	private String imagePath;
 
 	/**
-	 * ¶µ¥Ø»ù¿ú
+	 * é …ç›®åƒ¹æ ¼
 	 */
 	@Column(name = "PRICE")
 	private int price;
 
 	/**
-	 * ¶µ¥Ø±Ô­z
+	 * é …ç›®æ•˜è¿°
 	 */
 	@Column(name = "DESCRIPTION")
 	private String description;
 
 	/**
-	 * ¬O§_Åã¥Ü(1:Åã¥Ü, 0:¤£Åã¥Ü)
+	 * æ˜¯å¦é¡¯ç¤º(1:é¡¯ç¤º, 0:ä¸é¡¯ç¤º)
 	 */
-	@Column(name = "BLOCK")
-	private int block = 1;
+	@Column(name = "ISDISPLAY")
+	private int isDisplay = 1;
 
 	/**
-	 * ­q³æ¸ê°T
+	 * è¨‚å–®åˆ—è¡¨
 	 */
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "item")
 	private List<Booking> bookingList;
 
 	/**
-	 * ¨ú±o½s¸¹
+	 * å–å¾—é …ç›®ç·¨è™Ÿ
 	 * 
 	 * @return
 	 */
-	public String getMenuID() {
+	public String getItemID() {
 		return itemID;
 	}
 
 	/**
-	 * ¨ú±o¦WºÙ
+	 * å–å¾—é …ç›®åç¨±
 	 * 
 	 * @return
 	 */
@@ -80,7 +80,7 @@ public class Item {
 	}
 
 	/**
-	 * ³]©w¦WºÙ
+	 * è¨­å®šé …ç›®åç¨±
 	 * 
 	 * @param name
 	 */
@@ -89,7 +89,7 @@ public class Item {
 	}
 
 	/**
-	 * ¨ú±o¹Ï®×¸ô®|
+	 * å–å¾—åœ–æª”è·¯å¾‘
 	 * 
 	 * @return
 	 */
@@ -98,7 +98,7 @@ public class Item {
 	}
 
 	/**
-	 * ³]©w¹Ï®×¸ô®|
+	 * è¨­å®šåœ–æª”è·¯å¾‘
 	 * 
 	 * @param imagePath
 	 */
@@ -107,7 +107,7 @@ public class Item {
 	}
 
 	/**
-	 * ¨ú±o¼Ğ»ù
+	 * å–å¾—åƒ¹æ ¼
 	 * 
 	 * @return
 	 */
@@ -116,7 +116,7 @@ public class Item {
 	}
 
 	/**
-	 * ³]©w¼Ğ»ù
+	 * è¨­å®šåƒ¹æ ¼
 	 * 
 	 * @param price
 	 */
@@ -125,7 +125,7 @@ public class Item {
 	}
 
 	/**
-	 * ¨ú±o±Ô­z
+	 * å–å¾—æ•˜è¿°
 	 * 
 	 * @return
 	 */
@@ -134,7 +134,7 @@ public class Item {
 	}
 
 	/**
-	 * ³]©w±Ô­z
+	 * è¨­å®šæ•˜è¿°
 	 * 
 	 * @param description
 	 */
@@ -143,29 +143,29 @@ public class Item {
 	}
 
 	/**
-	 * ¨ú±o¸Ó¶µ¥Ø ¬O§_Åã¥Ü (1:Åã¥Ü, 0:¤£Åã¥Ü)
+	 * å–å¾—è©²é …ç›®æ˜¯å¦é¡¯ç¤º(1:é¡¯ç¤º, 0:ä¸é¡¯ç¤º)
 	 * 
 	 * @return
 	 */
-	public int getBlock() {
-		return block;
+	public int getIsDisplay() {
+		return isDisplay;
 	}
 
 	/**
-	 * ³]©w¸Ó¶µ¥Ø¬O§_Åã¥Ü (1:Åã¥Ü, 0:¤£Åã¥Ü)
+	 * è¨­å®šè©²é …ç›®æ˜¯å¦é¡¯ç¤º(1:é¡¯ç¤º, 0:ä¸é¡¯ç¤º)
 	 * 
 	 * @param block
 	 */
-	public void setBlock(int block) {
-		this.block = block;
+	public void setIsDisplay(int isDisplay) {
+		this.isDisplay = isDisplay;
 	}
 
 	/**
-	 * ¨ú±o­q³æ¸ê°T
+	 * å–å¾—è¨‚å–®åˆ—è¡¨
 	 * 
 	 * @return
 	 */
-	public List<Booking> getOrderList() {
+	public List<Booking> getBookingList() {
 		return bookingList;
 	}
 

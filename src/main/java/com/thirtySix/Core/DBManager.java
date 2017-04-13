@@ -18,7 +18,7 @@ public class DBManager {
 	private CustomerDAO customerDAO = null;
 
 	/**
-	 * ¨ú±o¥ÎÀ\¤¤ªºÅU«È
+	 * å–å¾—ç”¨é¤ä¸­é¡§å®¢
 	 * 
 	 * @return
 	 */
@@ -27,7 +27,7 @@ public class DBManager {
 	}
 	
 	/**
-	 * ·s¼WÅU«È
+	 * æ–°å¢ç”¨é¤ä¸­é¡§å®¢
 	 */
 	public Serializable insertCustomer(Customer po) {
 		return customerDAO.insert(po);

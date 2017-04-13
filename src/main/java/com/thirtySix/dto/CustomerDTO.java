@@ -14,52 +14,52 @@ public class CustomerDTO implements Serializable {
 	private static final long serialVersionUID = -8633191169307671028L;
 
 	/**
-	 * ÅU«È½s¸¹
+	 * é¡§å®¢ç·¨è™Ÿ
 	 */
 	private String customerID;
 
 	/**
-	 * ®à¸¹
+	 * æ¡Œè™Ÿ
 	 */
 	private String deskNumber;
 
 	/**
-	 * ¶i³õ®É¶¡
+	 * é€²å ´æ™‚é–“
 	 */
 	private Timestamp checkInTime;
 
 	/**
-	 * ¥X³õ®É¶¡
+	 * å‡ºå ´æ™‚é–“
 	 */
 	private Timestamp checkOutTime;
 
 	/**
-	 * ÅU«È¦WºÙ
+	 * é¡§å®¢åç¨±
 	 */
 	private String customerName;
 
 	/**
-	 * ÅU«È¹q¸Ü
+	 * é¡§å®¢é›»è©±
 	 */
 	private String phoneNumber;
 
 	/**
-	 * ¤HÀY¼Æ
+	 * äººæ•¸
 	 */
 	private Integer peopleCount;
 
 	/**
-	 * ÅU«È³Æµù
+	 * å‚™è¨»
 	 */
 	private String remark;
 
 	/**
-	 * ­q³æ¦Cªí
+	 * è¨‚å–®è³‡è¨Š
 	 */
 	private List<Booking> bookingList;
 
 	/**
-	 * ¨ú±oÅU«È½s¸¹
+	 * å–å¾—é¡§å®¢ç·¨è™Ÿ
 	 * 
 	 * @return
 	 */
@@ -68,7 +68,7 @@ public class CustomerDTO implements Serializable {
 	}
 
 	/**
-	 * ³]©wÅU«È½s¸¹
+	 * è¨­å®šé¡§å®¢ç·¨è™Ÿ
 	 * 
 	 * @param customerID
 	 */
@@ -77,7 +77,7 @@ public class CustomerDTO implements Serializable {
 	}
 
 	/**
-	 * ¨ú±o®à¸¹
+	 * å–å¾—æ¡Œè™Ÿ
 	 * 
 	 * @return
 	 */
@@ -86,7 +86,7 @@ public class CustomerDTO implements Serializable {
 	}
 
 	/**
-	 * ³]©w®à¸¹
+	 * è¨­å®šæ¡Œè™Ÿ
 	 * 
 	 * @param deskNumber
 	 */
@@ -95,7 +95,7 @@ public class CustomerDTO implements Serializable {
 	}
 
 	/**
-	 * ¨ú±oÅU«È¦WºÙ
+	 * å–å¾—é¡§å®¢åç¨±
 	 * 
 	 * @return
 	 */
@@ -104,7 +104,7 @@ public class CustomerDTO implements Serializable {
 	}
 
 	/**
-	 * ³]©wÅU«È¦WºÙ
+	 * è¨­å®šé¡§å®¢åç¨±
 	 * 
 	 * @param customerName
 	 */
@@ -113,7 +113,7 @@ public class CustomerDTO implements Serializable {
 	}
 
 	/**
-	 * ¨ú±oÅU«È¹q¸Ü
+	 * å–å¾—é¡§å®¢é›»è©±
 	 * 
 	 * @return
 	 */
@@ -122,7 +122,7 @@ public class CustomerDTO implements Serializable {
 	}
 
 	/**
-	 * ³]©wÅU«È¹q¸Ü
+	 * è¨­å®šé¡§å®¢é›»è©±
 	 * 
 	 * @param phoneNumber
 	 */
@@ -131,7 +131,7 @@ public class CustomerDTO implements Serializable {
 	}
 
 	/**
-	 * ¨ú±o³Æµù
+	 * å–å¾—å‚™è¨»
 	 * 
 	 * @return
 	 */
@@ -140,7 +140,7 @@ public class CustomerDTO implements Serializable {
 	}
 
 	/**
-	 * ³]©w³Æµù
+	 * è¨­å®šå‚™è¨»
 	 * 
 	 * @param remark
 	 */
@@ -149,7 +149,7 @@ public class CustomerDTO implements Serializable {
 	}
 
 	/**
-	 * ¨ú±o¶i³õ®É¶¡
+	 * å–å¾—é€²å ´æ™‚é–“
 	 * 
 	 * @return
 	 */
@@ -158,7 +158,7 @@ public class CustomerDTO implements Serializable {
 	}
 
 	/**
-	 * ³]©w¶i³õ®É¶¡
+	 * è¨­å®šé€²å ´æ™‚é–“
 	 * 
 	 * @param checkInTime
 	 */
@@ -167,7 +167,7 @@ public class CustomerDTO implements Serializable {
 	}
 
 	/**
-	 * ¨ú±o¥X³õ®É¶¡
+	 * å–å¾—å‡ºå ´æ™‚é–“
 	 * 
 	 * @return
 	 */
@@ -176,7 +176,7 @@ public class CustomerDTO implements Serializable {
 	}
 
 	/**
-	 * ³]©w¥X³õ®É¶¡
+	 * è¨­å®šå‡ºå ´æ™‚é–“
 	 * 
 	 * @param checkOutTime
 	 */
@@ -185,7 +185,7 @@ public class CustomerDTO implements Serializable {
 	}
 
 	/**
-	 * ¨ú±o¤HÀY¼Æ
+	 * å–å¾—äººæ•¸
 	 * 
 	 * @return
 	 */
@@ -194,7 +194,7 @@ public class CustomerDTO implements Serializable {
 	}
 
 	/**
-	 * ³]©w¤HÀY¼Æ
+	 * è¨­å®šäººæ•¸
 	 * 
 	 * @param peopleCount
 	 */
@@ -203,7 +203,7 @@ public class CustomerDTO implements Serializable {
 	}
 
 	/**
-	 * ¨ú±o¨Ï¥ÎªÌªº­q³æ
+	 * å–å¾—è¨‚å–®åˆ—è¡¨
 	 * 
 	 * @return
 	 */

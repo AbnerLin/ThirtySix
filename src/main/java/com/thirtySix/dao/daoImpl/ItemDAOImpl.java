@@ -7,5 +7,5 @@ import com.thirtySix.po.Item;
 
 @Repository
 public class ItemDAOImpl extends GenericDAOImpl<Item> implements ItemDAO {
-
+	
 }

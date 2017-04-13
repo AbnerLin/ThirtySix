@@ -18,7 +18,7 @@ import org.hibernate.annotations.GenericGenerator;
 public class Customer {
 
 	/**
-	 * ÅU«È½s¸¹
+	 * é¡§å®¢ç·¨è™Ÿ
 	 */
 	@Id
 	@GeneratedValue(generator = "UUID")
@@ -27,55 +27,55 @@ public class Customer {
 	private String customerID;
 
 	/**
-	 * ®à¸¹
+	 * æ¡Œè™Ÿ
 	 */
 	@Column(name = "DESKNUMBER")
 	private String deskNumber;
 
 	/**
-	 * ¶i³õ®É¶¡
+	 * é€²å ´æ™‚é–“
 	 */
 	@Column(name = "CHECKINTIME")
 	private Timestamp checkInTime;
 
 	/**
-	 * ¥X³õ®É¶¡
+	 * å‡ºå ´æ™‚é–“
 	 */
 	@Column(name = "CHECKOUTTIME")
 	private Timestamp checkOutTime;
 
 	/**
-	 * ÅU«È¦WºÙ
+	 * é¡§å®¢åç¨±
 	 */
 	@Column(name = "NAME")
 	private String customerName;
 
 	/**
-	 * ÅU«È¹q¸Ü
+	 * é¡§å®¢é›»è©±
 	 */
 	@Column(name = "PHONE")
 	private String phoneNumber;
 
 	/**
-	 * ¤HÀY¼Æ
+	 * äººæ•¸
 	 */
 	@Column(name = "PEOPLECOUNT")
 	private Integer peopleCount;
 
 	/**
-	 * ÅU«È³Æµù
+	 * å‚™è¨»
 	 */
 	@Column(name = "REMARK")
 	private String remark;
 
 	/**
-	 * ­q³æ¦Cªí
+	 * è¨‚å–®åˆ—è¡¨
 	 */
 	@OneToMany(fetch = FetchType.EAGER, mappedBy = "customer")
 	private List<Booking> bookingList;
 
 	/**
-	 * ¨ú±oÅU«È½s¸¹
+	 * å–å¾—é¡§å®¢ç·¨è™Ÿ
 	 * 
 	 * @return
 	 */
@@ -84,7 +84,7 @@ public class Customer {
 	}
 
 	/**
-	 * ³]©wÅU«È½s¸¹
+	 * è¨­å®šé¡§å®¢ç·¨è™Ÿ
 	 * 
 	 * @param customerID
 	 */
@@ -93,7 +93,7 @@ public class Customer {
 	}
 
 	/**
-	 * ¨ú±o®à¸¹
+	 * å–å¾—æ¡Œè™Ÿ
 	 * 
 	 * @return
 	 */
@@ -102,7 +102,7 @@ public class Customer {
 	}
 
 	/**
-	 * ³]©w®à¸¹
+	 * è¨­å®šæ¡Œè™Ÿ
 	 * 
 	 * @param deskNumber
 	 */
@@ -111,7 +111,7 @@ public class Customer {
 	}
 
 	/**
-	 * ¨ú±oÅU«È¦WºÙ
+	 * å–å¾—é¡§å®¢åç¨±
 	 * 
 	 * @return
 	 */
@@ -120,7 +120,7 @@ public class Customer {
 	}
 
 	/**
-	 * ³]©wÅU«È¦WºÙ
+	 * è¨­å®šé¡§å®¢åç¨±
 	 * 
 	 * @param customerName
 	 */
@@ -129,7 +129,7 @@ public class Customer {
 	}
 
 	/**
-	 * ¨ú±oÅU«È¹q¸Ü
+	 * å–å¾—é¡§å®¢é›»è©±
 	 * 
 	 * @return
 	 */
@@ -138,7 +138,7 @@ public class Customer {
 	}
 
 	/**
-	 * ³]©wÅU«È¹q¸Ü
+	 * è¨­å®šé¡§å®¢é›»è©±
 	 * 
 	 * @param phoneNumber
 	 */
@@ -147,7 +147,7 @@ public class Customer {
 	}
 
 	/**
-	 * ¨ú±o³Æµù
+	 * å–å¾—å‚™è¨»
 	 * 
 	 * @return
 	 */
@@ -156,7 +156,7 @@ public class Customer {
 	}
 
 	/**
-	 * ³]©w³Æµù
+	 * è¨­å®šå‚™è¨»
 	 * 
 	 * @param remark
 	 */
@@ -165,7 +165,7 @@ public class Customer {
 	}
 
 	/**
-	 * ¨ú±o¶i³õ®É¶¡
+	 * å–å¾—é€²å ´æ™‚é–“
 	 * 
 	 * @return
 	 */
@@ -174,7 +174,7 @@ public class Customer {
 	}
 
 	/**
-	 * ³]©w¶i³õ®É¶¡
+	 * è¨­å®šé€²å ´æ™‚é–“
 	 * 
 	 * @param checkInTime
 	 */
@@ -183,7 +183,7 @@ public class Customer {
 	}
 
 	/**
-	 * ¨ú±o¥X³õ®É¶¡
+	 * å–å¾—å‡ºå ´æ™‚é–“
 	 * 
 	 * @return
 	 */
@@ -192,7 +192,7 @@ public class Customer {
 	}
 
 	/**
-	 * ³]©w¥X³õ®É¶¡
+	 * è¨­å®šå‡ºå ´æ™‚é–“
 	 * 
 	 * @param checkOutTime
 	 */
@@ -201,7 +201,7 @@ public class Customer {
 	}
 
 	/**
-	 * ¨ú±o¤HÀY¼Æ
+	 * å–å¾—äººæ•¸
 	 * 
 	 * @return
 	 */
@@ -210,7 +210,7 @@ public class Customer {
 	}
 
 	/**
-	 * ³]©w¤HÀY¼Æ
+	 * è¨­å®šäººæ•¸
 	 * 
 	 * @param peopleCount
 	 */
@@ -219,7 +219,7 @@ public class Customer {
 	}
 
 	/**
-	 * ¨ú±o¨Ï¥ÎªÌªº­q³æ
+	 * å–å¾—è¨‚å–®åˆ—è¡¨
 	 * 
 	 * @return
 	 */

@@ -39,6 +39,7 @@
 	<mvc:resources mapping="/css/**" location="/webResourse/css/" />
 	<mvc:resources mapping="/images/**" location="/webResourse/images/" />
 	<mvc:resources mapping="/fonts/**" location="/webResourse/fonts/" />
+	<mvc:resources mapping="/plugin/**" location="/webResourse/plugin/" />
 
 	<bean
 		class="org.springframework.web.servlet.view.InternalResourceViewResolver">
