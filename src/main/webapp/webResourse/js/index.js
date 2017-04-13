@@ -24,18 +24,25 @@ function getDiningCustomer() {
 function updateDiningCustomerList(data) {
 	$('#diningCustomerList').html("");
 	for ( var key in data) {
-		var customerList = "";
 		if (data.hasOwnProperty(key)) {
 			var jsonObj = data[key];
 
+			/** div */
 			var div = document.createElement("div");
-			$(div).attr("custmerId", key);
-			$(div).attr("deskNumber", jsonObj.deskNumber);
-			customerList += "顧客編號: " + key + " 桌號： " + jsonObj.deskNumber
-					+ " 人數：" + jsonObj.peopleCount + " 入場時間："
-					+ jsonObj.checkInTime;
-			$(div).html(customerList);
 			$(div).appendTo("#diningCustomerList");
+
+			/** button */
+			var a = document.createElement("a");
+			$(a).attr({
+				"href" : "#",
+				"customId" : key,
+				"deskNumber" : jsonObj.deskNumber
+			});
+			$(a).text(
+					"顧客編號: " + key + " 桌號： " + jsonObj.deskNumber + " 人數："
+							+ jsonObj.peopleCount + " 入場時間："
+							+ jsonObj.checkInTime);
+			$(a).appendTo(div);
 		}
 	}
 }
@@ -98,98 +105,95 @@ function getMenu() {
 		success : function(response, status, jqXHR) {
 			var data = response.data;
 			alertify.success("菜單載入成功!");
-//			$("#menu").html(JSON.stringify(data));
+
 			for ( var key in data) {
 				if (data.hasOwnProperty(key)) {
 					var jsonObj = data[key];
-					
-					/** panel heading */
-					var panelHeading = document.createElement("div");
-					$(panelHeading).addClass("panel-heading");
-					$(panelHeading).html(jsonObj.className);
-					
-					/** panel body */
-					var panelBody = document.createElement("div");
-					$(panelBody).addClass("panel-body");
-					
-					/** create input box */
-					var itemList = jsonObj.itemList;
-					var itemText = [];
-					for(var index = 0; index < itemList.length; index++) {
-						var item = itemList[index];
-						
-						itemText.push('<div class="row">');
-						itemText.push('<div class="col-md-6">' + item.name + '</div>');
-						itemText.push('<div class="col-md-6">');
-						itemText.push('<input type="hidden" class="itemId" value="' + item.itemID + '" />');
-						itemText.push('<input type="number" class="volume" value=0 />');
-						itemText.push("</div>");
-						itemText.push("</div>");
-					}
-					
-//					<div class="panel-group" id="accordion" role="tablist"
-//						aria-multiselectable="true">
-//						<div class="panel panel-default">
-//							<div class="panel-heading" role="tab" id="headingOne">
-//								<h4 class="panel-title">
-//									<a role="button" data-toggle="collapse" data-parent="#accordion"
-//										href="#collapseOne" aria-expanded="true"
-//										aria-controls="collapseOne"> Collapsible Group Item #1 </a>
-//								</h4>
-//							</div>
-//							<div id="collapseOne" class="panel-collapse collapse in"
-//								role="tabpanel" aria-labelledby="headingOne">
-//								<div class="panel-body">Anim pariatur cliche reprehenderit,
-//									enim eiusmod high life accusamus terry richardson ad squid. 3
-//									wolf moon officia aute, non cupidatat skateboard dolor brunch.
-//									Food truck quinoa nesciunt laborum eiusmod. Brunch 3 wolf moon
-//									tempor, sunt aliqua put a bird on it squid single-origin coffee
-//									nulla assumenda shoreditch et. Nihil anim keffiyeh helvetica,
-//									craft beer labore wes anderson cred nesciunt sapiente ea
-//									proident. Ad vegan excepteur butcher vice lomo. Leggings
-//									occaecat craft beer farm-to-table, raw denim aesthetic synth
-//									nesciunt you probably haven't heard of them accusamus labore
-//									sustainable VHS.</div>
-//							</div>
-//						</div>
-//					</div>
-					
-					
-					
-					$(panelBody).html(itemText.join(""));
-					
+
 					/** panel container */
 					var panel = document.createElement("div");
 					$(panel).addClass("panel " + jsonObj.style);
-					$(panel).appendTo("#menu");
-					
-					/** add to panel container */
+					$(panel).appendTo("#menuBlock");
+
+					/** panel header */
+					var panelHeading = document.createElement("div");
+					$(panelHeading).addClass("panel-heading");
+					$(panelHeading).attr({
+						"role" : "tab",
+						"id" : "header" + jsonObj.classID
+					});
 					$(panelHeading).appendTo(panel);
-					$(panelBody).appendTo(panel);
+					/** head button */
+					var button = document.createElement("a");
+					$(button).attr({
+						"role" : "button",
+						"data-toggle" : "collapse",
+						"data-parent" : "#menuBlock",
+						"href" : "#" + jsonObj.classID,
+						"aria-expanded" : "true",
+						"aria-controls" : jsonObj.classID
+					});
+					$(button).css("color", "black");
+					$(button).text(jsonObj.className);
+					$(button).appendTo(panelHeading);
+
+					/** panel collapse */
+					var panelCollapse = document.createElement("div");
+					$(panelCollapse).addClass("panel-collapse collapse")
+					$(panelCollapse).attr({
+						"id" : jsonObj.classID,
+						"role" : "tabpanel",
+						"aria-labelledby" : "header" + jsonObj.classID
+					});
+					$(panelCollapse).appendTo(panel);
+
+					/** panel body */
+					var panelBody = document.createElement("div");
+					$(panelBody).addClass("panel-body");
+					$(panelBody).appendTo(panelCollapse);
+
+					var itemList = jsonObj.itemList;
+					var itemText = [];
+					for (var index = 0; index < itemList.length; index++) {
+						var item = itemList[index];
+
+						/** row */
+						var rowDiv = document.createElement("div");
+						$(rowDiv).addClass("row");
+						$(rowDiv).appendTo(panelBody);
+
+						/** food name */
+						var nameDiv = document.createElement("div");
+						$(nameDiv).addClass("col-md-6 text-center");
+						$(nameDiv).html(item.name);
+						$(nameDiv).appendTo(rowDiv);
+
+						/** input div */
+						var inputDiv = document.createElement("div");
+						$(inputDiv).addClass("col-md-6");
+						$(inputDiv).appendTo(rowDiv);
+
+						/** item id */
+						var inputHidden = document.createElement("input");
+						$(inputHidden).addClass("form-control itemId");
+						$(inputHidden).attr({
+							"type" : "hidden",
+							"value" : item.itemID
+						});
+						$(inputHidden).appendTo(inputDiv);
+
+						/** item volume */
+						var inputVolume = document.createElement("input");
+						$(inputVolume).addClass("form-control volume");
+						$(inputVolume).attr({
+							"type" : "number",
+							"value" : 0
+						});
+						$(inputVolume).appendTo(inputDiv);
+
+					}
 				}
 			}
-
-			// <div class="panel panel-default">
-			// <div class="panel-heading">Panel heading without title</div>
-			// <div class="panel-body">Panel content</div>
-			// </div>
-
-			// for ( var key in data) {
-			// var customerList = "";
-			// if (data.hasOwnProperty(key)) {
-			// var jsonObj = data[key];
-			//
-			// var div = document.createElement("div");
-			// $(div).attr("custmerId", key);
-			// $(div).attr("deskNumber", jsonObj.deskNumber);
-			// customerList += "顧客編號: " + key + " 桌號： " + jsonObj.deskNumber
-			// + " 人數：" + jsonObj.peopleCount + " 入場時間："
-			// + jsonObj.checkInTime;
-			// $(div).html(customerList);
-			// $(div).appendTo("#diningCustomerList");
-			// }
-			// }
-
 		}
 	})
 }

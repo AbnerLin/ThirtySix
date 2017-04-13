@@ -38,24 +38,29 @@
 
 </head>
 <body>
-
-	<div class="row">
-		<div id="serverTime" class="col-md-12 text-center"></div>
-	</div>
-
-	<div class="row">
-		<div class="col-md-6">
-			<button onclick="getDiningCustomer();">getDiningCustomer</button>
-			<div id="diningCustomerList"></div>
-
-			<button onclick="customerCheckIn();">customerCheckIn</button>
+	<div id="main">
+		<div class="row">
+			<div id="serverTime" class="col-md-12 text-center"></div>
 		</div>
-		<div class="col-md-6">
-			<div id="customerInfo" class="col-md-3">11</div>
-			<div id="menu" class="col-md-9">
 
-				
+		<div class="row">
+			<!-- left -->
+			<div class="col-md-6">
+				<button onclick="getDiningCustomer();">getDiningCustomer</button>
+				<div id="diningCustomerList"></div>
+
+				<button onclick="customerCheckIn();">customerCheckIn</button>
+			</div>
+			
+			<!-- right -->
+			<div class="col-md-6">
+				<div id="customerInfo" class="col-md-3">11</div>
+				<div id="menu" class="col-md-9">
+					<div class="panel-group" id="menuBlock" role="tablist"
+						aria-multiselectable="true"></div>
+				</div>
 			</div>
 		</div>
+	</div>
 </body>
 </html>
