@@ -27,24 +27,26 @@ function updateDiningCustomerList(data) {
 		if (data.hasOwnProperty(key)) {
 			var jsonObj = data[key];
 
-			/** div */
-			var div = document.createElement("div");
-			$(div).appendTo("#diningCustomerList");
-
 			/** button */
-			var a = document.createElement("a");
-			$(a).attr({
-				"href" : "#",
+			var buttonDiv = document.createElement("div");
+			$(buttonDiv).attr({
 				"customId" : key,
-				"deskNumber" : jsonObj.deskNumber
+				"deskNumber" : jsonObj.deskNumber,
+				"class" : "desk"
 			});
-			$(a).text(
+			$(buttonDiv).text(
 					"顧客編號: " + key + " 桌號： " + jsonObj.deskNumber + " 人數："
 							+ jsonObj.peopleCount + " 入場時間："
 							+ jsonObj.checkInTime);
-			$(a).appendTo(div);
+			$(buttonDiv).appendTo("#diningCustomerList");
 		}
 	}
+	
+	/** 桌號點餐trigger */
+	//TODO
+	$("div.desk").on("click", function(){
+		alert("!!!");
+	});
 }
 
 /**
@@ -198,10 +200,20 @@ function getMenu() {
 	})
 }
 
+
+function order(element) {
+	
+}
+
 $(document).ready(function() {
 	/** 啟動監聽WebSocket */
 	subscribeWebSocket();
 
 	/** 載入菜單列表 */
 	getMenu();
+	
+//	/** 桌號點餐trigger */
+//	$("div.desk").on("click", function(){
+//		alert("!!!");
+//	});
 });
