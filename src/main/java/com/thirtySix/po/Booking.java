@@ -52,6 +52,12 @@ public class Booking {
 	private int volume;
 
 	/**
+	 * 是否已出餐(1:出餐, 0:未出餐)
+	 */
+	@Column(name = "ISSEND")
+	private int isSend;
+
+	/**
 	 * 取得訂單編號
 	 * 
 	 * @return
@@ -130,6 +136,24 @@ public class Booking {
 	 */
 	public void setVolume(int volume) {
 		this.volume = volume;
+	}
+
+	/**
+	 * 取得是否已出餐
+	 * 
+	 * @return
+	 */
+	public int getIsSend() {
+		return isSend;
+	}
+
+	/**
+	 * 設定是否已出餐(1:出餐, 0:未出餐)
+	 * 
+	 * @param isSend
+	 */
+	public void setIsSend(int isSend) {
+		this.isSend = isSend;
 	}
 
 }

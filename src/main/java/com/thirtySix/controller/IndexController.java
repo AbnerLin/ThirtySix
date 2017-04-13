@@ -21,6 +21,7 @@ import com.thirtySix.Core.DBManager;
 import com.thirtySix.dto.AjaxDTO;
 import com.thirtySix.dto.CustomerDTO;
 import com.thirtySix.po.Customer;
+import com.thirtySix.po.ItemClass;
 import com.thirtySix.util.ObjectConverter;
 
 @Controller
@@ -65,6 +66,14 @@ public class IndexController {
 		return result;
 	}
 
+	/**
+	 * 顧客check in
+	 * 
+	 * @param request
+	 * @param response
+	 * @param customerDTO
+	 * @return
+	 */
 	@ResponseBody
 	@RequestMapping(value = { "/customerCheckIn" })
 	public AjaxDTO customerCheckIn(HttpServletRequest request,
@@ -90,6 +99,26 @@ public class IndexController {
 
 		result.setStatusOK();
 		result.setData(po);
+		return result;
+	}
+
+	/**
+	 * 取得菜單
+	 * 
+	 * @param request
+	 * @param response
+	 * @return
+	 */
+	@ResponseBody
+	@RequestMapping(value = { "/getMenu" })
+	private AjaxDTO getMenu(HttpServletRequest request,
+			HttpServletResponse response) {
+		AjaxDTO result = new AjaxDTO();
+		
+		Map<String, ItemClass> menu = buffer.getMenu();
+		
+		result.setStatusOK();
+		result.setData(menu);
 		return result;
 	}
 

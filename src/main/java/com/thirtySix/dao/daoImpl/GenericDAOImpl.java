@@ -1,6 +1,7 @@
 package com.thirtySix.dao.daoImpl;
 
 import java.io.Serializable;
+import java.util.List;
 
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,6 +11,12 @@ import com.thirtySix.dao.GenericDAO;
 
 public class GenericDAOImpl<T> extends HibernateDaoSupport implements
 		GenericDAO<T> {
+
+	private Class<T> persistentClass;
+
+	public GenericDAOImpl(Class<T> thisClass) {
+		this.persistentClass = thisClass;
+	}
 
 	@Autowired
 	public void init(SessionFactory factory) {
@@ -31,4 +38,8 @@ public class GenericDAOImpl<T> extends HibernateDaoSupport implements
 		this.getHibernateTemplate().delete(po);
 	}
 
+	@Override
+	public List<T> getAll() {
+		return this.getHibernateTemplate().loadAll(this.persistentClass);
+	}
 }

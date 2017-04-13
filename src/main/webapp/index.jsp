@@ -4,8 +4,8 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<meta name="viewport"
-	content="width=device-width initial-scale=1 maximum-scale=2">
+<!-- <meta name="viewport" -->
+<!-- 	content="width=device-width initial-scale=1 maximum-scale=2"> -->
 <!-- bootstrap -->
 <link type="text/css"
 	href="<c:url value="/plugin/bootstrap-3.3.7/css/bootstrap.min.css" />"
@@ -39,71 +39,23 @@
 </head>
 <body>
 
-	<center>
-		<div id="serverTime"></div>
-	</center>
+	<div class="row">
+		<div id="serverTime" class="col-md-12 text-center"></div>
+	</div>
 
-	<button onclick="getDiningCustomer();">getDiningCustomer</button>
-	<div id="diningCustomerList"></div>
+	<div class="row">
+		<div class="col-md-6">
+			<button onclick="getDiningCustomer();">getDiningCustomer</button>
+			<div id="diningCustomerList"></div>
 
-	<button onclick="customerCheckIn();">customerCheckIn</button>
-	中文測試
-	<!-- 	<nav class="w3-sidenav w3-white" style="width: 200px; display: none;" id="sideNav"> -->
-	<!-- 		<ul class="myMenu"> -->
-	<!-- 			<li data-menuanchor="intro" class="active"><a href="#intro">INTRODUCTION</a></li> -->
-	<!-- 			<li data-menuanchor="news"><a href="#news">中文測試</a></li> -->
-	<!-- 			<li data-menuanchor="production"><a href="#production">PRODUCTION</a></li> -->
-	<!-- 			<li data-menuanchor="location"><a href="#location">LOCATION</a></li> -->
-	<!-- 			<li data-menuanchor="question"><a href="#question">Q&A</a></li> -->
-	<!-- 		</ul> -->
-	<!-- 	</nav> -->
+			<button onclick="customerCheckIn();">customerCheckIn</button>
+		</div>
+		<div class="col-md-6">
+			<div id="customerInfo" class="col-md-3">11</div>
+			<div id="menu" class="col-md-9">
 
-	<!-- 	<div id="main"> -->
-	<!-- 		<header id="mobileMenu"> -->
-	<!-- 			<span class="w3-opennav w3-xlarge" onclick="w3_open()">&#9776;</span> -->
-	<!-- 		</header> -->
-
-	<!-- 		<header id="desktopMenu"> -->
-	<!-- 			<div class="text-center"> -->
-	<!-- 				<div> -->
-	<!-- 					<ul class="myMenu"> -->
-	<!-- 						<li data-menuanchor="intro" class="active"><a href="#intro">INTRODUCTION</a></li> -->
-	<!-- 						<li data-menuanchor="news"><a href="#news">NEWS</a></li> -->
-	<!-- 						<li data-menuanchor="production"><a href="#production">PRODUCTION</a></li> -->
-	<!-- 						<li data-menuanchor="location"><a href="#location">LOCATION</a></li> -->
-	<!-- 						<li data-menuanchor="question"><a href="#question">Q&A</a></li> -->
-	<!-- 					</ul> -->
-	<!-- 				</div> -->
-	<!-- 			</div> -->
-	<!-- 		</header> -->
-
-	<!-- 		<section id="firstView" class="bg01"> -->
-	<!-- 			<img src="images/healthy.png" id="healthy" class="storyTopic"/> -->
-	<!-- 		</section> -->
-
-	<!-- 		<section id="secondView"></section> -->
-
-	<!-- 		<div id="fullpage"> -->
-	<!-- 			<div class="section"> -->
-	<%-- 				<%@ include file="/WEB-INF/jsp/intro.jsp"%> --%>
-	<!-- 			</div> -->
-
-	<!-- 			<div class="section"> -->
-	<%-- 				<%@ include file="/WEB-INF/jsp/news.jsp"%> --%>
-	<!-- 			</div> -->
-
-	<!-- 			<div class="section"> -->
-	<%-- 				<%@ include file="/WEB-INF/jsp/production.jsp"%> --%>
-	<!-- 			</div> -->
-
-	<!-- 			<div class="section"> -->
-	<%-- 				<%@ include file="/WEB-INF/jsp/location.jsp"%> --%>
-	<!-- 			</div> -->
-
-	<!-- 			<div class="section"> -->
-	<%-- 				<%@ include file="/WEB-INF/jsp/question.jsp"%> --%>
-	<!-- 			</div> -->
-	<!-- 		</div> -->
-	<!-- 	</div> -->
+				
+			</div>
+		</div>
 </body>
 </html>

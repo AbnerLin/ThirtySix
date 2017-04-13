@@ -1,10 +1,18 @@
 package com.thirtySix.dao;
 
 import java.io.Serializable;
+import java.util.List;
 
 
 public interface GenericDAO<T> {
 
+	/**
+	 * SELECT ALL
+	 * 
+	 * @return
+	 */
+	public List<T> getAll();
+	
 	/**
 	 * INSERT
 	 * 

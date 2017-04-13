@@ -14,6 +14,10 @@ import com.thirtySix.po.Customer;
 public class CustomerDAOImpl extends GenericDAOImpl<Customer> implements
 		CustomerDAO {
 
+	public CustomerDAOImpl() {
+		super(Customer.class);
+	}
+
 	@Override
 	@SuppressWarnings("unchecked")
 	public List<Customer> getDiningCustomer() {

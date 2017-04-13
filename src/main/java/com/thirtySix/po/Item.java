@@ -7,10 +7,14 @@ import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import org.hibernate.annotations.GenericGenerator;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 @Table(name = "ITEM")
@@ -48,7 +52,15 @@ public class Item {
 	 */
 	@Column(name = "DESCRIPTION")
 	private String description;
-
+	
+	/**
+	 * 項目種類
+	 */
+	@JsonIgnore
+	@ManyToOne
+	@JoinColumn(name = "CLASSID", referencedColumnName = "CLASSID", nullable = false)
+	private ItemClass itemClass;
+	
 	/**
 	 * 是否顯示(1:顯示, 0:不顯示)
 	 */
@@ -58,6 +70,7 @@ public class Item {
 	/**
 	 * 訂單列表
 	 */
+	@JsonIgnore
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "item")
 	private List<Booking> bookingList;
 
@@ -167,6 +180,24 @@ public class Item {
 	 */
 	public List<Booking> getBookingList() {
 		return bookingList;
+	}
+
+	/**
+	 * 取得項目種類
+	 * 
+	 * @return
+	 */
+	public ItemClass getItemClass() {
+		return itemClass;
+	}
+
+	/**
+	 * 設定項目種類
+	 * 
+	 * @param itemClass
+	 */
+	public void setItemClass(ItemClass itemClass) {
+		this.itemClass = itemClass;
 	}
 
 }

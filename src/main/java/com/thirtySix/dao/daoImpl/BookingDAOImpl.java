@@ -9,4 +9,8 @@ import com.thirtySix.po.Booking;
 public class BookingDAOImpl extends GenericDAOImpl<Booking> implements
 		BookingDAO {
 
+	public BookingDAOImpl() {
+		super(Booking.class);
+	}
+
 }
