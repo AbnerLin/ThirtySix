@@ -101,19 +101,19 @@ public class Buffer {
 	 * @return
 	 */
 	@SuppressWarnings("rawtypes")
-	public Set<String> getDiningDesk() {
-		Set<String> desk = new HashSet<String>();
+	public Set<String> getDiningTable() {
+		Set<String> table = new HashSet<String>();
 
 		Iterator iter = this.diningCustomerBuffer.entrySet().iterator();
 		while (iter.hasNext()) {
 			Map.Entry pair = (Map.Entry) iter.next();
 			Customer customer = (Customer) pair.getValue();
-			String deskNumber = customer.getDeskNumber();
-
-			desk.add(deskNumber);
+			String tableNumber = customer.getTableNumber();
+			
+			table.add(tableNumber);
 		}
 
-		return desk;
+		return table;
 	}
 
 }

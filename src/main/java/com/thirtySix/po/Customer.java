@@ -29,8 +29,8 @@ public class Customer {
 	/**
 	 * 桌號
 	 */
-	@Column(name = "DESKNUMBER")
-	private String deskNumber;
+	@Column(name = "TABLENUMBER")
+	private String tableNumber;
 
 	/**
 	 * 進場時間
@@ -97,8 +97,8 @@ public class Customer {
 	 * 
 	 * @return
 	 */
-	public String getDeskNumber() {
-		return deskNumber;
+	public String getTableNumber() {
+		return tableNumber;
 	}
 
 	/**
@@ -106,8 +106,8 @@ public class Customer {
 	 * 
 	 * @param deskNumber
 	 */
-	public void setDeskNumber(String deskNumber) {
-		this.deskNumber = deskNumber;
+	public void setTableNumber(String tableNumber) {
+		this.tableNumber = tableNumber;
 	}
 
 	/**

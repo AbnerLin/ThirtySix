@@ -31,11 +31,11 @@ function updateDiningCustomerList(data) {
 			var buttonDiv = document.createElement("div");
 			$(buttonDiv).attr({
 				"customId" : key,
-				"deskNumber" : jsonObj.deskNumber,
-				"class" : "desk"
+				"tableNumber" : jsonObj.tableNumber,
+				"class" : "table"
 			});
 			$(buttonDiv).text(
-					"顧客編號: " + key + " 桌號： " + jsonObj.deskNumber + " 人數："
+					"顧客編號: " + key + " 桌號： " + jsonObj.tableNumber + " 人數："
 							+ jsonObj.peopleCount + " 入場時間："
 							+ jsonObj.checkInTime);
 			$(buttonDiv).appendTo("#diningCustomerList");
@@ -44,7 +44,7 @@ function updateDiningCustomerList(data) {
 	
 	/** 桌號點餐trigger */
 	//TODO
-	$("div.desk").on("click", function(){
+	$("div.table").on("click", function(){
 		alert("!!!");
 	});
 }
@@ -61,7 +61,7 @@ function customerCheckIn() {
 		method : "POST",
 		data : {
 			customerName : "ShaoYang, Lin",
-			deskNumber : "A8",
+			tableNumber : "A8",
 			phoneNumber : "0911491788",
 			peopleCount : 8
 		},

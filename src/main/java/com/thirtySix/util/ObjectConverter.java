@@ -16,7 +16,7 @@ public class ObjectConverter {
 		po.setCheckOutTime(dto.getCheckOutTime());
 		po.setCustomerName(dto.getCustomerName());
 		po.setPhoneNumber(dto.getPhoneNumber());
-		po.setDeskNumber(dto.getDeskNumber());
+		po.setTableNumber(dto.getTableNumber());
 		po.setPeopleCount(dto.getPeopleCount());
 		po.setRemark(dto.getRemark());
 

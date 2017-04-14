@@ -21,7 +21,7 @@ public class CustomerDTO implements Serializable {
 	/**
 	 * 桌號
 	 */
-	private String deskNumber;
+	private String tableNumber;
 
 	/**
 	 * 進場時間
@@ -81,17 +81,17 @@ public class CustomerDTO implements Serializable {
 	 * 
 	 * @return
 	 */
-	public String getDeskNumber() {
-		return deskNumber;
+	public String getTableNumber() {
+		return tableNumber;
 	}
 
 	/**
 	 * 設定桌號
 	 * 
-	 * @param deskNumber
+	 * @param tableNumber
 	 */
-	public void setDeskNumber(String deskNumber) {
-		this.deskNumber = deskNumber;
+	public void setDeskNumber(String tableNumber) {
+		this.tableNumber = tableNumber;
 	}
 
 	/**
@@ -218,7 +218,7 @@ public class CustomerDTO implements Serializable {
 		result += "ID: " + this.customerID + "\n" + "NAME: "
 				+ this.customerName + "\n" + "CheckInTime: " + this.checkInTime
 				+ "\n" + "CheckOutTime: " + this.checkOutTime + "\n"
-				+ "DeskNumber: " + this.deskNumber + "\n" + "PeopleCount:"
+				+ "DeskNumber: " + this.tableNumber + "\n" + "PeopleCount:"
 				+ this.peopleCount + "\n" + "Remark: " + this.remark + "\n"
 				+ "PhoneNumber: " + this.phoneNumber + "\n";
 
