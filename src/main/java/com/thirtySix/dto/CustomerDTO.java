@@ -8,9 +8,6 @@ import com.thirtySix.po.Booking;
 
 public class CustomerDTO implements Serializable {
 
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = -8633191169307671028L;
 
 	/**
@@ -90,7 +87,7 @@ public class CustomerDTO implements Serializable {
 	 * 
 	 * @param tableNumber
 	 */
-	public void setDeskNumber(String tableNumber) {
+	public void setTableNumber(String tableNumber) {
 		this.tableNumber = tableNumber;
 	}
 

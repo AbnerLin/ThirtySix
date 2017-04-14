@@ -270,12 +270,12 @@ function getMenu() {
 			$(".minusBtn, .plusBtn").click(function() {
 				inputTrigger();
 			});
-			
+
 			/** volume input trigger */
 			$(".volume").on("keypress keydown keyup", function() {
 				inputTrigger();
 			});
-			
+
 			function inputTrigger() {
 				var orderListTxt = "";
 				var inputs = $("#menuBlock").find("input.volume");
@@ -293,8 +293,53 @@ function getMenu() {
 	})
 }
 
-function order(element) {
+/** 下單 */
+function sendOrder() {
+	var tableNumber = $("#orderTableNumber").val();
+	var customerId = $("#orderCustomerId").val();
 
+	var itemList = [];
+	var inputs = $("#menuBlock").find("input.volume");
+	$(inputs).each(function() {
+		var volume = parseInt($(this).val());
+		if (volume > 0) {
+			var parentRow = $(this).closest("div.row");
+			var itemId = $(parentRow).find(".itemId").val();
+
+			var innerObj = {
+				"itemId" : itemId,
+				"volume" : volume
+			};
+			itemList.push(innerObj);
+		}
+	});
+
+	/** result */
+	var orderObj = {
+		"customerId" : customerId,
+		"tableNumber" : tableNumber,
+		"itemList" : itemList
+	};
+
+	var action = "sendOrder";
+	$.ajax({
+		url : appUrl + action,
+		async : true,
+		method : "POST",
+		dataType : "json",
+		contentType : 'application/json',
+		data : JSON.stringify(orderObj),
+		success : function(response, status, jqXHR) {
+			// TODO
+
+			alert(JSON.stringify(response));
+		}
+	})
+
+	/** init input box */
+	// TODO
+	/** init table number */
+	// TODO
 }
 
 $(document).ready(function() {
@@ -306,9 +351,7 @@ $(document).ready(function() {
 
 	/** 載入菜單列表 */
 	getMenu();
-
 });
 
-
-//TODO
-//1. confirm submit order.
+// TODO
+// 1. confirm submit order.

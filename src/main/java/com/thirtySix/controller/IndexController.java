@@ -11,7 +11,7 @@ import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
@@ -19,7 +19,9 @@ import org.springframework.web.servlet.ModelAndView;
 import com.thirtySix.Core.Buffer;
 import com.thirtySix.Core.DBManager;
 import com.thirtySix.dto.AjaxDTO;
+import com.thirtySix.dto.BookingDTO;
 import com.thirtySix.dto.CustomerDTO;
+import com.thirtySix.dto.ItemDTO;
 import com.thirtySix.po.Customer;
 import com.thirtySix.po.ItemClass;
 import com.thirtySix.util.ObjectConverter;
@@ -78,7 +80,7 @@ public class IndexController {
 	@RequestMapping(value = { "/customerCheckIn" })
 	public AjaxDTO customerCheckIn(HttpServletRequest request,
 			HttpServletResponse response,
-			@ModelAttribute CustomerDTO customerDTO) {
+			@RequestBody CustomerDTO customerDTO) {
 		AjaxDTO result = new AjaxDTO();
 
 		/** 設定進場時間 */
@@ -114,11 +116,29 @@ public class IndexController {
 	private AjaxDTO getMenu(HttpServletRequest request,
 			HttpServletResponse response) {
 		AjaxDTO result = new AjaxDTO();
-		
+
 		Map<String, ItemClass> menu = buffer.getMenu();
-		
+
 		result.setStatusOK();
 		result.setData(menu);
+		return result;
+	}
+
+	@ResponseBody
+	@RequestMapping(value = { "/sendOrder" }, consumes="application/json", produces="application/json")
+	private AjaxDTO sendOrder(HttpServletRequest request,
+			HttpServletResponse response, @RequestBody BookingDTO bookingDTO) {
+		AjaxDTO result = new AjaxDTO();
+		
+		//TODO
+		System.out.println(bookingDTO.getCustomerId());
+		System.out.println(bookingDTO.getTableNumber());
+		System.out.println(bookingDTO.getItemList().size());
+		for(ItemDTO item : bookingDTO.getItemList()) {
+			System.out.println(item.getItemId() + item.getVolume());
+		}
+
+		result.setStatusOK();
 		return result;
 	}
 

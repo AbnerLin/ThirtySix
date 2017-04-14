@@ -45,7 +45,7 @@
 
 		<div class="row">
 			<!-- left -->
-			<div class="col-md-6">
+			<div class="col-md-6 col-sm-12">
 				<!-- 				<button onclick="getDiningCustomer();">getDiningCustomer</button> -->
 				<div id="diningCustomerList"></div>
 
@@ -53,9 +53,9 @@
 			</div>
 
 			<!-- right -->
-			<div class="col-md-6">
+			<div class="col-md-6 col-sm-12">
 				<div class="row">
-					<div id="customerInfo" class="col-md-3">
+					<div id="customerInfo" class="col-md-3 col-sm-3">
 						<h3>
 							<span class="label label-info">桌號</span>
 						</h3>
@@ -63,13 +63,13 @@
 						<input class="form-control" type="hidden" id="orderCustomerId" />
 						<div id="orderListInfo"></div>
 					</div>
-					<div id="menu" class="col-md-9">
+					<div id="menu" class="col-md-9 col-sm-9">
 						<div class="panel-group" id="menuBlock" role="tablist"
 							aria-multiselectable="true"></div>
 					</div>
 				</div>
 				<div class="row">
-					<button type="button" class="btn btn-danger btn-lg btn-block">
+					<button type="button" class="btn btn-danger btn-lg btn-block" onclick="sendOrder();">
 					 	<span class="glyphicon glyphicon-shopping-cart" aria-hidden="true">　出餐</span>
 					</button>
 				</div>
