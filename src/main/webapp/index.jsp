@@ -46,15 +46,21 @@
 		<div class="row">
 			<!-- left -->
 			<div class="col-md-6">
-				<button onclick="getDiningCustomer();">getDiningCustomer</button>
+				<!-- 				<button onclick="getDiningCustomer();">getDiningCustomer</button> -->
 				<div id="diningCustomerList"></div>
 
 				<button onclick="customerCheckIn();">customerCheckIn</button>
 			</div>
-			
+
 			<!-- right -->
 			<div class="col-md-6">
-				<div id="customerInfo" class="col-md-3">11</div>
+				<div id="customerInfo" class="col-md-3">
+					<h3>
+						<span class="label label-info">桌號</span>
+					</h3>
+					<input class="form-control" type="text" id="orderTableNumber" /> <input
+						class="form-control" type="hidden" id="orderCustomerId" />
+				</div>
 				<div id="menu" class="col-md-9">
 					<div class="panel-group" id="menuBlock" role="tablist"
 						aria-multiselectable="true"></div>
