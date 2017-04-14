@@ -49,7 +49,6 @@ function updateDiningCustomerList(data) {
 
 		$("#orderTableNumber").val(tableNumber);
 		$("#orderCustomerId").val(customerId);
-		s
 	});
 }
 
@@ -70,6 +69,8 @@ function customerCheckIn() {
 			peopleCount : 8
 		},
 		success : function(response, status, jqXHR) {
+			// TODO
+
 			// alert("success !!!");
 			// alert(JSON.stringify(data));
 		}
@@ -170,7 +171,7 @@ function getMenu() {
 
 						/** food name */
 						var nameDiv = document.createElement("div");
-						$(nameDiv).addClass("col-md-3 col-sm-3");
+						$(nameDiv).addClass("col-md-3 col-sm-3 itemName");
 						$(nameDiv).html(item.name);
 						$(nameDiv).appendTo(rowDiv);
 
@@ -265,6 +266,29 @@ function getMenu() {
 				$(inputTag).val(volume);
 			});
 
+			/** btn trigger and set to orderList */
+			$(".minusBtn, .plusBtn").click(function() {
+				inputTrigger();
+			});
+			
+			/** volume input trigger */
+			$(".volume").on("keypress keydown keyup", function() {
+				inputTrigger();
+			});
+			
+			function inputTrigger() {
+				var orderListTxt = "";
+				var inputs = $("#menuBlock").find("input.volume");
+				$(inputs).each(function() {
+					var volume = parseInt($(this).val());
+					if (volume > 0) {
+						var parentRow = $(this).closest("div.row");
+						var nameDiv = $(parentRow).find(".itemName");
+						orderListTxt += nameDiv.html() + "*" + volume + "<br>";
+					}
+				});
+				$("#orderListInfo").html(orderListTxt);
+			}
 		}
 	})
 }
@@ -283,8 +307,8 @@ $(document).ready(function() {
 	/** 載入菜單列表 */
 	getMenu();
 
-	// /** 桌號點餐trigger */
-	// $("div.desk").on("click", function(){
-	// alert("!!!");
-	// });
 });
+
+
+//TODO
+//1. confirm submit order.

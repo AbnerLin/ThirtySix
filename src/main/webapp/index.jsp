@@ -54,16 +54,24 @@
 
 			<!-- right -->
 			<div class="col-md-6">
-				<div id="customerInfo" class="col-md-3">
-					<h3>
-						<span class="label label-info">桌號</span>
-					</h3>
-					<input class="form-control" type="text" id="orderTableNumber" /> <input
-						class="form-control" type="hidden" id="orderCustomerId" />
+				<div class="row">
+					<div id="customerInfo" class="col-md-3">
+						<h3>
+							<span class="label label-info">桌號</span>
+						</h3>
+						<input class="form-control" type="text" id="orderTableNumber" />
+						<input class="form-control" type="hidden" id="orderCustomerId" />
+						<div id="orderListInfo"></div>
+					</div>
+					<div id="menu" class="col-md-9">
+						<div class="panel-group" id="menuBlock" role="tablist"
+							aria-multiselectable="true"></div>
+					</div>
 				</div>
-				<div id="menu" class="col-md-9">
-					<div class="panel-group" id="menuBlock" role="tablist"
-						aria-multiselectable="true"></div>
+				<div class="row">
+					<button type="button" class="btn btn-danger btn-lg btn-block">
+					 	<span class="glyphicon glyphicon-shopping-cart" aria-hidden="true">　出餐</span>
+					</button>
 				</div>
 			</div>
 		</div>
