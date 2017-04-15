@@ -22,7 +22,9 @@ function getDiningCustomer() {
  * 更新用餐中顧客列表
  */
 function updateDiningCustomerList(data) {
+	//TODO
 	$('#diningCustomerList').html("");
+	
 	for ( var key in data) {
 		if (data.hasOwnProperty(key)) {
 			var jsonObj = data[key];
@@ -32,13 +34,32 @@ function updateDiningCustomerList(data) {
 			$(buttonDiv).attr({
 				"customerId" : key,
 				"tableNumber" : jsonObj.tableNumber,
-				"class" : "table"
+				"class" : "table",
+				"data-toggle" : "modal",
+				"data-target" : "#myModal"
 			});
 			$(buttonDiv).text(
 					"顧客編號: " + key + " 桌號： " + jsonObj.tableNumber + " 人數："
 							+ jsonObj.peopleCount + " 入場時間："
 							+ jsonObj.checkInTime);
 			$(buttonDiv).appendTo("#diningCustomerList");
+			
+//			<button type="button" class="btn btn-primary btn-lg"
+//				data-toggle="modal" data-target="#myModal">Launch demo modal
+//			</button>
+			
+			/** bookingList */
+			var bookingList = document.createElement("div");
+			var list = jsonObj.bookingList;
+			$.each(list, function(key, value) {
+				var booking = document.createElement("div");
+				var itemName = value.item.name;
+				var volume = value.volume;
+				var isSend = value.isSend;
+				$(booking).html("項目：" + itemName + "*" + volume + " 出餐:" + isSend);
+				$(booking).appendTo(bookingList);
+			});
+			$(bookingList).appendTo(buttonDiv);
 		}
 	}
 
@@ -74,7 +95,7 @@ function customerCheckIn() {
 			// alert("success !!!");
 			// alert(JSON.stringify(data));
 		}
-	})
+	});
 }
 
 /**
@@ -290,12 +311,11 @@ function getMenu() {
 				$("#orderListInfo").html(orderListTxt);
 			}
 		}
-	})
+	});
 }
 
 /** 下單 */
 function sendOrder() {
-	var tableNumber = $("#orderTableNumber").val();
 	var customerId = $("#orderCustomerId").val();
 
 	var itemList = [];
@@ -317,10 +337,9 @@ function sendOrder() {
 	/** result */
 	var orderObj = {
 		"customerId" : customerId,
-		"tableNumber" : tableNumber,
 		"itemList" : itemList
 	};
-
+	
 	var action = "sendOrder";
 	$.ajax({
 		url : appUrl + action,
@@ -331,15 +350,15 @@ function sendOrder() {
 		data : JSON.stringify(orderObj),
 		success : function(response, status, jqXHR) {
 			// TODO
-
-			alert(JSON.stringify(response));
+			/** init input box */
+			// TODO
+			/** init table number */
+			// TODO
+			
+			
+//			alert(JSON.stringify(response));
 		}
-	})
-
-	/** init input box */
-	// TODO
-	/** init table number */
-	// TODO
+	});
 }
 
 $(document).ready(function() {

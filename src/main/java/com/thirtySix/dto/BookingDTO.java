@@ -1,6 +1,8 @@
 package com.thirtySix.dto;
 
 import java.io.Serializable;
+import java.sql.Timestamp;
+import java.util.Calendar;
 import java.util.List;
 
 public class BookingDTO implements Serializable {
@@ -13,14 +15,24 @@ public class BookingDTO implements Serializable {
 	private String customerId;
 
 	/**
+	 * 訂單時間
+	 */
+	private Timestamp time;
+
+	/**
 	 * 桌號
 	 */
-	private String tableNumber;
+//	private String tableNumber;
 
 	/**
 	 * 項目清單
 	 */
 	private List<ItemDTO> itemList;
+
+	public BookingDTO() {
+		Calendar now = Calendar.getInstance();
+		this.time = new Timestamp(now.getTimeInMillis());
+	}
 
 	/**
 	 * 取得顧客編號
@@ -41,22 +53,40 @@ public class BookingDTO implements Serializable {
 	}
 
 	/**
-	 * 取得桌號
+	 * 取得時間
 	 * 
 	 * @return
 	 */
-	public String getTableNumber() {
-		return tableNumber;
+	public Timestamp getTime() {
+		return time;
 	}
 
 	/**
-	 * 設定桌號
+	 * 設定時間
 	 * 
-	 * @param tableNumber
+	 * @param time
 	 */
-	public void setTableNumber(String tableNumber) {
-		this.tableNumber = tableNumber;
+	public void setTime(Timestamp time) {
+		this.time = time;
 	}
+
+//	/**
+//	 * 取得桌號
+//	 * 
+//	 * @return
+//	 */
+//	public String getTableNumber() {
+//		return tableNumber;
+//	}
+//
+//	/**
+//	 * 設定桌號
+//	 * 
+//	 * @param tableNumber
+//	 */
+//	public void setTableNumber(String tableNumber) {
+//		this.tableNumber = tableNumber;
+//	}
 
 	/**
 	 * 取得項目列表

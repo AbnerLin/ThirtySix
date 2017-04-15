@@ -29,9 +29,11 @@ public class Buffer {
 	/** 用餐中顧客Buffer <customerId, po> */
 	private Map<String, Customer> diningCustomerBuffer = new ConcurrentHashMap<String, Customer>();
 
-	/** 菜單<String, ItemClass> */
+	/** 菜單(分類)<String, ItemClass> */
 	private Map<String, ItemClass> itemMenuBuffer = new HashMap<String, ItemClass>();
-
+	/** 菜單  <String, Item> */
+	private Map<String, Item> itemBuffer = new HashMap<String, Item>();
+	
 	@PostConstruct
 	public void init() {
 
@@ -54,6 +56,8 @@ public class Buffer {
 					+ itemClass.getClassName());
 
 			for (Item item : itemClass.getItemList()) {
+				this.itemBuffer.put(item.getItemID(), item);
+				
 				logger.info("菜色編號：" + item.getItemID() + " 名稱："
 						+ item.getName());
 			}
@@ -87,12 +91,21 @@ public class Buffer {
 	}
 
 	/**
-	 * 取得項目列表
+	 * 取得項目列表(分類)
 	 * 
 	 * @return
 	 */
 	public Map<String, ItemClass> getMenu() {
 		return this.itemMenuBuffer;
+	}
+	
+	/**
+	 * 取得項目列表
+	 * 
+	 * @return
+	 */
+	public Map<String, Item> getItems() {
+		return this.itemBuffer;
 	}
 
 	/**

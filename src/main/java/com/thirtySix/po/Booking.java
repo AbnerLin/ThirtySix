@@ -12,6 +12,8 @@ import javax.persistence.Table;
 
 import org.hibernate.annotations.GenericGenerator;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Entity
 @Table(name = "BOOKING")
 public class Booking {
@@ -34,6 +36,7 @@ public class Booking {
 	/**
 	 * 顧客資訊
 	 */
+	@JsonIgnore
 	@ManyToOne
 	@JoinColumn(name = "CUSTOMERID", referencedColumnName = "CUSTOMERID", nullable = false)
 	private Customer customer;
@@ -55,7 +58,7 @@ public class Booking {
 	 * 是否已出餐(1:出餐, 0:未出餐)
 	 */
 	@Column(name = "ISSEND")
-	private int isSend;
+	private int isSend = 0;
 
 	/**
 	 * 取得訂單編號

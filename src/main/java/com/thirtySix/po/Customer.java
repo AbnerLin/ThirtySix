@@ -1,6 +1,7 @@
 package com.thirtySix.po;
 
 import java.sql.Timestamp;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.Column;
@@ -12,6 +13,8 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import org.hibernate.annotations.GenericGenerator;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 @Table(name = "CUSTOMER")
@@ -72,7 +75,7 @@ public class Customer {
 	 * 訂單列表
 	 */
 	@OneToMany(fetch = FetchType.EAGER, mappedBy = "customer")
-	private List<Booking> bookingList;
+	private List<Booking> bookingList = new ArrayList<Booking>();
 
 	/**
 	 * 取得顧客編號

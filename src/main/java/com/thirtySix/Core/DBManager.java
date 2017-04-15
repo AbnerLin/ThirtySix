@@ -7,9 +7,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.thirtySix.dao.BookingDAO;
 import com.thirtySix.dao.CustomerDAO;
 import com.thirtySix.dao.ItemClassDAO;
 import com.thirtySix.dao.ItemDAO;
+import com.thirtySix.po.Booking;
 import com.thirtySix.po.Customer;
 import com.thirtySix.po.Item;
 import com.thirtySix.po.ItemClass;
@@ -26,6 +28,9 @@ public class DBManager {
 
 	@Autowired
 	private ItemDAO itemDAO = null;
+	
+	@Autowired
+	private BookingDAO bookingDAO = null;
 
 	/**
 	 * 取得用餐中顧客
@@ -68,5 +73,14 @@ public class DBManager {
 	 */
 	public void insertItem(Item po) {
 		itemDAO.insert(po);
+	}
+	
+	/**
+	 * 新增訂單
+	 * 
+	 * @param po
+	 */
+	public void insertBooking(Booking po) {
+		bookingDAO.insert(po);
 	}
 }

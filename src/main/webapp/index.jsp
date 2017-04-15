@@ -4,8 +4,8 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<!-- <meta name="viewport" -->
-<!-- 	content="width=device-width initial-scale=1 maximum-scale=2"> -->
+<meta name="viewport"
+	content="width=device-width initial-scale=1 maximum-scale=2">
 <!-- bootstrap -->
 <link type="text/css"
 	href="<c:url value="/plugin/bootstrap-3.3.7/css/bootstrap.min.css" />"
@@ -54,27 +54,76 @@
 
 			<!-- right -->
 			<div class="col-md-6 col-sm-12">
-				<div class="row">
-					<div id="customerInfo" class="col-md-3 col-sm-3">
-						<h3>
-							<span class="label label-info">桌號</span>
-						</h3>
-						<input class="form-control" type="text" id="orderTableNumber" />
-						<input class="form-control" type="hidden" id="orderCustomerId" />
-						<div id="orderListInfo"></div>
-					</div>
-					<div id="menu" class="col-md-9 col-sm-9">
-						<div class="panel-group" id="menuBlock" role="tablist"
-							aria-multiselectable="true"></div>
-					</div>
-				</div>
-				<div class="row">
-					<button type="button" class="btn btn-danger btn-lg btn-block" onclick="sendOrder();">
-					 	<span class="glyphicon glyphicon-shopping-cart" aria-hidden="true">　出餐</span>
-					</button>
-				</div>
+				<!-- 				<div class="row"> -->
+				<!-- 					<div id="customerInfo" class="col-md-3 col-sm-3"> -->
+				<!-- 						<h3> -->
+				<!-- 							<span class="label label-info">桌號</span> -->
+				<!-- 						</h3> -->
+				<!-- 						<input class="form-control" type="text" id="orderTableNumber" /> -->
+				<!-- 						<input class="form-control" type="hidden" id="orderCustomerId" /> -->
+				<!-- 						<div id="orderListInfo"></div> -->
+				<!-- 					</div> -->
+				<!-- 					<div id="menu" class="col-md-9 col-sm-9"> -->
+				<!-- 						<div class="panel-group" id="menuBlock" role="tablist" -->
+				<!-- 							aria-multiselectable="true"></div> -->
+				<!-- 					</div> -->
+				<!-- 				</div> -->
+				<!-- 				<div class="row"> -->
+				<!-- 					<button type="button" class="btn btn-danger btn-lg btn-block" -->
+				<!-- 						onclick="sendOrder();"> -->
+				<!-- 						<span class="glyphicon glyphicon-shopping-cart" aria-hidden="true"> -->
+				<!-- 							出餐</span> -->
+				<!-- 					</button> -->
+				<!-- 				</div> -->
 			</div>
 		</div>
 	</div>
+
+	<!-- Modal -->
+	<div class="modal fade" id="myModal" tabindex="-1" role="dialog"
+		aria-labelledby="myModalLabel">
+		<div class="modal-dialog modal-lg" role="document">
+			<div class="modal-content">
+
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal"
+						aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+					<h4 class="modal-title" id="myModalLabel">點餐</h4>
+				</div>
+				<div class="modal-body">
+
+					<div class="row">
+						<div id="customerInfo" class="col-md-3 col-sm-3">
+							<h3>
+								<span class="label label-info">桌號</span>
+							</h3>
+							<input class="form-control" type="text" id="orderTableNumber" />
+							<input class="form-control" type="hidden" id="orderCustomerId" />
+							<div id="orderListInfo"></div>
+						</div>
+						<div id="menu" class="col-md-9 col-sm-9">
+							<div class="panel-group" id="menuBlock" role="tablist"
+								aria-multiselectable="true"></div>
+						</div>
+					</div>
+					<div class="row" id="sendOrder">
+						<button type="button" class="btn btn-danger btn-lg btn-block"
+							onclick="sendOrder();">
+							<span class="glyphicon glyphicon-shopping-cart"
+								aria-hidden="true"> 出餐</span>
+						</button>
+					</div>
+
+				</div>
+				<!-- 				<div class="modal-footer"> -->
+				<!-- 					<button type="button" class="btn btn-default" data-dismiss="modal">Close</button> -->
+				<!-- 					<button type="button" class="btn btn-primary">Save changes</button> -->
+				<!-- 				</div> -->
+			</div>
+		</div>
+	</div>
+
 </body>
 </html>
