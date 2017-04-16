@@ -22,9 +22,9 @@ function getDiningCustomer() {
  * 更新用餐中顧客列表
  */
 function updateDiningCustomerList(data) {
-	//TODO
+	// TODO
 	$('#diningCustomerList').html("");
-	
+
 	for ( var key in data) {
 		if (data.hasOwnProperty(key)) {
 			var jsonObj = data[key];
@@ -43,11 +43,11 @@ function updateDiningCustomerList(data) {
 							+ jsonObj.peopleCount + " 入場時間："
 							+ jsonObj.checkInTime);
 			$(buttonDiv).appendTo("#diningCustomerList");
-			
-//			<button type="button" class="btn btn-primary btn-lg"
-//				data-toggle="modal" data-target="#myModal">Launch demo modal
-//			</button>
-			
+
+			// <button type="button" class="btn btn-primary btn-lg"
+			// data-toggle="modal" data-target="#myModal">Launch demo modal
+			// </button>
+
 			/** bookingList */
 			var bookingList = document.createElement("div");
 			var list = jsonObj.bookingList;
@@ -56,7 +56,8 @@ function updateDiningCustomerList(data) {
 				var itemName = value.item.name;
 				var volume = value.volume;
 				var isSend = value.isSend;
-				$(booking).html("項目：" + itemName + "*" + volume + " 出餐:" + isSend);
+				$(booking).html(
+						"項目：" + itemName + "*" + volume + " 出餐:" + isSend);
 				$(booking).appendTo(bookingList);
 			});
 			$(bookingList).appendTo(buttonDiv);
@@ -339,7 +340,7 @@ function sendOrder() {
 		"customerId" : customerId,
 		"itemList" : itemList
 	};
-	
+
 	var action = "sendOrder";
 	$.ajax({
 		url : appUrl + action,
@@ -354,10 +355,60 @@ function sendOrder() {
 			// TODO
 			/** init table number */
 			// TODO
-			
-			
-//			alert(JSON.stringify(response));
+			// alert(JSON.stringify(response));
 		}
+	});
+}
+
+/** init canvas */
+function initCanvas() {
+	/** init */
+	var canvas = new fabric.Canvas("seatCanvas", {
+		width : 800,
+		height : 600
+	});
+
+	//TODO
+	var moveHandler = function (evt) {
+	    var movingObject = evt.target;
+	    console.log(movingObject.get('left'), movingObject.get('top'));
+	    //TODO img
+	    
+	    //TODO text
+	    console.log(movingObject.item(1).getText());
+	    
+	    //TODO
+	    //export to json ?
+	};
+	canvas.on('mouse:up', moveHandler);
+	
+	/** add obj trigger */
+	$(".canvasInnerObj").click(function() {
+		var id = $(this).attr("id");
+
+		/** table number */
+		var text = new fabric.Text("01", {
+			fontFamily : 'Comic Sans',
+			fontSize : 30
+		});
+
+		/** table img */
+		var imgElement = document.getElementById(id);
+		var img = new fabric.Image(imgElement, {
+			id : "A1",
+			opacity : 0.85
+		});
+
+		/** text position */
+		text.set("top", (img.getBoundingRectHeight() / 2) - (text.width / 2));
+		text.set("left", (img.getBoundingRectWidth() / 2) - (text.height / 2));
+
+		var group = new fabric.Group([ img, text ], {
+			left : 100,
+			top : 25,
+		});
+
+		canvas.add(group);
 	});
 }
 
@@ -370,6 +421,9 @@ $(document).ready(function() {
 
 	/** 載入菜單列表 */
 	getMenu();
+
+	/** init canvas */
+	initCanvas();
 });
 
 // TODO

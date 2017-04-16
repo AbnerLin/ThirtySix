@@ -33,12 +33,34 @@
 	src="<c:url value="/plugin/bootstrap-3.3.7/js/bootstrap.min.js" />"></script>
 <!-- alertify -->
 <script src="<c:url value="/plugin/alertify/js/alertify.min.js" />"></script>
+<!-- fabric -->
+<script src="<c:url value="/plugin/fabric-1.7.9/fabric.min.js" />"></script>
 <!-- index -->
 <script src="<c:url value="/js/index.js" />"></script>
 
 </head>
 <body>
 	<div id="main">
+
+		<div class="row">
+			<div class="col-md-3 col-sm-3">
+				<div id="info">current information</div>
+
+				<div>
+					<img id="tableIconMD" class="canvasInnerObj" src="<c:url value="images/table-md.png" />">
+					<img id="tableIconSM" class="canvasInnerObj" src="<c:url value="images/table-sm.png" />">
+				</div>
+			</div>
+			<div class="col-md-9 col-sm-9">
+				<div id="seatMap">
+					<!-- 					<div class="fourPeopleSeat"></div> -->
+					<!-- 					<div class="twoPeopleSeat"></div> -->
+					<canvas id="seatCanvas">
+					</canvas>
+				</div>
+			</div>
+		</div>
+		<!-- -------------------------------------------------- -->
 		<div class="row">
 			<div id="serverTime" class="col-md-12 text-center"></div>
 		</div>
@@ -108,6 +130,9 @@
 								aria-multiselectable="true"></div>
 						</div>
 					</div>
+
+				</div>
+				<div class="modal-footer">
 					<div class="row" id="sendOrder">
 						<button type="button" class="btn btn-danger btn-lg btn-block"
 							onclick="sendOrder();">
@@ -115,12 +140,9 @@
 								aria-hidden="true"> 出餐</span>
 						</button>
 					</div>
-
+					<!-- 					<button type="button" class="btn btn-default" data-dismiss="modal">Close</button> -->
+					<!-- 					<button type="button" class="btn btn-primary">Save changes</button> -->
 				</div>
-				<!-- 				<div class="modal-footer"> -->
-				<!-- 					<button type="button" class="btn btn-default" data-dismiss="modal">Close</button> -->
-				<!-- 					<button type="button" class="btn btn-primary">Save changes</button> -->
-				<!-- 				</div> -->
 			</div>
 		</div>
 	</div>
