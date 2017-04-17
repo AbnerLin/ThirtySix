@@ -13,6 +13,10 @@
 <link type="text/css"
 	href="<c:url value="/plugin/bootstrap-3.3.7/css/bootstrap.min.css.map" />"
 	rel="stylesheet">
+<!-- bootstrap toggle -->
+<link type="text/css"
+	href="<c:url value="/plugin/bootstrap-toggle/css/bootstrap-toggle.min.css" />"
+	rel="stylesheet">
 <!-- alertify -->
 <link type="text/css"
 	href="<c:url value="/plugin/alertify/css/alertify.core.css" />"
@@ -31,6 +35,9 @@
 <!-- bootstrap -->
 <script
 	src="<c:url value="/plugin/bootstrap-3.3.7/js/bootstrap.min.js" />"></script>
+<!-- bootstrap-toggle -->
+<script
+	src="<c:url value="/plugin/bootstrap-toggle/js/bootstrap-toggle.min.js" />"></script>
 <!-- alertify -->
 <script src="<c:url value="/plugin/alertify/js/alertify.min.js" />"></script>
 <!-- fabric -->
@@ -44,17 +51,37 @@
 
 		<div class="row">
 			<div class="col-md-3 col-sm-3">
-				<div id="info">current information</div>
-
-				<div>
-					<img id="tableIconMD" class="canvasInnerObj" src="<c:url value="images/table-md.png" />">
-					<img id="tableIconSM" class="canvasInnerObj" src="<c:url value="images/table-sm.png" />">
-				</div>
+				<div id="info">current information +++ open server tim sync...</div>
 			</div>
 			<div class="col-md-9 col-sm-9">
-				<div id="seatMap">
+				<div id="option" class="row">
+					<div class="col-md-3">
+						<input type="checkbox" id="seatMap-toggle" data-size="normal"
+							data-toggle="toggle" data-onstyle="success"
+							data-offstyle="danger" /> 調整座位表
+					</div>
+					<div class="col-md-3">
+						<button id="deleteTable" onclick="deleteTable();" type="button"
+							class="btn btn-danger">刪除點選</button>
+					</div>
+					<div class="col-md-6">
+						<button id="saveSeatMap" onclick="saveSeatMap();" type="button"
+							class="btn btn-success">存檔</button>
+					</div>
+				</div>
+				<div class="row">
+					<div id="imageSelection">
+						<img id="tableIconMD" class="canvasInnerObj"
+							src="<c:url value="images/table-md.png" />"> <img
+							id="tableIconSM" class="canvasInnerObj"
+							src="<c:url value="images/table-sm.png" />">
+					</div>
+				</div>
+				<div id="seatMap" class="row">
 					<!-- 					<div class="fourPeopleSeat"></div> -->
 					<!-- 					<div class="twoPeopleSeat"></div> -->
+					<input id="mapLocation" type="hidden" value="">
+					<input id="mapID" type="hidden" value="">
 					<canvas id="seatCanvas">
 					</canvas>
 				</div>

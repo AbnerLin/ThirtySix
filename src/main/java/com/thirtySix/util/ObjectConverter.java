@@ -6,9 +6,11 @@ import org.springframework.stereotype.Component;
 import com.thirtySix.Core.Buffer;
 import com.thirtySix.dto.BookingDTO;
 import com.thirtySix.dto.CustomerDTO;
+import com.thirtySix.dto.SeatMapDTO;
 import com.thirtySix.po.Booking;
 import com.thirtySix.po.Customer;
 import com.thirtySix.po.Item;
+import com.thirtySix.po.SeatMap;
 
 @Component
 public class ObjectConverter {
@@ -27,7 +29,6 @@ public class ObjectConverter {
 		po.setTableNumber(dto.getTableNumber());
 		po.setPeopleCount(dto.getPeopleCount());
 		po.setRemark(dto.getRemark());
-		
 
 		return po;
 	}
@@ -42,6 +43,16 @@ public class ObjectConverter {
 		po.setVolume(volume);
 
 		return po;
+	}
+
+	public SeatMap seatMapDTOtoPO(SeatMapDTO dto) {
+		SeatMap seatMap = new SeatMap();
+		
+		seatMap.setMapID(dto.getMapID());
+		seatMap.setLocation(dto.getLocation());
+		seatMap.setJsonString(dto.getJsonString());
+		
+		return seatMap;
 	}
 
 }

@@ -11,10 +11,12 @@ import com.thirtySix.dao.BookingDAO;
 import com.thirtySix.dao.CustomerDAO;
 import com.thirtySix.dao.ItemClassDAO;
 import com.thirtySix.dao.ItemDAO;
+import com.thirtySix.dao.SeatMapDAO;
 import com.thirtySix.po.Booking;
 import com.thirtySix.po.Customer;
 import com.thirtySix.po.Item;
 import com.thirtySix.po.ItemClass;
+import com.thirtySix.po.SeatMap;
 
 @Component
 @Transactional
@@ -31,7 +33,37 @@ public class DBManager {
 	
 	@Autowired
 	private BookingDAO bookingDAO = null;
+	
+	@Autowired
+	private SeatMapDAO seatMapDAO = null;
 
+	/**
+	 * 新增座位表
+	 * 
+	 * @param po
+	 */
+	public void insertSeatMap(SeatMap po) {
+		seatMapDAO.insert(po);
+	}
+	
+	/**
+	 * 更新座位表
+	 * 
+	 * @param po
+	 */
+	public void updateSeatMap(SeatMap po) {
+		seatMapDAO.update(po);
+	}
+	
+	/**
+	 * 取得座位表
+	 * 
+	 * @return
+	 */
+	public List<SeatMap> getSeatMap() {
+		return seatMapDAO.getAll();
+	}
+	
 	/**
 	 * 取得用餐中顧客
 	 * 

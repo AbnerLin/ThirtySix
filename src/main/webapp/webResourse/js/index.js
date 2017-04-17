@@ -1,4 +1,10 @@
 var appUrl = "/thirtySix/";
+var canvas = null;
+
+var emptyTableImageSrm = "/images/empty-table-md.png";
+
+/** cach dining customer list */
+var diningCustomer = null;
 
 /**
  * 取得目前在用餐的顧客資訊
@@ -12,17 +18,74 @@ function getDiningCustomer() {
 		dataType : "json",
 		success : function(response, status, jqXHR) {
 			var data = response.data;
+			diningCustomer = data;
+
+			/** update list */
 			updateDiningCustomerList(data);
+
+			/** update seatMap */
+			updateSeatMap(data);
+
 			alertify.success("用餐中顧客載入成功!");
 		}
 	})
+}
+
+/** 更新座位表 */
+function updateSeatMap(data) {
+	//TODO
+	canvas.getObjects().map(function(group) {
+		var _tableNumber = group.item(1).getText().trim();
+		var isDining = isTableDining(_tableNumber);
+
+		// var img = document.createElement("img");
+		// img.attr("src", emptyTableImageSrm);
+		/** change img src */
+		if (!isDining) {
+			var img = group.item(0);
+			
+			console.log(img.src);
+			console.log(JSON.stringify(group));
+			
+			img.onload = function() {
+				img.src = emptyTableImageSrm;
+			}
+			img.src = "http://localhost:8080/thirtySix/images/empty-table-sm.png";
+			
+//			img.src = "http://localhost:8080/thirtySix/images/empty-table-sm.png";
+//			img.src = emptyTableImageSrm;
+			canvas.renderAll();
+		}
+
+
+		console.log(_tableNumber + " " + isDining);
+	});
+}
+
+/**
+ * 判斷該桌號是否使用中
+ * 
+ * @param tableNumber
+ */
+function isTableDining(tableNumber) {
+	for ( var key in diningCustomer) {
+		if (diningCustomer.hasOwnProperty(key)) {
+			var jsonObj = diningCustomer[key];
+			// console.log(JSON.stringify(jsonObj));
+			// console.log("-=--==--");
+			var _tableNumber = jsonObj.tableNumber.trim();
+			if (tableNumber == _tableNumber)
+				return true;
+		}
+	}
+	return false;
 }
 
 /**
  * 更新用餐中顧客列表
  */
 function updateDiningCustomerList(data) {
-	// TODO
+	// TODO ui must update..
 	$('#diningCustomerList').html("");
 
 	for ( var key in data) {
@@ -43,10 +106,6 @@ function updateDiningCustomerList(data) {
 							+ jsonObj.peopleCount + " 入場時間："
 							+ jsonObj.checkInTime);
 			$(buttonDiv).appendTo("#diningCustomerList");
-
-			// <button type="button" class="btn btn-primary btn-lg"
-			// data-toggle="modal" data-target="#myModal">Launch demo modal
-			// </button>
 
 			/** bookingList */
 			var bookingList = document.createElement("div");
@@ -112,6 +171,7 @@ function subscribeWebSocket() {
 		stompClient.subscribe('/topic/customerUpdate', function(data) {
 			var jsonObj = JSON.parse(data.body);
 			updateDiningCustomerList(jsonObj);
+			diningCustomer = data;
 		});
 
 		/** server time listener */
@@ -360,64 +420,238 @@ function sendOrder() {
 	});
 }
 
-/** init canvas */
+/** lock canvas */
+function lockCanvas() {
+	canvas.deactivateAll();
+	canvas.renderAll();
+	canvas.forEachObject(function(object) {
+		object.selectable = false;
+	});
+
+	/** show seat map revise option */
+	$("#saveSeatMap, #deleteTable").fadeOut();
+	$("#imageSelection").slideUp();
+}
+
+function unlockCanvas() {
+	canvas.deactivateAll();
+	canvas.renderAll();
+	canvas.forEachObject(function(object) {
+		object.selectable = true;
+		/** disable resize */
+		object.setControlsVisibility({
+			mt : false,
+			mb : false,
+			ml : false,
+			mr : false,
+			bl : false,
+			br : false,
+			tl : false,
+			tr : false,
+			mtr : false,
+		});
+	});
+
+	/** show seat map revise option */
+	$("#saveSeatMap, #deleteTable").fadeIn();
+	$("#imageSelection").slideDown();
+}
+
+/** get canvas data */
 function initCanvas() {
-	/** init */
-	var canvas = new fabric.Canvas("seatCanvas", {
+
+	var action = "getSeatMap";
+
+	$.ajax({
+		url : appUrl + action,
+		async : true,
+		method : "POST",
+		success : function(response, status, jqXHR) {
+			var data = response.data[0].jsonString;
+
+			/** set map ID */
+			var mapID = response.data[0].mapID;
+			$("#mapID").val(mapID);
+
+			/** set location */
+			var location = response.data[0].location;
+			$("#mapLocation").val(location);
+
+			/** setup canvas */
+			setCanvas("seatCanvas", data);
+
+			/** init toggle */
+			$("#seatMap-toggle").bootstrapToggle();
+			$('#seatMap-toggle').change(function() {
+				var checked = $(this).prop("checked");
+				console.log(checked);
+				if (checked == true) {
+					unlockCanvas();
+				} else if (checked == false) {
+					lockCanvas();
+				}
+			});
+
+			alertify.success("座位表載入成功。");
+
+			/** 載入用餐中顧客 */
+			getDiningCustomer();
+		}
+	});
+}
+
+/** init canvas */
+function setCanvas(canvasId, fabricJsonStr) {
+	/** init canvas */
+	canvas = new fabric.Canvas(canvasId, {
 		width : 800,
 		height : 600
 	});
 
-	//TODO
-	var moveHandler = function (evt) {
-	    var movingObject = evt.target;
-	    console.log(movingObject.get('left'), movingObject.get('top'));
-	    //TODO img
-	    
-	    //TODO text
-	    console.log(movingObject.item(1).getText());
-	    
-	    //TODO
-	    //export to json ?
-	};
-	canvas.on('mouse:up', moveHandler);
-	
-	/** add obj trigger */
-	$(".canvasInnerObj").click(function() {
-		var id = $(this).attr("id");
-
-		/** table number */
-		var text = new fabric.Text("01", {
-			fontFamily : 'Comic Sans',
-			fontSize : 30
-		});
-
-		/** table img */
-		var imgElement = document.getElementById(id);
-		var img = new fabric.Image(imgElement, {
-			id : "A1",
-			opacity : 0.85
-		});
-
-		/** text position */
-		text.set("top", (img.getBoundingRectHeight() / 2) - (text.width / 2));
-		text.set("left", (img.getBoundingRectWidth() / 2) - (text.height / 2));
-
-		var group = new fabric.Group([ img, text ], {
-			left : 100,
-			top : 25,
-		});
-
-		canvas.add(group);
+	canvas.loadFromJSON(fabricJsonStr, function() {
+		canvas.renderAll.bind(canvas);
+		lockCanvas();
 	});
+
+	/** object click event */
+	var clickHandler = function(evt) {
+		var clickObject = evt.target;
+
+		if (clickObject != null) {
+			var tableNumber = clickObject.item(1).getText();
+
+			console.log(tableNumber);
+
+			console.log(JSON.stringify(diningCustomer));
+
+			// TODO
+		}
+	};
+	canvas.on('mouse:up', clickHandler);
+
+	/** object hover event */
+	canvas.on('mouse:over', function(e) {
+		console.log("mouse over.");
+	});
+	canvas.on('mouse:out', function(e) {
+		console.log("mouse out.");
+	});
+
+	/** add obj trigger */
+	$(".canvasInnerObj").click(
+			function() {
+				var id = $(this).attr("id");
+				/** get table number */
+				alertify.prompt("請輸入桌號", function(e, str) {
+					if (e) {
+						tableNumber = str.trim();
+
+						if (tableNumber == "") {
+							alertify.alert("桌號不可空白！");
+							return;
+						}
+
+						var isDiplucate = false;
+						canvas.getObjects().map(function(group) {
+							var _tableNumber = group.item(1).getText();
+							if (_tableNumber.trim() == tableNumber) {
+								alertify.alert("桌號重複！");
+								isDiplucate = true;
+							}
+						});
+
+						if (isDiplucate)
+							return;
+
+						/** table number */
+						var text = new fabric.Text(tableNumber, {
+							fontFamily : 'Comic Sans',
+							fontSize : 30
+						});
+
+						/** table img */
+						var imgElement = document.getElementById(id);
+						var img = new fabric.Image(imgElement, {
+							opacity : 0.85
+						});
+
+						/** text position */
+						text.set("top", (img.getBoundingRectHeight() / 2)
+								- (text.width / 2));
+						text.set("left", (img.getBoundingRectWidth() / 2)
+								- (text.height / 2));
+
+						var group = new fabric.Group([ img, text ], {
+							left : 100,
+							top : 25,
+							hoverCursor : "pointer"
+						});
+
+						/** disable resize */
+						group.setControlsVisibility({
+							mt : false,
+							mb : false,
+							ml : false,
+							mr : false,
+							bl : false,
+							br : false,
+							tl : false,
+							tr : false,
+							mtr : false,
+						});
+
+						canvas.add(group);
+					} else {
+
+					}
+				}, "");
+
+			});
+}
+
+/**
+ * 刪除座位表上的桌子
+ */
+function deleteTable() {
+	/** check if group */
+	if (canvas.getActiveGroup()) {
+		canvas.getActiveGroup().forEachObject(function(o) {
+			canvas.remove(o)
+		});
+		canvas.discardActiveGroup().renderAll();
+	} else {
+		canvas.remove(canvas.getActiveObject());
+	}
+}
+
+/**
+ * 儲存座位表
+ */
+function saveSeatMap() {
+	var action = "saveSeatMap";
+	var mapID = $("#mapID").val();
+	var mapLocation = $("#mapLocation").val();
+
+	var jsonStr = JSON.stringify(canvas);
+	$.ajax({
+		url : appUrl + action,
+		async : true,
+		method : "POST",
+		data : {
+			mapID : mapID,
+			location : mapLocation,
+			jsonString : jsonStr
+		},
+		success : function(response, status, jqXHR) {
+			alertify.success("座位表儲存成功！");
+		}
+	});
+
 }
 
 $(document).ready(function() {
 	/** 啟動監聽WebSocket */
 	subscribeWebSocket();
-
-	/** 載入用餐中顧客 */
-	getDiningCustomer();
 
 	/** 載入菜單列表 */
 	getMenu();

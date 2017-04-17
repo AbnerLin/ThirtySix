@@ -2,6 +2,7 @@ package com.thirtySix.controller;
 
 import java.sql.Timestamp;
 import java.util.Date;
+import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
@@ -23,9 +24,11 @@ import com.thirtySix.dto.AjaxDTO;
 import com.thirtySix.dto.BookingDTO;
 import com.thirtySix.dto.CustomerDTO;
 import com.thirtySix.dto.ItemDTO;
+import com.thirtySix.dto.SeatMapDTO;
 import com.thirtySix.po.Booking;
 import com.thirtySix.po.Customer;
 import com.thirtySix.po.ItemClass;
+import com.thirtySix.po.SeatMap;
 import com.thirtySix.util.ObjectConverter;
 
 @Controller
@@ -107,6 +110,53 @@ public class IndexController {
 	}
 
 	/**
+	 * 儲存座位表
+	 * 
+	 * @param request
+	 * @param response
+	 * @param seatMapDTO
+	 * @return
+	 */
+	@ResponseBody
+	@RequestMapping(value = { "/saveSeatMap" })
+	private AjaxDTO saveSeatMap(HttpServletRequest request,
+			HttpServletResponse response, @ModelAttribute SeatMapDTO seatMapDTO) {
+		AjaxDTO result = new AjaxDTO();
+		
+		SeatMap po = objConverter.seatMapDTOtoPO(seatMapDTO);
+		
+		/** save to db */
+		if(po.getMapID().equals(""))
+			dbManager.insertSeatMap(po);
+		else
+			dbManager.updateSeatMap(po);
+		
+		return result;
+	}
+	
+	/**
+	 * 取得座位表
+	 * 
+	 * @param request
+	 * @param response
+	 * @param seatMapDTO
+	 * @return
+	 */
+	@ResponseBody
+	@RequestMapping(value = { "/getSeatMap" })
+	private AjaxDTO getSeatMap(HttpServletRequest request,
+			HttpServletResponse response) {
+		AjaxDTO result = new AjaxDTO();
+		
+		List<SeatMap> mapList = dbManager.getSeatMap();
+		
+		result.setStatusOK();
+		result.setData(mapList);
+		
+		return result;
+	}
+	
+	/**
 	 * 取得菜單
 	 * 
 	 * @param request
@@ -150,6 +200,8 @@ public class IndexController {
 		result.setStatusOK();
 		return result;
 	}
+	
+	
 
 	/**
 	 * 用餐中顧客 更新(發布socket topic)
