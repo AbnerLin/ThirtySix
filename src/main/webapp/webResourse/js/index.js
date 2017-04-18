@@ -24,7 +24,7 @@ function getDiningCustomer() {
 			updateDiningCustomerList(data);
 
 			/** update seatMap */
-			updateSeatMap(data);
+			updateSeatMap();
 
 			alertify.success("用餐中顧客載入成功!");
 		}
@@ -32,7 +32,7 @@ function getDiningCustomer() {
 }
 
 /** 更新座位表 */
-function updateSeatMap(data) {
+function updateSeatMap() {
 	canvas.getObjects().map(function(group) {
 		var _tableNumber = group.item(1).getText().trim();
 		var isDining = isTableDining(_tableNumber);
@@ -70,7 +70,7 @@ function updateSeatMap(data) {
 		group.add(text);
 
 		canvas.renderAll();
-		console.log(group.item(1));
+//		console.log(group.item(1));
 	});
 }
 
@@ -180,8 +180,13 @@ function subscribeWebSocket() {
 		/** customer update listener */
 		stompClient.subscribe('/topic/customerUpdate', function(data) {
 			var jsonObj = JSON.parse(data.body);
+			diningCustomer = jsonObj;
+			
+			/** update list */
 			updateDiningCustomerList(jsonObj);
-			diningCustomer = data;
+			
+			/** update seatMap */
+			updateSeatMap();
 		});
 
 		/** server time listener */
