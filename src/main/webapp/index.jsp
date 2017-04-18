@@ -71,10 +71,14 @@
 				</div>
 				<div class="row">
 					<div id="imageSelection">
-						<img id="tableIconMD" class="canvasInnerObj"
-							src="<c:url value="images/table-md.png" />"> <img
+<!-- 						<img id="tableIconMD" class="canvasInnerObj" -->
+<%-- 							src="<c:url value="images/table-md.png" />">  --%>
+						<img
 							id="tableIconSM" class="canvasInnerObj"
 							src="<c:url value="images/table-sm.png" />">
+						<img
+							id="emptytableIconMD" class="canvasInnerObj"
+							src="<c:url value="images/empty-table-sm.png" />">
 					</div>
 				</div>
 				<div id="seatMap" class="row">

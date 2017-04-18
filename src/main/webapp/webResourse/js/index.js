@@ -1,7 +1,7 @@
 var appUrl = "/thirtySix/";
 var canvas = null;
 
-var emptyTableImageSrm = "/images/empty-table-md.png";
+var emptyTableImageSrm = "images/empty-table-md.png";
 
 /** cach dining customer list */
 var diningCustomer = null;
@@ -33,32 +33,44 @@ function getDiningCustomer() {
 
 /** 更新座位表 */
 function updateSeatMap(data) {
-	//TODO
 	canvas.getObjects().map(function(group) {
 		var _tableNumber = group.item(1).getText().trim();
 		var isDining = isTableDining(_tableNumber);
 
-		// var img = document.createElement("img");
-		// img.attr("src", emptyTableImageSrm);
+		var imgElemnt = null;
 		/** change img src */
 		if (!isDining) {
-			var img = group.item(0);
-			
-			console.log(img.src);
-			console.log(JSON.stringify(group));
-			
-			img.onload = function() {
-				img.src = emptyTableImageSrm;
-			}
-			img.src = "http://localhost:8080/thirtySix/images/empty-table-sm.png";
-			
-//			img.src = "http://localhost:8080/thirtySix/images/empty-table-sm.png";
-//			img.src = emptyTableImageSrm;
-			canvas.renderAll();
+			imgElement = document.getElementById("emptytableIconMD");
+		} else {
+			imgElement = document.getElementById("tableIconSM");
 		}
 
+		/** table number */
+		var text = new fabric.Text(_tableNumber, {
+			fontFamily : 'Comic Sans',
+			fontSize : 30,
+			fill : "#ff0000"
+		});
 
-		console.log(_tableNumber + " " + isDining);
+		/** table img */
+		var img = new fabric.Image(imgElement, {
+			opacity : 0.5,
+			left : group.getBoundingRectHeight() / 2 * -1,
+			top : group.getBoundingRectWidth() / 2 * -1
+		});
+
+		/** text position */
+		text.set("top", (text.height / 2 * -1));
+		text.set("left", (text.width / 2 * -1));
+
+		group.remove(group.item(1));
+		group.remove(group.item(0));
+
+		group.add(img);
+		group.add(text);
+
+		canvas.renderAll();
+		console.log(group.item(1));
 	});
 }
 
@@ -71,8 +83,6 @@ function isTableDining(tableNumber) {
 	for ( var key in diningCustomer) {
 		if (diningCustomer.hasOwnProperty(key)) {
 			var jsonObj = diningCustomer[key];
-			// console.log(JSON.stringify(jsonObj));
-			// console.log("-=--==--");
 			var _tableNumber = jsonObj.tableNumber.trim();
 			if (tableNumber == _tableNumber)
 				return true;
@@ -530,11 +540,19 @@ function setCanvas(canvasId, fabricJsonStr) {
 	canvas.on('mouse:up', clickHandler);
 
 	/** object hover event */
-	canvas.on('mouse:over', function(e) {
-		console.log("mouse over.");
+	canvas.on('mouse:over', function(hoverObj) {
+		if (hoverObj.target != null) {
+			var textObj = hoverObj.target.item(1);
+			console.log(textObj.getText().trim());
+			
+			//TODO
+			
+			
+		}
 	});
+
 	canvas.on('mouse:out', function(e) {
-		console.log("mouse out.");
+		//TODO
 	});
 
 	/** add obj trigger */
