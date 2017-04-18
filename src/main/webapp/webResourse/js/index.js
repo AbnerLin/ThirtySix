@@ -3,7 +3,7 @@ var canvas = null;
 
 var emptyTableImageSrm = "images/empty-table-md.png";
 
-/** cach dining customer list */
+/** cache dining customer list */
 var diningCustomer = null;
 
 /**
@@ -33,44 +33,47 @@ function getDiningCustomer() {
 
 /** 更新座位表 */
 function updateSeatMap() {
-	canvas.getObjects().map(function(group) {
-		var _tableNumber = group.item(1).getText().trim();
-		var isDining = isTableDining(_tableNumber);
+	canvas.getObjects().map(function(obj) {
+		if (obj.type == "group") {
+			var group = obj;
 
-		var imgElemnt = null;
-		/** change img src */
-		if (!isDining) {
-			imgElement = document.getElementById("emptytableIconMD");
-		} else {
-			imgElement = document.getElementById("tableIconSM");
+			var _tableNumber = group.item(1).getText().trim();
+			var isDining = isTableDining(_tableNumber);
+
+			var imgElemnt = null;
+			/** change img src */
+			if (!isDining) {
+				imgElement = document.getElementById("emptytableIconMD");
+			} else {
+				imgElement = document.getElementById("tableIconSM");
+			}
+
+			/** table number */
+			var text = new fabric.Text(_tableNumber, {
+				fontFamily : 'Comic Sans',
+				fontSize : 30,
+				fill : "#ff0000"
+			});
+
+			/** table img */
+			var img = new fabric.Image(imgElement, {
+				opacity : 0.5,
+				left : group.getBoundingRectHeight() / 2 * -1,
+				top : group.getBoundingRectWidth() / 2 * -1
+			});
+
+			/** text position */
+			text.set("top", (text.height / 2 * -1));
+			text.set("left", (text.width / 2 * -1));
+
+			group.remove(group.item(1));
+			group.remove(group.item(0));
+
+			group.add(img);
+			group.add(text);
+
+			canvas.renderAll();
 		}
-
-		/** table number */
-		var text = new fabric.Text(_tableNumber, {
-			fontFamily : 'Comic Sans',
-			fontSize : 30,
-			fill : "#ff0000"
-		});
-
-		/** table img */
-		var img = new fabric.Image(imgElement, {
-			opacity : 0.5,
-			left : group.getBoundingRectHeight() / 2 * -1,
-			top : group.getBoundingRectWidth() / 2 * -1
-		});
-
-		/** text position */
-		text.set("top", (text.height / 2 * -1));
-		text.set("left", (text.width / 2 * -1));
-
-		group.remove(group.item(1));
-		group.remove(group.item(0));
-
-		group.add(img);
-		group.add(text);
-
-		canvas.renderAll();
-//		console.log(group.item(1));
 	});
 }
 
@@ -89,6 +92,22 @@ function isTableDining(tableNumber) {
 		}
 	}
 	return false;
+}
+
+/**
+ * 取得顧客編號
+ * 
+ * @param tableNumber
+ */
+function getCustomerIdByTableNumber(tableNumber) {
+	for ( var key in diningCustomer) {
+		if (diningCustomer.hasOwnProperty(key)) {
+			var jsonObj = diningCustomer[key];
+			if (jsonObj.tableNumber.trim() == tableNumber.trim())
+				return jsonObj.customerID;
+		}
+	}
+	return null;
 }
 
 /**
@@ -181,10 +200,10 @@ function subscribeWebSocket() {
 		stompClient.subscribe('/topic/customerUpdate', function(data) {
 			var jsonObj = JSON.parse(data.body);
 			diningCustomer = jsonObj;
-			
+
 			/** update list */
 			updateDiningCustomerList(jsonObj);
-			
+
 			/** update seatMap */
 			updateSeatMap();
 		});
@@ -416,23 +435,41 @@ function sendOrder() {
 		"itemList" : itemList
 	};
 
-	var action = "sendOrder";
-	$.ajax({
-		url : appUrl + action,
-		async : true,
-		method : "POST",
-		dataType : "json",
-		contentType : 'application/json',
-		data : JSON.stringify(orderObj),
-		success : function(response, status, jqXHR) {
-			// TODO
-			/** init input box */
-			// TODO
-			/** init table number */
-			// TODO
-			// alert(JSON.stringify(response));
+	if (itemList.length == 0) {
+		alertify.error("請選擇餐點！");
+		return;
+	}
+
+	// confirm dialog
+	alertify.confirm("確定下單？", function(e) {
+		if (e) {
+			var action = "sendOrder";
+			$.ajax({
+				url : appUrl + action,
+				async : true,
+				method : "POST",
+				dataType : "json",
+				contentType : 'application/json',
+				data : JSON.stringify(orderObj),
+				success : function(response, status, jqXHR) {
+					/** init input box */
+					$(inputs).each(function() {
+						$(this).val(0);
+					});
+					/** init order list info */
+					$("#orderListInfo").html("");
+
+					/** slide up panel */
+					$("#menuBlock").find(".in").each(function() {
+						$(this).removeClass("in");
+					});
+
+					alertify.success("下單成功！");
+				}
+			});
 		}
 	});
+
 }
 
 /** lock canvas */
@@ -446,6 +483,9 @@ function lockCanvas() {
 	/** show seat map revise option */
 	$("#saveSeatMap, #deleteTable").fadeOut();
 	$("#imageSelection").slideUp();
+
+	/** resume canvas trigger */
+	resumeCanvasEvent();
 }
 
 function unlockCanvas() {
@@ -470,6 +510,9 @@ function unlockCanvas() {
 	/** show seat map revise option */
 	$("#saveSeatMap, #deleteTable").fadeIn();
 	$("#imageSelection").slideDown();
+
+	/** pause canvas trigger */
+	pauseCanvasEvent();
 }
 
 /** get canvas data */
@@ -499,7 +542,6 @@ function initCanvas() {
 			$("#seatMap-toggle").bootstrapToggle();
 			$('#seatMap-toggle').change(function() {
 				var checked = $(this).prop("checked");
-				console.log(checked);
 				if (checked == true) {
 					unlockCanvas();
 				} else if (checked == false) {
@@ -511,6 +553,35 @@ function initCanvas() {
 
 			/** 載入用餐中顧客 */
 			getDiningCustomer();
+		}
+	});
+}
+
+/**
+ * 取消座位表監聽事件
+ */
+function pauseCanvasEvent() {
+	canvas.__eventListeners["mouse:down"] = [];
+}
+
+/**
+ * 恢復座位表監聽事件
+ */
+function resumeCanvasEvent() {
+	/** object click event */
+	canvas.on("mouse:down", function(evt) {
+		var clickObject = evt.target;
+		if (clickObject != null) {
+			var tableNumber = clickObject.item(1).getText();
+			var dining = isTableDining(tableNumber);
+
+			/** set customerId, tableNumber */
+			var customerId = getCustomerIdByTableNumber(tableNumber);
+			$("#orderTableNumber").val(tableNumber);
+			$("#orderCustomerId").val(customerId);
+
+			/** show up modal */
+			$("#myModal").modal("show");
 		}
 	});
 }
@@ -528,37 +599,8 @@ function setCanvas(canvasId, fabricJsonStr) {
 		lockCanvas();
 	});
 
-	/** object click event */
-	var clickHandler = function(evt) {
-		var clickObject = evt.target;
-
-		if (clickObject != null) {
-			var tableNumber = clickObject.item(1).getText();
-
-			console.log(tableNumber);
-
-			console.log(JSON.stringify(diningCustomer));
-
-			// TODO
-		}
-	};
-	canvas.on('mouse:up', clickHandler);
-
-	/** object hover event */
-	canvas.on('mouse:over', function(hoverObj) {
-		if (hoverObj.target != null) {
-			var textObj = hoverObj.target.item(1);
-			console.log(textObj.getText().trim());
-			
-			//TODO
-			
-			
-		}
-	});
-
-	canvas.on('mouse:out', function(e) {
-		//TODO
-	});
+	/** open trigger */
+	resumeCanvasEvent();
 
 	/** add obj trigger */
 	$(".canvasInnerObj").click(
@@ -682,6 +724,3 @@ $(document).ready(function() {
 	/** init canvas */
 	initCanvas();
 });
-
-// TODO
-// 1. confirm submit order.

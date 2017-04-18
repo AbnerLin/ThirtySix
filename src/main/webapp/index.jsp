@@ -71,12 +71,10 @@
 				</div>
 				<div class="row">
 					<div id="imageSelection">
-<!-- 						<img id="tableIconMD" class="canvasInnerObj" -->
-<%-- 							src="<c:url value="images/table-md.png" />">  --%>
-						<img
-							id="tableIconSM" class="canvasInnerObj"
-							src="<c:url value="images/table-sm.png" />">
-						<img
+						<!-- 						<img id="tableIconMD" class="canvasInnerObj" -->
+						<%-- 							src="<c:url value="images/table-md.png" />">  --%>
+						<img id="tableIconSM" class="canvasInnerObj"
+							src="<c:url value="images/table-sm.png" />"> <img
 							id="emptytableIconMD" class="canvasInnerObj"
 							src="<c:url value="images/empty-table-sm.png" />">
 					</div>
@@ -84,8 +82,8 @@
 				<div id="seatMap" class="row">
 					<!-- 					<div class="fourPeopleSeat"></div> -->
 					<!-- 					<div class="twoPeopleSeat"></div> -->
-					<input id="mapLocation" type="hidden" value="">
-					<input id="mapID" type="hidden" value="">
+					<input id="mapLocation" type="hidden" value=""> <input
+						id="mapID" type="hidden" value="">
 					<canvas id="seatCanvas">
 					</canvas>
 				</div>
@@ -143,23 +141,45 @@
 						aria-label="Close">
 						<span aria-hidden="true">&times;</span>
 					</button>
-					<h4 class="modal-title" id="myModalLabel">點餐</h4>
+					<h3 class="modal-title" id="myModalLabel">服務選單</h3>
 				</div>
-				<div class="modal-body">
 
-					<div class="row">
-						<div id="customerInfo" class="col-md-3 col-sm-3">
-							<h3>
-								<span class="label label-info">桌號</span>
-							</h3>
-							<input class="form-control" type="text" id="orderTableNumber" />
-							<input class="form-control" type="hidden" id="orderCustomerId" />
-							<div id="orderListInfo"></div>
+				<div class="modal-body">
+					<!-- Nav tabs -->
+					<ul class="nav nav-tabs" role="tablist">
+						<li role="presentation" class="active"><a
+							href="#orderPageTab" aria-controls="orderPageTab" role="tab"
+							data-toggle="tab">點餐</a></li>
+						<li role="presentation"><a href="#customerInfoTab"
+							aria-controls="customerInfoTab" role="tab" data-toggle="tab">顧客資訊</a></li>
+						<li role="presentation"><a href="#orderHistoryTab"
+							aria-controls="orderHistoryTab" role="tab" data-toggle="tab">點餐紀錄</a></li>
+						<li role="presentation"><a href="#settingsTab"
+							aria-controls="settingsTab" role="tab" data-toggle="tab">Settings</a></li>
+					</ul>
+
+					<!-- Tab panes -->
+					<div class="tab-content">
+						<!-- order tab -->
+						<div role="tabpanel" class="tab-pane active" id="orderPageTab">
+							<div class="row" id="orderPageInner">
+								<div id="customerInfo" class="col-md-3 col-sm-3">
+									<h3>
+										<span class="label label-info">桌號</span>
+									</h3>
+									<input class="form-control" type="text" id="orderTableNumber" />
+									<input class="form-control" type="hidden" id="orderCustomerId" />
+									<div id="orderListInfo"></div>
+								</div>
+								<div id="menu" class="col-md-9 col-sm-9">
+									<div class="panel-group" id="menuBlock" role="tablist"
+										aria-multiselectable="true"></div>
+								</div>
+							</div>
 						</div>
-						<div id="menu" class="col-md-9 col-sm-9">
-							<div class="panel-group" id="menuBlock" role="tablist"
-								aria-multiselectable="true"></div>
-						</div>
+						<div role="tabpanel" class="tab-pane" id="customerInfoTab">customerInfo</div>
+						<div role="tabpanel" class="tab-pane" id="orderHistoryTab">orderHistory</div>
+						<div role="tabpanel" class="tab-pane" id="settingsTab">...</div>
 					</div>
 
 				</div>
@@ -171,8 +191,6 @@
 								aria-hidden="true"> 出餐</span>
 						</button>
 					</div>
-					<!-- 					<button type="button" class="btn btn-default" data-dismiss="modal">Close</button> -->
-					<!-- 					<button type="button" class="btn btn-primary">Save changes</button> -->
 				</div>
 			</div>
 		</div>
