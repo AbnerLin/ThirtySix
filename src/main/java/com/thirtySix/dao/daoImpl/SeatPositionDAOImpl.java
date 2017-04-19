@@ -22,7 +22,7 @@ public class SeatPositionDAOImpl extends GenericDAOImpl<SeatPosition> implements
 					.getSessionFactory()
 					.getCurrentSession()
 					.createQuery(
-							"DELETE FROM SeatPosition WHERE seatMap < :mapID");
+							"DELETE FROM SeatPosition WHERE seatMap = :mapID");
 			query.setString("mapID", mapID);
 			query.executeUpdate();
 

@@ -32,9 +32,52 @@ function getDiningCustomer() {
 }
 
 /** 更新座位表 */
-function updateSeatMap() {
-
+function updateSeatMap(data) {
 	// TODO
+	/** check table dining ; add badge(unSend) */
+	$(".table").each(function() {
+		var id = $(this).attr("id").trim();
+
+		/** switch image */
+		var isDining = isTableDining(id);
+		if(isDining) {
+			$(this).removeClass("emptyTable");
+			$(this).addClass("diningTable");
+		} else {
+			$(this).removeClass("diningTable");
+			$(this).addClass("emptyTable");
+		}
+		
+		/** unSend badge */
+		var customerID = getCustomerIdByTableNumber(id);
+		var unSendCount = 0;
+		var bookingList = data[customerID].bookingList;
+		$.each(bookingList, function(key, value) {
+			if(value.isSend == "0")
+				unSendCount++;
+		});
+		if(unSendCount > 0) {
+			var h4 = document.createElement("h4");
+			var badge = document.createElement("span");
+			$(badge).addClass("label label-danger label-pill");
+			$(badge).html(unSendCount);
+			$("<br>").appendTo($(this));
+			$(badge).appendTo(h4);
+			$(h4).appendTo($(this));
+		}
+	});
+
+	
+	
+	for ( var key in data) {
+		if (data.hasOwnProperty(key)) {
+			var value = data[key];
+			
+			console.log(key);
+			console.log(value);
+			
+		}
+	}
 
 }
 
@@ -87,7 +130,6 @@ function updateDiningCustomerList(data) {
 			$(buttonDiv).attr({
 				"customerId" : key,
 				"tableNumber" : jsonObj.tableNumber,
-				// "class" : "table",
 				"data-toggle" : "modal",
 				"data-target" : "#serviceModal"
 			});
@@ -112,15 +154,6 @@ function updateDiningCustomerList(data) {
 			$(bookingList).appendTo(buttonDiv);
 		}
 	}
-
-	// /** 桌號點餐trigger */
-	// $("div.table").on("click", function() {
-	// var customerId = $(this).attr("customerId");
-	// var tableNumber = $(this).attr("tableNumber");
-	//
-	// $("#orderTableNumber").val(tableNumber);
-	// $("#orderCustomerId").val(customerId);
-	// });
 }
 
 /**
@@ -177,7 +210,7 @@ function subscribeWebSocket() {
 			updateDiningCustomerList(jsonObj);
 
 			/** update seatMap */
-			updateSeatMap();
+			updateSeatMap(jsonObj);
 		});
 
 		/** server time listener */
@@ -536,7 +569,6 @@ function unlockMap() {
  * init seat map
  */
 function initSeatMap() {
-	// TODO
 	var action = "getSeatMap";
 
 	$.ajax({
@@ -565,18 +597,15 @@ function initSeatMap() {
 			/** resize seat map */
 			$("#seatMap").animate({
 				width : width,
-				height : width
+				height : height
 			}, 800);
-			
-			console.log(data);
 
 			/** set funish position */
 			$.each(data.seatPositionList, function(key, value) {
-				var isDining = isTableDining(value.displayText);
-				addTableToMap(value.displayText, value.x, value.y, isDining);
-				console.log("!!");
-				console.log(data.seatPositionList);
+				addTableToMap(value.displayText, value.x, value.y);
 			});
+			lockMap();
+			updateSeatMap(diningCustomer);
 		}
 	});
 
@@ -615,7 +644,7 @@ function initSeatMap() {
 				});
 
 				if (!isDuplicate)
-					addTableToMap(tableNumber, 0, 0, false);
+					addTableToMap(tableNumber, 0, 0);
 			}
 		}, "");
 	});
@@ -629,17 +658,13 @@ function initSeatMap() {
  * 
  * @param tableNumber
  */
-function addTableToMap(tableNumber, x, y, isDining) {
+function addTableToMap(tableNumber, x, y) {
 
 	var className = "";
-	if (isDining)
-		className = "diningTable";
-	else
-		className = "emptyTable";
 
 	/** container */
 	var container = document.createElement("div");
-	$(container).addClass(className + " table disableSelection");
+	$(container).addClass("emptyTable table disableSelection");
 	$(container).html(tableNumber);
 
 	/** set Id */
@@ -649,14 +674,16 @@ function addTableToMap(tableNumber, x, y, isDining) {
 
 	/** set position */
 	$(container).css({
-		"top" : x,
-		"left" : y
+		"top" : y,
+		"left" : x
 	});
 
 	$(container).draggable({
 		containment : "#seatMap",
 		zIndex : 1
 	});
+
+	$(container).css("position", "absolute");
 
 	/** add child to map */
 	$("#seatMap").append(container);
@@ -717,11 +744,5 @@ $(document).ready(function() {
 	getDiningCustomer();
 
 	/** initSeatMap */
-//	initSeatMap();
-
+	// initSeatMap();
 });
-
-// TODO
-// fabric min => re download...
-// test on ipad... fabric.js may not work...:::
-
