@@ -29,6 +29,7 @@ import com.thirtySix.po.Booking;
 import com.thirtySix.po.Customer;
 import com.thirtySix.po.ItemClass;
 import com.thirtySix.po.SeatMap;
+import com.thirtySix.po.SeatPosition;
 import com.thirtySix.util.ObjectConverter;
 
 @Controller
@@ -118,22 +119,34 @@ public class IndexController {
 	 * @return
 	 */
 	@ResponseBody
-	@RequestMapping(value = { "/saveSeatMap" })
+	@RequestMapping(value = { "/saveSeatMap" }, consumes = "application/json", produces = "application/json")
 	private AjaxDTO saveSeatMap(HttpServletRequest request,
-			HttpServletResponse response, @ModelAttribute SeatMapDTO seatMapDTO) {
+			HttpServletResponse response, @RequestBody SeatMapDTO seatMapDTO) {
 		AjaxDTO result = new AjaxDTO();
-		
-		SeatMap po = objConverter.seatMapDTOtoPO(seatMapDTO);
-		
-		/** save to db */
-		if(po.getMapID().equals(""))
-			dbManager.insertSeatMap(po);
+
+		/** map save */
+		SeatMap mapPO = objConverter.seatMapDTOtoPO(seatMapDTO);
+		if (mapPO.getMapID().equals(""))
+			dbManager.insertSeatMap(mapPO);
 		else
-			dbManager.updateSeatMap(po);
-		
+			dbManager.updateSeatMap(mapPO);
+
+		/** position save */
+		List<SeatPosition> positionList = objConverter.seatPositionDTOtoPO(
+				mapPO, seatMapDTO.getSeatPositionList());
+		dbManager.insertSeatPosition(mapPO, positionList);
+
+		//TODO
+		// for(SeatPositionDTO position : seatMapDTO.getSeatPositionList()) {
+		// System.out.println(position.getFurnishID());
+		// System.out.println(position.getDisplayText());
+		// System.out.println(position.getX());
+		// System.out.println(position.getY());
+		// }
+
 		return result;
 	}
-	
+
 	/**
 	 * 取得座位表
 	 * 
@@ -147,15 +160,15 @@ public class IndexController {
 	private AjaxDTO getSeatMap(HttpServletRequest request,
 			HttpServletResponse response) {
 		AjaxDTO result = new AjaxDTO();
-		
+
 		List<SeatMap> mapList = dbManager.getSeatMap();
-		
+
 		result.setStatusOK();
 		result.setData(mapList);
-		
+
 		return result;
 	}
-	
+
 	/**
 	 * 取得菜單
 	 * 
@@ -177,31 +190,30 @@ public class IndexController {
 	}
 
 	@ResponseBody
-	@RequestMapping(value = { "/sendOrder" }, consumes="application/json", produces="application/json")
+	@RequestMapping(value = { "/sendOrder" }, consumes = "application/json", produces = "application/json")
 	private AjaxDTO sendOrder(HttpServletRequest request,
 			HttpServletResponse response, @RequestBody BookingDTO bookingDTO) {
 		AjaxDTO result = new AjaxDTO();
-		
-		for(ItemDTO item : bookingDTO.getItemList()) {
-			Booking booking = objConverter.bookingDTOtoPO(bookingDTO, item.getItemId(), item.getVolume());
-			
+
+		for (ItemDTO item : bookingDTO.getItemList()) {
+			Booking booking = objConverter.bookingDTOtoPO(bookingDTO,
+					item.getItemId(), item.getVolume());
+
 			/** save to db */
 			dbManager.insertBooking(booking);
-			
+
 			/** update buffer */
 			String customerId = bookingDTO.getCustomerId();
 			Customer customer = buffer.getDiningCustomer().get(customerId);
 			customer.getBookingList().add(booking);
-			
+
 			/** send to client */
 			this.diningCustomerUpdate(buffer.getDiningCustomer());
 		}
-		
+
 		result.setStatusOK();
 		return result;
 	}
-	
-	
 
 	/**
 	 * 用餐中顧客 更新(發布socket topic)

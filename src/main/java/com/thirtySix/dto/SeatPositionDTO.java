@@ -1,0 +1,121 @@
+package com.thirtySix.dto;
+
+import com.thirtySix.po.SeatMap;
+
+public class SeatPositionDTO {
+
+	/**
+	 * 擺設編號
+	 */
+	private String furnishID;
+
+	/**
+	 * X座標
+	 */
+	private int x;
+
+	/**
+	 * Y座標
+	 */
+	private int y;
+
+	/**
+	 * 名稱
+	 */
+	private String displayText;
+
+	/**
+	 * 地圖資訊
+	 */
+	private SeatMap seatMap;
+
+	/**
+	 * 取得擺設編號
+	 * 
+	 * @return
+	 */
+	public String getFurnishID() {
+		return furnishID;
+	}
+
+	/**
+	 * 設定擺設編號
+	 * 
+	 * @param furnishID
+	 */
+	public void setFurnishID(String furnishID) {
+		this.furnishID = furnishID;
+	}
+
+	/**
+	 * 取得X座標
+	 * 
+	 * @return
+	 */
+	public int getX() {
+		return x;
+	}
+
+	/**
+	 * 設定X座標
+	 * 
+	 * @param x
+	 */
+	public void setX(int x) {
+		this.x = x;
+	}
+
+	/**
+	 * 取得Y座標
+	 * 
+	 * @return
+	 */
+	public int getY() {
+		return y;
+	}
+
+	/**
+	 * 設定Y座標
+	 * 
+	 * @param y
+	 */
+	public void setY(int y) {
+		this.y = y;
+	}
+
+	/**
+	 * 取得名稱
+	 * 
+	 * @return
+	 */
+	public String getDisplayText() {
+		return displayText;
+	}
+
+	/**
+	 * 設定名稱
+	 * 
+	 * @param text
+	 */
+	public void setDisplayText(String displayText) {
+		this.displayText = displayText;
+	}
+
+	/**
+	 * 取得地圖資訊
+	 * 
+	 * @return
+	 */
+	public SeatMap getSeatMap() {
+		return seatMap;
+	}
+
+	/**
+	 * 設定地圖資訊
+	 * 
+	 * @param seatMap
+	 */
+	public void setSeatMap(SeatMap seatMap) {
+		this.seatMap = seatMap;
+	}
+}

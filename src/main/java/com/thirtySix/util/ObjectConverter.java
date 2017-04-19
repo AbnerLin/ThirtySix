@@ -1,5 +1,8 @@
 package com.thirtySix.util;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -7,10 +10,12 @@ import com.thirtySix.Core.Buffer;
 import com.thirtySix.dto.BookingDTO;
 import com.thirtySix.dto.CustomerDTO;
 import com.thirtySix.dto.SeatMapDTO;
+import com.thirtySix.dto.SeatPositionDTO;
 import com.thirtySix.po.Booking;
 import com.thirtySix.po.Customer;
 import com.thirtySix.po.Item;
 import com.thirtySix.po.SeatMap;
+import com.thirtySix.po.SeatPosition;
 
 @Component
 public class ObjectConverter {
@@ -46,13 +51,33 @@ public class ObjectConverter {
 	}
 
 	public SeatMap seatMapDTOtoPO(SeatMapDTO dto) {
-		SeatMap seatMap = new SeatMap();
-		
-		seatMap.setMapID(dto.getMapID());
-		seatMap.setLocation(dto.getLocation());
-		seatMap.setJsonString(dto.getJsonString());
-		
-		return seatMap;
+		SeatMap po = new SeatMap();
+
+		if (!dto.getMapID().trim().equals(""))
+			po.setMapID(dto.getMapID().trim());
+
+		po.setLocation(dto.getLocation());
+		po.setWidth(dto.getWidth());
+		po.setHeight(dto.getHeight());
+
+		return po;
+	}
+
+	public List<SeatPosition> seatPositionDTOtoPO(SeatMap mapPO,
+			List<SeatPositionDTO> dtos) {
+		List<SeatPosition> poList = new ArrayList<SeatPosition>();
+
+		for (SeatPositionDTO dto : dtos) {
+			SeatPosition po = new SeatPosition();
+			
+			po.setSeatMap(mapPO);
+			po.setDisplayText(dto.getDisplayText());
+			po.setX(dto.getX());
+			po.setY(dto.getY());
+			poList.add(po);
+		}
+
+		return poList;
 	}
 
 }

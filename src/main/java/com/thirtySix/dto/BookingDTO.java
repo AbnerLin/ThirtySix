@@ -20,11 +20,6 @@ public class BookingDTO implements Serializable {
 	private Timestamp time;
 
 	/**
-	 * 桌號
-	 */
-//	private String tableNumber;
-
-	/**
 	 * 項目清單
 	 */
 	private List<ItemDTO> itemList;
@@ -69,24 +64,6 @@ public class BookingDTO implements Serializable {
 	public void setTime(Timestamp time) {
 		this.time = time;
 	}
-
-//	/**
-//	 * 取得桌號
-//	 * 
-//	 * @return
-//	 */
-//	public String getTableNumber() {
-//		return tableNumber;
-//	}
-//
-//	/**
-//	 * 設定桌號
-//	 * 
-//	 * @param tableNumber
-//	 */
-//	public void setTableNumber(String tableNumber) {
-//		this.tableNumber = tableNumber;
-//	}
 
 	/**
 	 * 取得項目列表

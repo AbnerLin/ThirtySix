@@ -1,10 +1,10 @@
 var appUrl = "/thirtySix/";
-var canvas = null;
-
-var emptyTableImageSrm = "images/empty-table-md.png";
 
 /** cache dining customer list */
 var diningCustomer = null;
+
+/** cache click object id */
+var cacheClickObjectId = null;
 
 /**
  * 取得目前在用餐的顧客資訊
@@ -23,8 +23,8 @@ function getDiningCustomer() {
 			/** update list */
 			updateDiningCustomerList(data);
 
-			/** update seatMap */
-			updateSeatMap();
+			/** init seatMap */
+			initSeatMap();
 
 			alertify.success("用餐中顧客載入成功!");
 		}
@@ -33,48 +33,9 @@ function getDiningCustomer() {
 
 /** 更新座位表 */
 function updateSeatMap() {
-	canvas.getObjects().map(function(obj) {
-		if (obj.type == "group") {
-			var group = obj;
 
-			var _tableNumber = group.item(1).getText().trim();
-			var isDining = isTableDining(_tableNumber);
+	// TODO
 
-			var imgElemnt = null;
-			/** change img src */
-			if (!isDining) {
-				imgElement = document.getElementById("emptytableIconMD");
-			} else {
-				imgElement = document.getElementById("tableIconSM");
-			}
-
-			/** table number */
-			var text = new fabric.Text(_tableNumber, {
-				fontFamily : 'Comic Sans',
-				fontSize : 30,
-				fill : "#ff0000"
-			});
-
-			/** table img */
-			var img = new fabric.Image(imgElement, {
-				opacity : 0.5,
-				left : group.getBoundingRectHeight() / 2 * -1,
-				top : group.getBoundingRectWidth() / 2 * -1
-			});
-
-			/** text position */
-			text.set("top", (text.height / 2 * -1));
-			text.set("left", (text.width / 2 * -1));
-
-			group.remove(group.item(1));
-			group.remove(group.item(0));
-
-			group.add(img);
-			group.add(text);
-
-			canvas.renderAll();
-		}
-	});
 }
 
 /**
@@ -126,9 +87,9 @@ function updateDiningCustomerList(data) {
 			$(buttonDiv).attr({
 				"customerId" : key,
 				"tableNumber" : jsonObj.tableNumber,
-				"class" : "table",
+				// "class" : "table",
 				"data-toggle" : "modal",
-				"data-target" : "#myModal"
+				"data-target" : "#serviceModal"
 			});
 			$(buttonDiv).text(
 					"顧客編號: " + key + " 桌號： " + jsonObj.tableNumber + " 人數："
@@ -152,37 +113,48 @@ function updateDiningCustomerList(data) {
 		}
 	}
 
-	/** 桌號點餐trigger */
-	$("div.table").on("click", function() {
-		var customerId = $(this).attr("customerId");
-		var tableNumber = $(this).attr("tableNumber");
-
-		$("#orderTableNumber").val(tableNumber);
-		$("#orderCustomerId").val(customerId);
-	});
+	// /** 桌號點餐trigger */
+	// $("div.table").on("click", function() {
+	// var customerId = $(this).attr("customerId");
+	// var tableNumber = $(this).attr("tableNumber");
+	//
+	// $("#orderTableNumber").val(tableNumber);
+	// $("#orderCustomerId").val(customerId);
+	// });
 }
 
 /**
  * 新增顧客
  */
 function customerCheckIn() {
-	var action = "customerCheckIn";
+	var customerName = $("#checkInCustomerName").val();
+	var tableNumber = $("#checkInTableNumber").val();
+	var peopleCount = $("#checkInPeopleCount").val();
+	var phoneNumber = $("#checkInCustomerPhone").val();
 
-	$.ajax({
-		url : appUrl + action,
-		async : true,
-		method : "POST",
-		data : {
-			customerName : "ShaoYang, Lin",
-			tableNumber : "A8",
-			phoneNumber : "0987654321",
-			peopleCount : 8
-		},
-		success : function(response, status, jqXHR) {
-			// TODO
+	var confirmInfo = "顧客名稱： " + customerName + "<br>" + "顧客電話： " + phoneNumber
+			+ "<br>" + "桌號： " + tableNumber + "<br>" + "人數： " + peopleCount;
 
-			// alert("success !!!");
-			// alert(JSON.stringify(data));
+	alertify.confirm(confirmInfo, function(e) {
+		if (e) {
+			var action = "customerCheckIn";
+			$.ajax({
+				url : appUrl + action,
+				async : true,
+				method : "POST",
+				data : {
+					customerName : customerName,
+					tableNumber : tableNumber,
+					phoneNumber : phoneNumber,
+					peopleCount : peopleCount
+				},
+				success : function(response, status, jqXHR) {
+					alertify.success("checkIn 成功！");
+
+					/** hide modal */
+					$("#checkInModal").modal("hide");
+				}
+			});
 		}
 	});
 }
@@ -472,52 +444,99 @@ function sendOrder() {
 
 }
 
-/** lock canvas */
-function lockCanvas() {
-	canvas.deactivateAll();
-	canvas.renderAll();
-	canvas.forEachObject(function(object) {
-		object.selectable = false;
-	});
+/**
+ * table click event handler
+ */
+function tableClickHandler() {
+	var tableNumber = $(this).attr("id");
+	var dining = isTableDining(tableNumber);
 
+	/** show up modal */
+	if (dining) {
+		/** set customerId, tableNumber */
+		var customerId = getCustomerIdByTableNumber(tableNumber);
+		$("#orderTableNumber").val(tableNumber);
+		$("#orderCustomerId").val(customerId);
+
+		$("#serviceModal").modal("show");
+	} else {
+		$("#checkInTableNumber").val(tableNumber);
+
+		$("#checkInModal").modal("show");
+	}
+}
+
+/** lock canvas */
+function lockMap() {
 	/** show seat map revise option */
 	$("#saveSeatMap, #deleteTable").fadeOut();
-	$("#imageSelection").slideUp();
+	$("#imageSelection, #mapSizeOption").slideUp();
 
-	/** resume canvas trigger */
-	resumeCanvasEvent();
+	/** disable draggable */
+	$(".table").draggable("disable");
+
+	/** click event */
+	$(".table").click(tableClickHandler);
+
+	/** hide garbage block */
+	$("#garbageBlock").fadeOut();
 }
 
-function unlockCanvas() {
-	canvas.deactivateAll();
-	canvas.renderAll();
-	canvas.forEachObject(function(object) {
-		object.selectable = true;
-		/** disable resize */
-		object.setControlsVisibility({
-			mt : false,
-			mb : false,
-			ml : false,
-			mr : false,
-			bl : false,
-			br : false,
-			tl : false,
-			tr : false,
-			mtr : false,
-		});
-	});
-
+function unlockMap() {
 	/** show seat map revise option */
 	$("#saveSeatMap, #deleteTable").fadeIn();
-	$("#imageSelection").slideDown();
+	$("#imageSelection, #mapSizeOption").slideDown();
 
-	/** pause canvas trigger */
-	pauseCanvasEvent();
+	/** map width trigger */
+	$("#mapWidth").on("keypress keydown keyup", function() {
+		$("#seatMap").css("width", $(this).val());
+	});
+
+	/** map height trigger */
+	$("#mapHeight").on("keypress keydown keyup", function() {
+		$("#seatMap").css("height", $(this).val());
+	});
+
+	/** disable click event */
+	$(".table").unbind("click");
+
+	/** apply draggable */
+	$(".table").draggable("enable");
+
+	/** display garbage block */
+	$("#garbageBlock").fadeIn();
+
+	/** add remove block */
+	$("#garbageBlock").droppable({
+		drop : function(event, ui) {
+			var id = ui.draggable.attr("id");
+			$("#" + id).remove();
+
+			$("#garbageBlock").css({
+				"background-color" : "#F0F0F0"
+			});
+
+			alertify.success("刪除桌號：" + id);
+		},
+		over : function(event, ui) {
+			$("#garbageBlock").css({
+				"background-color" : "#FF5733"
+			});
+		},
+		out : function(event, ui) {
+			$("#garbageBlock").css({
+				"background-color" : "#F0F0F0"
+			});
+		}
+	});
+
 }
 
-/** get canvas data */
-function initCanvas() {
-
+/**
+ * init seat map
+ */
+function initSeatMap() {
+	// TODO
 	var action = "getSeatMap";
 
 	$.ajax({
@@ -525,188 +544,161 @@ function initCanvas() {
 		async : true,
 		method : "POST",
 		success : function(response, status, jqXHR) {
-			var data = response.data[0].jsonString;
+			var data = response.data[0];
 
 			/** set map ID */
-			var mapID = response.data[0].mapID;
-			$("#mapID").val(mapID);
+			var mapID = data.mapID;
+			$("#mapID").val(mapID)
 
 			/** set location */
-			var location = response.data[0].location;
+			var location = data.location;
 			$("#mapLocation").val(location);
 
-			/** setup canvas */
-			setCanvas("seatCanvas", data);
+			/** set width */
+			var width = parseInt(data.width);
+			$("#mapWidth").val(width);
 
-			/** init toggle */
-			$("#seatMap-toggle").bootstrapToggle();
-			$('#seatMap-toggle').change(function() {
-				var checked = $(this).prop("checked");
-				if (checked == true) {
-					unlockCanvas();
-				} else if (checked == false) {
-					lockCanvas();
+			/** set height */
+			var height = parseInt(data.height);
+			$("#mapHeight").val(height);
+
+			/** resize seat map */
+			$("#seatMap").animate({
+				width : width,
+				height : width
+			}, 800);
+			
+			console.log(data);
+
+			/** set funish position */
+			$.each(data.seatPositionList, function(key, value) {
+				var isDining = isTableDining(value.displayText);
+				addTableToMap(value.displayText, value.x, value.y, isDining);
+				console.log("!!");
+				console.log(data.seatPositionList);
+			});
+		}
+	});
+
+	/** init adjust toggle */
+	$("#seatMap-toggle").bootstrapToggle();
+	$('#seatMap-toggle').change(function() {
+		var checked = $(this).prop("checked");
+		if (checked == true) {
+			unlockMap();
+		} else if (checked == false) {
+			lockMap();
+		}
+	});
+
+	/** compoment add */
+	$(".canvasInnerObj").click(function() {
+		var id = $(this).attr("id");
+		/** get table number */
+		alertify.prompt("請輸入桌號", function(e, str) {
+			if (e) {
+				tableNumber = str.trim();
+
+				if (tableNumber == "") {
+					alertify.alert("桌號不可空白！");
+					return;
 				}
-			});
 
-			alertify.success("座位表載入成功。");
-
-			/** 載入用餐中顧客 */
-			getDiningCustomer();
-		}
-	});
-}
-
-/**
- * 取消座位表監聽事件
- */
-function pauseCanvasEvent() {
-	canvas.__eventListeners["mouse:down"] = [];
-}
-
-/**
- * 恢復座位表監聽事件
- */
-function resumeCanvasEvent() {
-	/** object click event */
-	canvas.on("mouse:down", function(evt) {
-		var clickObject = evt.target;
-		if (clickObject != null) {
-			var tableNumber = clickObject.item(1).getText();
-			var dining = isTableDining(tableNumber);
-
-			/** set customerId, tableNumber */
-			var customerId = getCustomerIdByTableNumber(tableNumber);
-			$("#orderTableNumber").val(tableNumber);
-			$("#orderCustomerId").val(customerId);
-
-			/** show up modal */
-			$("#myModal").modal("show");
-		}
-	});
-}
-
-/** init canvas */
-function setCanvas(canvasId, fabricJsonStr) {
-	/** init canvas */
-	canvas = new fabric.Canvas(canvasId, {
-		width : 800,
-		height : 600
-	});
-
-	canvas.loadFromJSON(fabricJsonStr, function() {
-		canvas.renderAll.bind(canvas);
-		lockCanvas();
-	});
-
-	/** open trigger */
-	resumeCanvasEvent();
-
-	/** add obj trigger */
-	$(".canvasInnerObj").click(
-			function() {
-				var id = $(this).attr("id");
-				/** get table number */
-				alertify.prompt("請輸入桌號", function(e, str) {
-					if (e) {
-						tableNumber = str.trim();
-
-						if (tableNumber == "") {
-							alertify.alert("桌號不可空白！");
-							return;
-						}
-
-						var isDiplucate = false;
-						canvas.getObjects().map(function(group) {
-							var _tableNumber = group.item(1).getText();
-							if (_tableNumber.trim() == tableNumber) {
-								alertify.alert("桌號重複！");
-								isDiplucate = true;
-							}
-						});
-
-						if (isDiplucate)
-							return;
-
-						/** table number */
-						var text = new fabric.Text(tableNumber, {
-							fontFamily : 'Comic Sans',
-							fontSize : 30
-						});
-
-						/** table img */
-						var imgElement = document.getElementById(id);
-						var img = new fabric.Image(imgElement, {
-							opacity : 0.85
-						});
-
-						/** text position */
-						text.set("top", (img.getBoundingRectHeight() / 2)
-								- (text.width / 2));
-						text.set("left", (img.getBoundingRectWidth() / 2)
-								- (text.height / 2));
-
-						var group = new fabric.Group([ img, text ], {
-							left : 100,
-							top : 25,
-							hoverCursor : "pointer"
-						});
-
-						/** disable resize */
-						group.setControlsVisibility({
-							mt : false,
-							mb : false,
-							ml : false,
-							mr : false,
-							bl : false,
-							br : false,
-							tl : false,
-							tr : false,
-							mtr : false,
-						});
-
-						canvas.add(group);
-					} else {
-
+				/** check tableNumber duplicate */
+				var isDuplicate = false;
+				$(".table").each(function() {
+					var _id = $(this).attr("id").trim();
+					if (_id == tableNumber) {
+						alertify.alert("桌號重複！");
+						isDuplicate = true;
 					}
-				}, "");
+				});
 
-			});
+				if (!isDuplicate)
+					addTableToMap(tableNumber, 0, 0, false);
+			}
+		}, "");
+	});
+
+	/** disable draggable */
+	lockMap();
 }
 
 /**
- * 刪除座位表上的桌子
+ * 新增桌號至地圖
+ * 
+ * @param tableNumber
  */
-function deleteTable() {
-	/** check if group */
-	if (canvas.getActiveGroup()) {
-		canvas.getActiveGroup().forEachObject(function(o) {
-			canvas.remove(o)
-		});
-		canvas.discardActiveGroup().renderAll();
-	} else {
-		canvas.remove(canvas.getActiveObject());
-	}
+function addTableToMap(tableNumber, x, y, isDining) {
+
+	var className = "";
+	if (isDining)
+		className = "diningTable";
+	else
+		className = "emptyTable";
+
+	/** container */
+	var container = document.createElement("div");
+	$(container).addClass(className + " table disableSelection");
+	$(container).html(tableNumber);
+
+	/** set Id */
+	$(container).attr({
+		id : tableNumber
+	});
+
+	/** set position */
+	$(container).css({
+		"top" : x,
+		"left" : y
+	});
+
+	$(container).draggable({
+		containment : "#seatMap",
+		zIndex : 1
+	});
+
+	/** add child to map */
+	$("#seatMap").append(container);
 }
 
 /**
  * 儲存座位表
  */
 function saveSeatMap() {
-	var action = "saveSeatMap";
+	// TODO
+
 	var mapID = $("#mapID").val();
 	var mapLocation = $("#mapLocation").val();
+	var mapWidth = $("#mapWidth").val();
+	var mapHeight = $("#mapHeight").val();
 
-	var jsonStr = JSON.stringify(canvas);
+	/** compose container list */
+	var containerList = [];
+	$(".table").each(function() {
+		containerList.push({
+			x : $(this).position().left,
+			y : $(this).position().top,
+			displayText : $(this).attr("id"),
+		});
+	});
+
+	var postData = {
+		mapID : mapID,
+		location : mapLocation,
+		width : mapWidth,
+		height : mapHeight,
+		seatPositionList : containerList
+	}
+
+	var action = "saveSeatMap";
 	$.ajax({
 		url : appUrl + action,
 		async : true,
 		method : "POST",
-		data : {
-			mapID : mapID,
-			location : mapLocation,
-			jsonString : jsonStr
-		},
+		dataType : "json",
+		contentType : 'application/json',
+		data : JSON.stringify(postData),
 		success : function(response, status, jqXHR) {
 			alertify.success("座位表儲存成功！");
 		}
@@ -721,6 +713,15 @@ $(document).ready(function() {
 	/** 載入菜單列表 */
 	getMenu();
 
-	/** init canvas */
-	initCanvas();
+	/** get dining customer */
+	getDiningCustomer();
+
+	/** initSeatMap */
+//	initSeatMap();
+
 });
+
+// TODO
+// fabric min => re download...
+// test on ipad... fabric.js may not work...:::
+
