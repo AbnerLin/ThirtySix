@@ -1,5 +1,6 @@
 package com.thirtySix.Core;
 
+import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -17,6 +18,7 @@ import org.springframework.stereotype.Component;
 import com.thirtySix.po.Customer;
 import com.thirtySix.po.Item;
 import com.thirtySix.po.ItemClass;
+import com.thirtySix.util.TimeFormatter;
 
 @Component
 public class Buffer {
@@ -74,6 +76,10 @@ public class Buffer {
 		int count = 0;
 		for (Customer customer : diningCustomerList) {
 			String id = customer.getCustomerID();
+			
+			Date date = new Date(customer.getCheckInTime().getTime());
+			customer.setCheckInTimeStringFormat(TimeFormatter.getInstance().getTime(date));
+			
 			this.diningCustomerBuffer.put(id, customer);
 			count++;
 			logger.info("顧客編號" + id + " 進場時間" + customer.getCheckInTime());

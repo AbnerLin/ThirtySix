@@ -11,6 +11,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 import org.hibernate.annotations.GenericGenerator;
 
@@ -74,6 +75,12 @@ public class Customer {
 	 */
 	@OneToMany(fetch = FetchType.EAGER, mappedBy = "customer")
 	private List<Booking> bookingList = new ArrayList<Booking>();
+
+	/**
+	 * 進場時間(字串)
+	 */
+	@Transient
+	private String checkInTimeStringFormat = "";
 
 	/**
 	 * 取得顧客編號
@@ -226,6 +233,24 @@ public class Customer {
 	 */
 	public List<Booking> getBookingList() {
 		return bookingList;
+	}
+
+	/**
+	 * 取得進場時間 字串格式
+	 * 
+	 * @return
+	 */
+	public String getCheckInTimeStringFormat() {
+		return checkInTimeStringFormat;
+	}
+
+	/**
+	 * 設定進場時間 字串格式
+	 * 
+	 * @param checkInTimeStringFormat
+	 */
+	public void setCheckInTimeStringFormat(String checkInTimeStringFormat) {
+		this.checkInTimeStringFormat = checkInTimeStringFormat;
 	}
 
 }

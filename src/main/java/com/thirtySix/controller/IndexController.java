@@ -136,14 +136,6 @@ public class IndexController {
 				mapPO, seatMapDTO.getSeatPositionList());
 		dbManager.insertSeatPosition(mapPO, positionList);
 
-		//TODO
-		// for(SeatPositionDTO position : seatMapDTO.getSeatPositionList()) {
-		// System.out.println(position.getFurnishID());
-		// System.out.println(position.getDisplayText());
-		// System.out.println(position.getX());
-		// System.out.println(position.getY());
-		// }
-
 		return result;
 	}
 

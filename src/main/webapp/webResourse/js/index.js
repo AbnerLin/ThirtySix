@@ -40,23 +40,26 @@ function updateSeatMap(data) {
 
 		/** switch image */
 		var isDining = isTableDining(id);
-		if(isDining) {
+		if (isDining) {
 			$(this).removeClass("emptyTable");
 			$(this).addClass("diningTable");
 		} else {
 			$(this).removeClass("diningTable");
 			$(this).addClass("emptyTable");
 		}
-		
+
 		/** unSend badge */
 		var customerID = getCustomerIdByTableNumber(id);
+		if(customerID == null)
+			return;
+		
 		var unSendCount = 0;
 		var bookingList = data[customerID].bookingList;
 		$.each(bookingList, function(key, value) {
-			if(value.isSend == "0")
+			if (value.isSend == "0")
 				unSendCount++;
 		});
-		if(unSendCount > 0) {
+		if (unSendCount > 0) {
 			var h4 = document.createElement("h4");
 			var badge = document.createElement("span");
 			$(badge).addClass("label label-danger label-pill");
@@ -67,17 +70,30 @@ function updateSeatMap(data) {
 		}
 	});
 
-	
-	
-	for ( var key in data) {
-		if (data.hasOwnProperty(key)) {
-			var value = data[key];
+	/** tooltip */
+	$(".table").tooltip({
+		placement : "auto",
+		html : true,
+		title : function() {
+			var id = $(this).attr("id").trim();
+			var title = [];
+			var customerId = getCustomerIdByTableNumber(id);
+			if(customerId == null)
+				return;
 			
-			console.log(key);
-			console.log(value);
+			var div = document.createElement("div");
+			$(div).addClass("text-left");
 			
+			var info = diningCustomer[customerId];
+			title.push("顧客名稱： " + info.customerName);
+			title.push("人數： " + info.peopleCount);
+			title.push("進場時間： " + info.checkInTimeStringFormat);
+			title.push("連絡電話： " + info.phoneNumber);
+			$(div).html(title.join("<br>"));
+			
+			return div;
 		}
-	}
+	});
 
 }
 
@@ -513,6 +529,9 @@ function lockMap() {
 
 	/** hide garbage block */
 	$("#garbageBlock").fadeOut();
+	
+	/** update map */
+	updateSeatMap(diningCustomer);
 }
 
 function unlockMap() {
@@ -562,6 +581,9 @@ function unlockMap() {
 			});
 		}
 	});
+	
+	/** remove tooltip */
+	$(".table").tooltip('destroy');
 
 }
 
