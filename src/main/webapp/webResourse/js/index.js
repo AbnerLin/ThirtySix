@@ -507,11 +507,27 @@ function tableClickHandler() {
 		$("#orderCustomerId").val(customerId);
 
 		$("#serviceModal").modal("show");
+		
+		/** set value into service modal */
+		setServiceInfo(customerId);
 	} else {
 		$("#checkInTableNumber").val(tableNumber);
 
 		$("#checkInModal").modal("show");
 	}
+}
+
+/**
+ * set value into service modal
+ */
+function setServiceInfo(customerId) {
+	//TODO
+	console.log(JSON.stringify(diningCustomer));
+	
+	
+	var container = document.createElement("div");
+	
+	
 }
 
 /** lock canvas */
@@ -714,8 +730,6 @@ function addTableToMap(tableNumber, x, y) {
  * 儲存座位表
  */
 function saveSeatMap() {
-	// TODO
-
 	var mapID = $("#mapID").val();
 	var mapLocation = $("#mapLocation").val();
 	var mapWidth = $("#mapWidth").val();

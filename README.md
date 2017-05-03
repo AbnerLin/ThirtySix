@@ -1,5 +1,5 @@
 # ThirtySix
-The ThirtySix is the web-base application for restaurant which can monitor dishes serving status, customer check in/out time, and also provide the function for operator design the seat map.
+The ThirtySix is the web-base application for restaurant which can monitor dishes serving status, customer check in/out time, and also provide the feature for operator design the seat map.
 
 ## Features
 * Check-in/out for customer.

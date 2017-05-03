@@ -113,8 +113,8 @@
 
 				<div class="row">
 					<div id="seatMap">
-						<input id="mapLocation" type="hidden" value=""> 
-						<input id="mapID" type="hidden" value="">
+						<input id="mapLocation" type="hidden" value=""> <input
+							id="mapID" type="hidden" value="">
 						<div id="garbageBlock" class="glyphicon glyphicon-trash"></div>
 					</div>
 				</div>
@@ -240,43 +240,39 @@
 							aria-controls="customerInfoTab" role="tab" data-toggle="tab">顧客資訊</a></li>
 						<li role="presentation"><a href="#orderHistoryTab"
 							aria-controls="orderHistoryTab" role="tab" data-toggle="tab">點餐紀錄</a></li>
-						<li role="presentation"><a href="#settingsTab"
-							aria-controls="settingsTab" role="tab" data-toggle="tab">Settings</a></li>
+						<li role="presentation"><a href="#checkOutTab"
+							aria-controls="checkOutTab" role="tab" data-toggle="tab">結帳</a></li>
 					</ul>
 
 					<!-- Tab panes -->
 					<div class="tab-content">
 						<!-- order tab -->
 						<div role="tabpanel" class="tab-pane active" id="orderPageTab">
-							<div class="row" id="orderPageInner">
-								<div id="customerInfo" class="col-md-3 col-sm-3">
-									<h3>
-										<span class="label label-info">桌號</span>
-									</h3>
-									<input class="form-control" type="text" id="orderTableNumber" />
-									<input class="form-control" type="hidden" id="orderCustomerId" />
-									<div id="orderListInfo"></div>
-								</div>
-								<div id="menu" class="col-md-9 col-sm-9">
-									<div class="panel-group" id="menuBlock" role="tablist"
-										aria-multiselectable="true"></div>
-								</div>
-							</div>
+							<%@ include file="jsp/orderPage.jsp"%>
 						</div>
-						<div role="tabpanel" class="tab-pane" id="customerInfoTab">customerInfo</div>
-						<div role="tabpanel" class="tab-pane" id="orderHistoryTab">orderHistory</div>
-						<div role="tabpanel" class="tab-pane" id="settingsTab">...</div>
+						<!-- customer information -->
+						<div role="tabpanel" class="tab-pane" id="customerInfoTab">
+							<%@ include file="jsp/customerInfo.jsp"%>
+						</div>
+						<!-- order history -->
+						<div role="tabpanel" class="tab-pane" id="orderHistoryTab">
+							<div class="orderHistory">order History</div>
+						</div>
+						<!-- check out -->
+						<div role="tabpanel" class="tab-pane" id="checkOutTab">
+							<%@ include file="jsp/checkOutPage.jsp"%>
+						</div>
 					</div>
 
 				</div>
 				<div class="modal-footer">
-					<div class="row" id="sendOrder">
-						<button type="button" class="btn btn-danger btn-lg btn-block"
-							onclick="sendOrder();">
-							<span class="glyphicon glyphicon-shopping-cart"
-								aria-hidden="true"> 出餐</span>
-						</button>
-					</div>
+					<!-- 					<div class="row" id="sendOrder"> -->
+					<!-- 						<button type="button" class="btn btn-danger btn-lg btn-block" -->
+					<!-- 							onclick="sendOrder();"> -->
+					<!-- 							<span class="glyphicon glyphicon-shopping-cart" -->
+					<!-- 								aria-hidden="true"> 出餐</span> -->
+					<!-- 						</button> -->
+					<!-- 					</div> -->
 				</div>
 			</div>
 		</div>

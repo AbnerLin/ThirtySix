@@ -119,6 +119,6 @@ input[type=number]::-webkit-inner-spin-button, input[type=number]::-webkit-outer
 	border: 1px solid #f0f0f0;
 }
 
-#orderPageInner {
+#orderPageInner, #checkOutTab, #customerInfoTab {
 	padding: 10px;
 }

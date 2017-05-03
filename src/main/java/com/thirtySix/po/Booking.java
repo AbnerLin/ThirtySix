@@ -30,8 +30,14 @@ public class Booking {
 	/**
 	 * 訂單時間
 	 */
-	@Column(name = "TIME")
-	private Timestamp time;
+	@Column(name = "ORDERTIME")
+	private Timestamp orderTime;
+
+	/**
+	 * 出貨時間
+	 */
+	@Column(name = "DELIVERYTIME")
+	private Timestamp deliveryTime;
 
 	/**
 	 * 顧客資訊
@@ -70,21 +76,39 @@ public class Booking {
 	}
 
 	/**
-	 * 取得訂單時間
+	 * 取得下單時間
 	 * 
 	 * @return
 	 */
-	public Timestamp getTime() {
-		return time;
+	public Timestamp getOrderTime() {
+		return orderTime;
 	}
 
 	/**
-	 * 設定訂單時間
+	 * 設定下單時間
 	 * 
-	 * @param time
+	 * @param orderTime
 	 */
-	public void setTime(Timestamp time) {
-		this.time = time;
+	public void setOrderTime(Timestamp orderTime) {
+		this.orderTime = orderTime;
+	}
+
+	/**
+	 * 取得出貨時間
+	 * 
+	 * @return
+	 */
+	public Timestamp getDeliveryTime() {
+		return deliveryTime;
+	}
+
+	/**
+	 * 設定出貨時間
+	 * 
+	 * @param deliveryTime
+	 */
+	public void setDeliveryTime(Timestamp deliveryTime) {
+		this.deliveryTime = deliveryTime;
 	}
 
 	/**
