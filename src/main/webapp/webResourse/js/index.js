@@ -33,7 +33,6 @@ function getDiningCustomer() {
 
 /** 更新座位表 */
 function updateSeatMap(data) {
-	// TODO
 	/** check table dining ; add badge(unSend) */
 	$(".table").each(function() {
 		var id = $(this).attr("id").trim();
