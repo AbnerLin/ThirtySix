@@ -114,7 +114,7 @@ public class Buffer {
 	public Map<String, Item> getItems() {
 		return this.itemBuffer;
 	}
-	
+
 	/**
 	 * 取得使用中桌號
 	 * 
