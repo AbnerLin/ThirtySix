@@ -6,6 +6,9 @@ var diningCustomer = null;
 /** cache click object id */
 var cacheClickObjectId = null;
 
+/** modal show up customerId cache */
+var modalShowUpCacheCustomerID = null;
+
 /**
  * 取得目前在用餐的顧客資訊
  */
@@ -19,81 +22,61 @@ function getDiningCustomer() {
 		success : function(response, status, jqXHR) {
 			var data = response.data;
 			diningCustomer = data;
-
-			/** update list */
-			updateDiningCustomerList(data);
-
+			
 			/** init seatMap */
-			initSeatMap();
+			initSeatMap(data);
 
 			alertify.success("用餐中顧客載入成功!");
 		}
 	})
 }
 
+/**
+ * 出場
+ * 
+ * @param customerData
+ */
+function checkOut(tableNumber) {
+	$("#" + tableNumber).removeClass("diningTable");
+	$("#" + tableNumber).addClass("emptyTable");
+	$("#" + tableNumber).find(".seatMapBadge").remove();
+}
+
+/**
+ * 進場
+ * 
+ * @param tableNumber
+ */
+function checkIn(tableNumber) {
+	$("#" + tableNumber).removeClass("emptyTable");
+	$("#" + tableNumber).addClass("diningTable");
+	
+	alertify.success("桌號：" + tableNumber + " 客人進場。");
+}
+
 /** 更新座位表 */
-function updateSeatMap(data) {
-	/** check table dining ; add badge(unSend) */
-	$(".table").each(function() {
-		var id = $(this).attr("id").trim();
+function updateSeatMapBadge(customerData) {
+	
+	/** add badge(unSend) */
+	var id = customerData.tableNumber.trim();
 
-		/** switch image */
-		var isDining = isTableDining(id);
-		if (isDining) {
-			$(this).removeClass("emptyTable");
-			$(this).addClass("diningTable");
-		} else {
-			$(this).removeClass("diningTable");
-			$(this).addClass("emptyTable");
-		}
-
-		/** unSend badge */
-		var customerID = getCustomerIdByTableNumber(id);
-		if(customerID == null)
-			return;
-		
-		var unSendCount = 0;
-		var bookingList = data[customerID].bookingList;
-		$.each(bookingList, function(key, value) {
-			if (value.isSend == "0")
-				unSendCount++;
-		});
-		if (unSendCount > 0) {
-			var h4 = document.createElement("h4");
-			var badge = document.createElement("span");
-			$(badge).addClass("label label-danger label-pill");
-			$(badge).html(unSendCount);
-			$("<br>").appendTo($(this));
-			$(badge).appendTo(h4);
-			$(h4).appendTo($(this));
-		}
+	var unSendCount = 0;
+	var bookingList = customerData.bookingList;
+	$.each(bookingList, function(key, value) {
+		if (value.isSend == "0")
+			unSendCount++;
 	});
-
-	/** tooltip */
-	$(".table").tooltip({
-		placement : "auto",
-		html : true,
-		title : function() {
-			var id = $(this).attr("id").trim();
-			var title = [];
-			var customerId = getCustomerIdByTableNumber(id);
-			if(customerId == null)
-				return;
-			
-			var div = document.createElement("div");
-			$(div).addClass("text-left");
-			
-			var info = diningCustomer[customerId];
-			title.push("顧客名稱： " + info.customerName);
-			title.push("人數： " + info.peopleCount);
-			title.push("進場時間： " + info.checkInTimeStringFormat);
-			title.push("連絡電話： " + info.phoneNumber);
-			$(div).html(title.join("<br>"));
-			
-			return div;
-		}
-	});
-
+	if (unSendCount > 0) {
+		var h4 = document.createElement("h4");
+		var badge = document.createElement("span");
+		$(badge).addClass("label label-danger label-pill seatMapBadge");
+		$(badge).html(unSendCount);
+		$("<br>").appendTo("#" + id);
+		$(badge).appendTo(h4);
+		$(h4).appendTo("#" + id);
+	} else {
+		$("#" + id).find(".seatMapBadge").remove();
+	}
 }
 
 /**
@@ -221,11 +204,31 @@ function subscribeWebSocket() {
 			var jsonObj = JSON.parse(data.body);
 			diningCustomer = jsonObj;
 
-			/** update list */
-			updateDiningCustomerList(jsonObj);
-
 			/** update seatMap */
-			updateSeatMap(jsonObj);
+			// updateSeatMap(jsonObj);
+		});
+
+		stompClient.subscribe('/topic/specifyCustomerUpdate', function(data) {
+			/** update modal display data if show up. */
+			var customerData = JSON.parse(data.body);
+
+			/** update seat map */
+			updateSeatMapBadge(customerData);
+
+			/** update modal display data */
+			if (modalShowUpCacheCustomerID == customerData.customerID)
+				setServiceInfo(customerData);
+			
+			/** update buffer */
+			diningCustomer[customerData.customerID] = customerData;
+		});
+
+		stompClient.subscribe('/topic/customerCheckIn', function(data) {
+			checkIn(data.body);
+		});
+
+		stompClient.subscribe('/topic/customerCheckOut', function(data) {
+			checkOut(data.body);
 		});
 
 		/** server time listener */
@@ -460,7 +463,7 @@ function sendOrder() {
 		return;
 	}
 
-	// confirm dialog
+	/** confirm dialog */
 	alertify.confirm("確定下單？", function(e) {
 		if (e) {
 			var action = "sendOrder";
@@ -503,13 +506,17 @@ function tableClickHandler() {
 	if (dining) {
 		/** set customerId, tableNumber */
 		var customerId = getCustomerIdByTableNumber(tableNumber);
+
+		/** cache modal customerId */
+		modalShowUpCacheCustomerID = customerId;
+
 		$("#orderTableNumber").val(tableNumber);
 		$("#orderCustomerId").val(customerId);
 
 		$("#serviceModal").modal("show");
-		
+
 		/** set value into service modal */
-		setServiceInfo(customerId);
+		setServiceInfo(diningCustomer[customerId]);
 	} else {
 		$("#checkInTableNumber").val(tableNumber);
 
@@ -520,14 +527,42 @@ function tableClickHandler() {
 /**
  * set value into service modal
  */
-function setServiceInfo(customerId) {
-	//TODO
-	console.log(JSON.stringify(diningCustomer));
-	
-	
-	var container = document.createElement("div");
-	
-	
+function setServiceInfo(customerData) {
+	/** clear previous display data */
+	$("#orderListTable").html("");
+
+	/** set value for order history. */
+	var orderHistory = customerData.bookingList;
+	var dataArray = [];
+	$.each(orderHistory, function(key, value) {
+		dataArray.push({
+			itemName : value.item.name,
+			orderTime : value.orderTimeStringFormat,
+			deliveryTime : function() {
+				if (value.deliveryTimeStringFormat != null)
+					return value.deliveryTimeStringFormat;
+				else
+					return "未出餐";
+			},
+			volume : value.volume,
+			send : function() {
+				if (value.isSend == 0)
+					return "block;";
+				else
+					return "none;";
+			},
+			bookingID : value.bookingID,
+			customerID : key
+		});
+	});
+	$("#orderListTableTemplate").tmpl(dataArray).appendTo("#orderListTable");
+
+	/** set value for customer info */
+	$(".service-customerName").html(customerData.customerName);
+	$(".service-peopleCount").html(customerData.peopleCount);
+	$(".service-tableNumber").html(customerData.tableNumber);
+	$(".service-checkInTime").html(customerData.checkInTimeStringFormat);
+	$(".service-customerPhone").html(customerData.phoneNumber);
 }
 
 /** lock canvas */
@@ -537,16 +572,14 @@ function lockMap() {
 	$("#imageSelection, #mapSizeOption").slideUp();
 
 	/** disable draggable */
-	$(".table").draggable("disable");
+	$(".tableSeat").draggable("disable");
 
 	/** click event */
-	$(".table").click(tableClickHandler);
+	$(".tableSeat").click(tableClickHandler);
 
 	/** hide garbage block */
 	$("#garbageBlock").fadeOut();
-	
-	/** update map */
-	updateSeatMap(diningCustomer);
+
 }
 
 function unlockMap() {
@@ -565,10 +598,10 @@ function unlockMap() {
 	});
 
 	/** disable click event */
-	$(".table").unbind("click");
+	$(".tableSeat").unbind("click");
 
 	/** apply draggable */
-	$(".table").draggable("enable");
+	$(".tableSeat").draggable("enable");
 
 	/** display garbage block */
 	$("#garbageBlock").fadeIn();
@@ -596,16 +629,16 @@ function unlockMap() {
 			});
 		}
 	});
-	
+
 	/** remove tooltip */
-	$(".table").tooltip('destroy');
+	$(".tableSeat").tooltip('destroy');
 
 }
 
 /**
  * init seat map
  */
-function initSeatMap() {
+function initSeatMap(customerData) {
 	var action = "getSeatMap";
 
 	$.ajax({
@@ -642,7 +675,7 @@ function initSeatMap() {
 				addTableToMap(value.displayText, value.x, value.y);
 			});
 			lockMap();
-			updateSeatMap(diningCustomer);
+			initInfoToSeatMap(customerData);
 		}
 	});
 
@@ -672,7 +705,7 @@ function initSeatMap() {
 
 				/** check tableNumber duplicate */
 				var isDuplicate = false;
-				$(".table").each(function() {
+				$(".tableSeat").each(function() {
 					var _id = $(this).attr("id").trim();
 					if (_id == tableNumber) {
 						alertify.alert("桌號重複！");
@@ -690,6 +723,45 @@ function initSeatMap() {
 	lockMap();
 }
 
+function initInfoToSeatMap(data) {
+	/** set info to seat map */
+	$(".tableSeat").each(function() {
+		var id = $(this).attr("id");
+
+		/** switch image */
+		var isDining = isTableDining(id);
+		if (isDining) {
+			$(this).removeClass("emptyTable");
+			$(this).addClass("diningTable");
+		} else {
+			$(this).removeClass("diningTable");
+			$(this).addClass("emptyTable");
+		}
+
+		/** unSend badge */
+		var customerID = getCustomerIdByTableNumber(id);
+		if (customerID == null)
+			return;
+
+		var unSendCount = 0;
+		var bookingList = data[customerID].bookingList;
+		$.each(bookingList, function(key, value) {
+			if (value.isSend == "0")
+				unSendCount++;
+		});
+		if (unSendCount > 0) {
+			var h4 = document.createElement("h4");
+			var badge = document.createElement("span");
+			$(badge).addClass("label label-danger label-pill");
+			$(badge).html(unSendCount);
+			$("<br>").appendTo($(this));
+			$(badge).appendTo(h4);
+			$(h4).appendTo($(this));
+		}
+	});
+
+}
+
 /**
  * 新增桌號至地圖
  * 
@@ -701,7 +773,7 @@ function addTableToMap(tableNumber, x, y) {
 
 	/** container */
 	var container = document.createElement("div");
-	$(container).addClass("emptyTable table disableSelection");
+	$(container).addClass("emptyTable tableSeat disableSelection");
 	$(container).html(tableNumber);
 
 	/** set Id */
@@ -737,7 +809,7 @@ function saveSeatMap() {
 
 	/** compose container list */
 	var containerList = [];
-	$(".table").each(function() {
+	$(".tableSeat").each(function() {
 		containerList.push({
 			x : $(this).position().left,
 			y : $(this).position().top,
@@ -768,6 +840,29 @@ function saveSeatMap() {
 
 }
 
+/**
+ * 送餐
+ * 
+ * @param bookingID
+ */
+function sendItem(bookingID, customerID) {
+	bookingID = bookingID.trim();
+
+	var action = "sendDishes";
+	$.ajax({
+		url : appUrl + action,
+		async : true,
+		method : "POST",
+		data : {
+			"bookingID" : bookingID
+		},
+		success : function(response, status, jqXHR) {
+			alertify.success("送餐成功！");
+		}
+	});
+
+}
+
 $(document).ready(function() {
 	/** 啟動監聽WebSocket */
 	subscribeWebSocket();
@@ -778,6 +873,4 @@ $(document).ready(function() {
 	/** get dining customer */
 	getDiningCustomer();
 
-	/** initSeatMap */
-	// initSeatMap();
 });

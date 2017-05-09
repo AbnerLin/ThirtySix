@@ -44,6 +44,8 @@
 	src="<c:url value="/plugin/jquery-ui-1.12.1.custom/jquery-ui.min.js" />"></script>
 <script
 	src="<c:url value="/plugin/jquery-ui-1.12.1.custom/jquery-ui.touch-punch.min.js" />"></script>
+<!-- jquery tmpl -->
+<script src="<c:url value="/plugin/jquery/js/jquery-tmpl.min.js" />"></script>
 <!-- socket -->
 <script src="<c:url value="/plugin/socket/sockjs-1.1.1.js" />"></script>
 <script src="<c:url value="/plugin/socket/stomp.min.js" />"></script>
@@ -128,36 +130,11 @@
 		<div class="row">
 			<!-- left -->
 			<div class="col-md-6 col-sm-12">
-				<!-- 				<button onclick="getDiningCustomer();">getDiningCustomer</button> -->
 				<div id="diningCustomerList"></div>
-
-				<button onclick="customerCheckIn();">customerCheckIn</button>
 			</div>
 
 			<!-- right -->
-			<div class="col-md-6 col-sm-12">
-				<!-- 				<div class="row"> -->
-				<!-- 					<div id="customerInfo" class="col-md-3 col-sm-3"> -->
-				<!-- 						<h3> -->
-				<!-- 							<span class="label label-info">桌號</span> -->
-				<!-- 						</h3> -->
-				<!-- 						<input class="form-control" type="text" id="orderTableNumber" /> -->
-				<!-- 						<input class="form-control" type="hidden" id="orderCustomerId" /> -->
-				<!-- 						<div id="orderListInfo"></div> -->
-				<!-- 					</div> -->
-				<!-- 					<div id="menu" class="col-md-9 col-sm-9"> -->
-				<!-- 						<div class="panel-group" id="menuBlock" role="tablist" -->
-				<!-- 							aria-multiselectable="true"></div> -->
-				<!-- 					</div> -->
-				<!-- 				</div> -->
-				<!-- 				<div class="row"> -->
-				<!-- 					<button type="button" class="btn btn-danger btn-lg btn-block" -->
-				<!-- 						onclick="sendOrder();"> -->
-				<!-- 						<span class="glyphicon glyphicon-shopping-cart" aria-hidden="true"> -->
-				<!-- 							出餐</span> -->
-				<!-- 					</button> -->
-				<!-- 				</div> -->
-			</div>
+			<div class="col-md-6 col-sm-12"></div>
 		</div>
 	</div>
 
@@ -236,10 +213,6 @@
 						<li role="presentation" class="active"><a
 							href="#orderPageTab" aria-controls="orderPageTab" role="tab"
 							data-toggle="tab">點餐</a></li>
-						<li role="presentation"><a href="#customerInfoTab"
-							aria-controls="customerInfoTab" role="tab" data-toggle="tab">顧客資訊</a></li>
-						<li role="presentation"><a href="#orderHistoryTab"
-							aria-controls="orderHistoryTab" role="tab" data-toggle="tab">點餐紀錄</a></li>
 						<li role="presentation"><a href="#checkOutTab"
 							aria-controls="checkOutTab" role="tab" data-toggle="tab">結帳</a></li>
 					</ul>
@@ -250,20 +223,11 @@
 						<div role="tabpanel" class="tab-pane active" id="orderPageTab">
 							<%@ include file="jsp/orderPage.jsp"%>
 						</div>
-						<!-- customer information -->
-						<div role="tabpanel" class="tab-pane" id="customerInfoTab">
-							<%@ include file="jsp/customerInfo.jsp"%>
-						</div>
-						<!-- order history -->
-						<div role="tabpanel" class="tab-pane" id="orderHistoryTab">
-							<div class="orderHistory">order History</div>
-						</div>
 						<!-- check out -->
 						<div role="tabpanel" class="tab-pane" id="checkOutTab">
 							<%@ include file="jsp/checkOutPage.jsp"%>
 						</div>
 					</div>
-
 				</div>
 				<div class="modal-footer">
 					<!-- 					<div class="row" id="sendOrder"> -->

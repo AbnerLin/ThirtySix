@@ -2,9 +2,10 @@ package com.thirtySix.dto;
 
 import java.io.Serializable;
 import java.sql.Timestamp;
+import java.util.Date;
 import java.util.List;
 
-import com.thirtySix.po.Booking;
+import com.thirtySix.util.TimeFormatter;
 
 public class CustomerDTO implements Serializable {
 
@@ -26,9 +27,19 @@ public class CustomerDTO implements Serializable {
 	private Timestamp checkInTime;
 
 	/**
+	 * 進場時間 字串格式
+	 */
+	private String checkInTimeStringFormat;
+
+	/**
 	 * 出場時間
 	 */
 	private Timestamp checkOutTime;
+
+	/**
+	 * 出場時間 字串格式
+	 */
+	private String checkOutTimeStringFormat;
 
 	/**
 	 * 顧客名稱
@@ -53,7 +64,7 @@ public class CustomerDTO implements Serializable {
 	/**
 	 * 訂單資訊
 	 */
-	private List<Booking> bookingList;
+	private List<BookingDTO> bookingList;
 
 	/**
 	 * 取得顧客編號
@@ -161,6 +172,10 @@ public class CustomerDTO implements Serializable {
 	 */
 	public void setCheckInTime(Timestamp checkInTime) {
 		this.checkInTime = checkInTime;
+
+		Date time = new Date(checkInTime.getTime());
+		this.setCheckInTimeStringFormat(TimeFormatter.getInstance().getTime(
+				time));
 	}
 
 	/**
@@ -179,6 +194,12 @@ public class CustomerDTO implements Serializable {
 	 */
 	public void setCheckOutTime(Timestamp checkOutTime) {
 		this.checkOutTime = checkOutTime;
+
+		if (this.checkOutTime != null) {
+			Date time = new Date(checkOutTime.getTime());
+			this.setCheckInTimeStringFormat(TimeFormatter.getInstance()
+					.getTime(time));
+		}
 	}
 
 	/**
@@ -204,8 +225,53 @@ public class CustomerDTO implements Serializable {
 	 * 
 	 * @return
 	 */
-	public List<Booking> getBookingList() {
+	public List<BookingDTO> getBookingList() {
 		return bookingList;
+	}
+
+	/**
+	 * 設定訂單列表
+	 * 
+	 * @param bookingList
+	 */
+	public void setBookingList(List<BookingDTO> bookingList) {
+		this.bookingList = bookingList;
+	}
+
+	/**
+	 * 取得進場時間 字串格式
+	 * 
+	 * @return
+	 */
+	public String getCheckInTimeStringFormat() {
+		return checkInTimeStringFormat;
+	}
+
+	/**
+	 * 設定進場時間 字串格式
+	 * 
+	 * @param checkInTimeStringFormat
+	 */
+	public void setCheckInTimeStringFormat(String checkInTimeStringFormat) {
+		this.checkInTimeStringFormat = checkInTimeStringFormat;
+	}
+
+	/**
+	 * 取得出場時間 字串格式
+	 * 
+	 * @return
+	 */
+	public String getCheckOutTimeStringFormat() {
+		return checkOutTimeStringFormat;
+	}
+
+	/**
+	 * 設定出場時間 字串格式
+	 * 
+	 * @param checkOutTimeStringFormat
+	 */
+	public void setCheckOutTimeStringFormat(String checkOutTimeStringFormat) {
+		this.checkOutTimeStringFormat = checkOutTimeStringFormat;
 	}
 
 	@Override

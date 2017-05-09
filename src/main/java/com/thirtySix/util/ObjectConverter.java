@@ -9,6 +9,7 @@ import org.springframework.stereotype.Component;
 import com.thirtySix.Core.Buffer;
 import com.thirtySix.dto.BookingDTO;
 import com.thirtySix.dto.CustomerDTO;
+import com.thirtySix.dto.OrderDTO;
 import com.thirtySix.dto.SeatMapDTO;
 import com.thirtySix.dto.SeatPositionDTO;
 import com.thirtySix.po.Booking;
@@ -38,11 +39,11 @@ public class ObjectConverter {
 		return po;
 	}
 
-	public Booking bookingDTOtoPO(BookingDTO dto, String itemId, int volume) {
+	public Booking bookingDTOtoPO(OrderDTO dto, String itemId, int volume) {
 		Booking po = new Booking();
 		Customer customer = buffer.getDiningCustomer().get(dto.getCustomerId());
 		po.setCustomer(customer);
-		po.setTime(dto.getTime());
+		po.setOrderTime(dto.getTime());
 		Item item = this.buffer.getItems().get(itemId);
 		po.setItem(item);
 		po.setVolume(volume);
@@ -69,7 +70,7 @@ public class ObjectConverter {
 
 		for (SeatPositionDTO dto : dtos) {
 			SeatPosition po = new SeatPosition();
-			
+
 			po.setSeatMap(mapPO);
 			po.setDisplayText(dto.getDisplayText());
 			po.setX(dto.getX());
@@ -80,4 +81,37 @@ public class ObjectConverter {
 		return poList;
 	}
 
+	public CustomerDTO customerPOtoDTO(Customer po) {
+		CustomerDTO dto = new CustomerDTO();
+
+		dto.setCustomerID(po.getCustomerID());
+		dto.setCustomerName(po.getCustomerName());
+		dto.setPeopleCount(po.getPeopleCount());
+		dto.setTableNumber(po.getTableNumber());
+		dto.setRemark(po.getRemark());
+		dto.setPhoneNumber(po.getPhoneNumber());
+		dto.setCheckInTime(po.getCheckInTime());
+		dto.setCheckOutTime(po.getCheckOutTime());
+
+		List<BookingDTO> dtoList = new ArrayList<BookingDTO>();
+		for (Booking bookingPO : po.getBookingList()) {
+			dtoList.add(bookingPOtoDTO(bookingPO));
+		}
+		dto.setBookingList(dtoList);
+
+		return dto;
+	}
+
+	public BookingDTO bookingPOtoDTO(Booking po) {
+		BookingDTO dto = new BookingDTO();
+
+		dto.setBookingID(po.getBookingID());
+		dto.setOrderTime(po.getOrderTime());
+		dto.setDeliveryTime(po.getDeliveryTime());
+		dto.setVolume(po.getVolume());
+		dto.setItem(po.getItem());
+		dto.setIsSend(po.getIsSend());
+		
+		return dto;
+	}
 }

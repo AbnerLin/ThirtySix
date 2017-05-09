@@ -33,9 +33,9 @@ public class Buffer {
 
 	/** 菜單(分類)<String, ItemClass> */
 	private Map<String, ItemClass> itemMenuBuffer = new HashMap<String, ItemClass>();
-	/** 菜單  <String, Item> */
+	/** 菜單 <String, Item> */
 	private Map<String, Item> itemBuffer = new HashMap<String, Item>();
-	
+
 	@PostConstruct
 	public void init() {
 
@@ -59,7 +59,7 @@ public class Buffer {
 
 			for (Item item : itemClass.getItemList()) {
 				this.itemBuffer.put(item.getItemID(), item);
-				
+
 				logger.info("菜色編號：" + item.getItemID() + " 名稱："
 						+ item.getName());
 			}
@@ -76,10 +76,11 @@ public class Buffer {
 		int count = 0;
 		for (Customer customer : diningCustomerList) {
 			String id = customer.getCustomerID();
-			
+
 			Date date = new Date(customer.getCheckInTime().getTime());
-			customer.setCheckInTimeStringFormat(TimeFormatter.getInstance().getTime(date));
-			
+			customer.setCheckInTimeStringFormat(TimeFormatter.getInstance()
+					.getTime(date));
+
 			this.diningCustomerBuffer.put(id, customer);
 			count++;
 			logger.info("顧客編號" + id + " 進場時間" + customer.getCheckInTime());
@@ -104,7 +105,7 @@ public class Buffer {
 	public Map<String, ItemClass> getMenu() {
 		return this.itemMenuBuffer;
 	}
-	
+
 	/**
 	 * 取得項目列表
 	 * 
@@ -113,7 +114,7 @@ public class Buffer {
 	public Map<String, Item> getItems() {
 		return this.itemBuffer;
 	}
-
+	
 	/**
 	 * 取得使用中桌號
 	 * 
@@ -128,7 +129,7 @@ public class Buffer {
 			Map.Entry pair = (Map.Entry) iter.next();
 			Customer customer = (Customer) pair.getValue();
 			String tableNumber = customer.getTableNumber();
-			
+
 			table.add(tableNumber);
 		}
 

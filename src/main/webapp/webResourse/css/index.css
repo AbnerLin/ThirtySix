@@ -38,7 +38,7 @@ input[type=number]::-webkit-inner-spin-button, input[type=number]::-webkit-outer
 	margin: auto;
 }
 
-.table {
+.tableSeat {
 	background-repeat: no-repeat;
 	width: 64px;
 	height: 64px;

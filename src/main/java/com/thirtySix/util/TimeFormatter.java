@@ -4,9 +4,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import org.apache.log4j.Logger;
-import org.springframework.stereotype.Component;
 
-@Component
 public class TimeFormatter {
 
 	private Logger logger = Logger.getLogger(this.getClass());

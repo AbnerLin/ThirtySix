@@ -2,85 +2,230 @@ package com.thirtySix.dto;
 
 import java.io.Serializable;
 import java.sql.Timestamp;
-import java.util.Calendar;
-import java.util.List;
+import java.util.Date;
+
+import com.thirtySix.po.Customer;
+import com.thirtySix.po.Item;
+import com.thirtySix.util.TimeFormatter;
 
 public class BookingDTO implements Serializable {
 
-	private static final long serialVersionUID = 6147911624233901739L;
+	private static final long serialVersionUID = -3673877985938233369L;
 
 	/**
-	 * 顧客編號
+	 * 訂單編號
 	 */
-	private String customerId;
+	private String bookingID;
 
 	/**
 	 * 訂單時間
 	 */
-	private Timestamp time;
+	private Timestamp orderTime;
 
 	/**
-	 * 項目清單
+	 * 訂單時間 字串格式
 	 */
-	private List<ItemDTO> itemList;
-
-	public BookingDTO() {
-		Calendar now = Calendar.getInstance();
-		this.time = new Timestamp(now.getTimeInMillis());
-	}
+	private String orderTimeStringFormat;
 
 	/**
-	 * 取得顧客編號
+	 * 出貨時間
+	 */
+	private Timestamp deliveryTime;
+
+	/**
+	 * 出貨時間 字串格式
+	 */
+	private String deliveryTimeStringFormat;
+
+	/**
+	 * 顧客資訊
+	 */
+	private Customer customer;
+
+	/**
+	 * 項目資訊
+	 */
+	private Item item;
+
+	/**
+	 * 項目 量
+	 */
+	private int volume;
+
+	/**
+	 * 是否已出餐(1:出餐, 0:未出餐)
+	 */
+	private int isSend = 0;
+
+	/**
+	 * 設定訂單編號
+	 * 
+	 * @param bookingID
+	 */
+	public void setBookingID(String bookingID) {
+		this.bookingID = bookingID;
+	}
+	
+	/**
+	 * 取得訂單編號
 	 * 
 	 * @return
 	 */
-	public String getCustomerId() {
-		return customerId;
+	public String getBookingID() {
+		return bookingID;
 	}
 
 	/**
-	 * 設定顧客編號
-	 * 
-	 * @param customerId
-	 */
-	public void setCustomerId(String customerId) {
-		this.customerId = customerId;
-	}
-
-	/**
-	 * 取得時間
+	 * 取得下單時間
 	 * 
 	 * @return
 	 */
-	public Timestamp getTime() {
-		return time;
+	public Timestamp getOrderTime() {
+		return orderTime;
 	}
 
 	/**
-	 * 設定時間
+	 * 設定下單時間
 	 * 
-	 * @param time
+	 * @param orderTime
 	 */
-	public void setTime(Timestamp time) {
-		this.time = time;
+	public void setOrderTime(Timestamp orderTime) {
+		this.orderTime = orderTime;
+
+		Date time = new Date(orderTime.getTime());
+		this.setOrderTimeStringFormat(TimeFormatter.getInstance().getTime(time));
 	}
 
 	/**
-	 * 取得項目列表
+	 * 取得出貨時間
 	 * 
 	 * @return
 	 */
-	public List<ItemDTO> getItemList() {
-		return itemList;
+	public Timestamp getDeliveryTime() {
+		return deliveryTime;
 	}
 
 	/**
-	 * 設定項目列表
+	 * 設定出貨時間
 	 * 
-	 * @param itemList
+	 * @param deliveryTime
 	 */
-	public void setItemList(List<ItemDTO> itemList) {
-		this.itemList = itemList;
+	public void setDeliveryTime(Timestamp deliveryTime) {
+		this.deliveryTime = deliveryTime;
+
+		if (deliveryTime != null) {
+			Date time = new Date(deliveryTime.getTime());
+			this.setDeliveryTimeStringFormat(TimeFormatter.getInstance()
+					.getTime(time));
+		}
+	}
+
+	/**
+	 * 取得顧客資訊
+	 * 
+	 * @return
+	 */
+	public Customer getCustomer() {
+		return customer;
+	}
+
+	/**
+	 * 設定顧客資訊
+	 * 
+	 * @param customer
+	 */
+	public void setCustomer(Customer customer) {
+		this.customer = customer;
+	}
+
+	/**
+	 * 取得項目資訊
+	 * 
+	 * @return
+	 */
+	public Item getItem() {
+		return item;
+	}
+
+	/**
+	 * 設定項目資訊
+	 * 
+	 * @param item
+	 */
+	public void setItem(Item item) {
+		this.item = item;
+	}
+
+	/**
+	 * 取得 量
+	 * 
+	 * @return
+	 */
+	public int getVolume() {
+		return volume;
+	}
+
+	/**
+	 * 設定 量
+	 * 
+	 * @param volume
+	 */
+	public void setVolume(int volume) {
+		this.volume = volume;
+	}
+
+	/**
+	 * 取得是否已出餐
+	 * 
+	 * @return
+	 */
+	public int getIsSend() {
+		return isSend;
+	}
+
+	/**
+	 * 設定是否已出餐(1:出餐, 0:未出餐)
+	 * 
+	 * @param isSend
+	 */
+	public void setIsSend(int isSend) {
+		this.isSend = isSend;
+	}
+
+	/**
+	 * 取得訂單時間 字串格式
+	 * 
+	 * @return
+	 */
+	public String getOrderTimeStringFormat() {
+		return orderTimeStringFormat;
+	}
+
+	/**
+	 * 設定訂單時間 字串格式
+	 * 
+	 * @param orderTimeStringFormat
+	 */
+	public void setOrderTimeStringFormat(String orderTimeStringFormat) {
+		this.orderTimeStringFormat = orderTimeStringFormat;
+	}
+
+	/**
+	 * 取得出貨時間 字串格式
+	 * 
+	 * @return
+	 */
+	public String getDeliveryTimeStringFormat() {
+		return deliveryTimeStringFormat;
+	}
+
+	/**
+	 * 設定出貨時間 字串格式
+	 * 
+	 * @param deliveryTimeStringFormat
+	 */
+	public void setDeliveryTimeStringFormat(String deliveryTimeStringFormat) {
+		this.deliveryTimeStringFormat = deliveryTimeStringFormat;
 	}
 
 }

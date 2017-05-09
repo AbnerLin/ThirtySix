@@ -122,6 +122,15 @@ public class DBManager {
 	}
 	
 	/**
+	 * 更新訂單
+	 * 
+	 * @param po
+	 */
+	public void updateBooking(Booking po) {
+		bookingDAO.update(po);
+	}
+	
+	/**
 	 * 新增地圖擺設座標點位
 	 * 
 	 * @param poList

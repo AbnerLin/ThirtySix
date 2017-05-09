@@ -1,9 +1,13 @@
 package com.thirtySix.controller;
 
 import java.sql.Timestamp;
+import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -16,14 +20,13 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.servlet.ModelAndView;
 
 import com.thirtySix.Core.Buffer;
 import com.thirtySix.Core.DBManager;
 import com.thirtySix.dto.AjaxDTO;
-import com.thirtySix.dto.BookingDTO;
 import com.thirtySix.dto.CustomerDTO;
 import com.thirtySix.dto.ItemDTO;
+import com.thirtySix.dto.OrderDTO;
 import com.thirtySix.dto.SeatMapDTO;
 import com.thirtySix.po.Booking;
 import com.thirtySix.po.Customer;
@@ -49,12 +52,6 @@ public class IndexController {
 
 	private Logger logger = Logger.getLogger(this.getClass());
 
-	@RequestMapping(value = { "/1" })
-	public ModelAndView index(HttpServletRequest request,
-			HttpServletResponse response) {
-		return new ModelAndView("test");
-	}
-
 	/**
 	 * 取得用餐中顧客
 	 * 
@@ -62,14 +59,26 @@ public class IndexController {
 	 * @param response
 	 * @return
 	 */
+	@SuppressWarnings("rawtypes")
 	@ResponseBody
 	@RequestMapping(value = { "/getDiningCustomer" })
 	public AjaxDTO getDiningCustomer(HttpServletRequest request,
 			HttpServletResponse response) {
 		AjaxDTO result = new AjaxDTO();
 		Map<String, Customer> diningCustomer = buffer.getDiningCustomer();
+
+		Map<String, CustomerDTO> diningCustomerDTO = new HashMap<String, CustomerDTO>();
+		Iterator iter = diningCustomer.entrySet().iterator();
+		while (iter.hasNext()) {
+			Map.Entry pair = (Entry) iter.next();
+			String customerId = (String) pair.getKey();
+			Customer customerPO = (Customer) pair.getValue();
+			diningCustomerDTO.put(customerId,
+					objConverter.customerPOtoDTO(customerPO));
+		}
+
 		result.setStatusOK();
-		result.setData(diningCustomer);
+		result.setData(diningCustomerDTO);
 
 		return result;
 	}
@@ -103,10 +112,9 @@ public class IndexController {
 		bufferMap.put(po.getCustomerID(), po);
 
 		/** push socket to every client */
-		this.diningCustomerUpdate(bufferMap);
+		this.customerCheckInNotification(customerDTO.getTableNumber());
 
 		result.setStatusOK();
-		result.setData(po);
 		return result;
 	}
 
@@ -126,7 +134,7 @@ public class IndexController {
 
 		/** map save */
 		SeatMap mapPO = objConverter.seatMapDTOtoPO(seatMapDTO);
-		if (mapPO.getMapID().equals(""))
+		if (mapPO.getMapID() == null)
 			dbManager.insertSeatMap(mapPO);
 		else
 			dbManager.updateSeatMap(mapPO);
@@ -181,27 +189,81 @@ public class IndexController {
 		return result;
 	}
 
+	/**
+	 * 下單
+	 * 
+	 * @param request
+	 * @param response
+	 * @param bookingDTO
+	 * @return
+	 */
 	@ResponseBody
 	@RequestMapping(value = { "/sendOrder" }, consumes = "application/json", produces = "application/json")
 	private AjaxDTO sendOrder(HttpServletRequest request,
-			HttpServletResponse response, @RequestBody BookingDTO bookingDTO) {
+			HttpServletResponse response, @RequestBody OrderDTO orderDTO) {
 		AjaxDTO result = new AjaxDTO();
 
-		for (ItemDTO item : bookingDTO.getItemList()) {
-			Booking booking = objConverter.bookingDTOtoPO(bookingDTO,
+		for (ItemDTO item : orderDTO.getItemList()) {
+			Booking booking = objConverter.bookingDTOtoPO(orderDTO,
 					item.getItemId(), item.getVolume());
 
 			/** save to db */
 			dbManager.insertBooking(booking);
 
 			/** update buffer */
-			String customerId = bookingDTO.getCustomerId();
+			String customerId = orderDTO.getCustomerId();
 			Customer customer = buffer.getDiningCustomer().get(customerId);
 			customer.getBookingList().add(booking);
 
 			/** send to client */
-			this.diningCustomerUpdate(buffer.getDiningCustomer());
+			// this.diningCustomerUpdate();
+			this.customerInfoUpdateNotification(customer);
 		}
+
+		result.setStatusOK();
+		return result;
+	}
+
+	/**
+	 * 送餐
+	 * 
+	 * @return
+	 */
+	@SuppressWarnings("rawtypes")
+	@ResponseBody
+	@RequestMapping(value = { "/sendDishes" })
+	private AjaxDTO sendDishes(HttpServletRequest request,
+			HttpServletResponse response) {
+		AjaxDTO result = new AjaxDTO();
+
+		String bookingID = request.getParameter("bookingID").trim();
+		Map<String, Customer> diningCustomer = buffer.getDiningCustomer();
+		Customer customerData = null;
+		Iterator iter = diningCustomer.entrySet().iterator();
+		while (iter.hasNext()) {
+			Map.Entry pair = (Entry) iter.next();
+			Customer customer = (Customer) pair.getValue();
+			List<Booking> bookingList = customer.getBookingList();
+			for (Booking booking : bookingList) {
+				if (booking.getBookingID().equals(bookingID)) {
+					Calendar now = Calendar.getInstance();
+					Timestamp time = new Timestamp(now.getTimeInMillis());
+
+					/** update buffer */
+					booking.setDeliveryTime(time);
+					booking.setIsSend(1);
+
+					/** update db */
+					dbManager.updateBooking(booking);
+
+					customerData = customer;
+					break;
+				}
+			}
+		}
+		/** update dining customer */
+		// this.diningCustomerUpdate();
+		this.customerInfoUpdateNotification(customerData);
 
 		result.setStatusOK();
 		return result;
@@ -212,8 +274,53 @@ public class IndexController {
 	 * 
 	 * @return
 	 */
-	public void diningCustomerUpdate(Map<String, Customer> bufferMap) {
+	@SuppressWarnings("rawtypes")
+	public void diningCustomerUpdate() {
 		logger.info("用餐中顧客更新，發佈WebSocket");
-		this.messageTemplate.convertAndSend("/topic/customerUpdate", bufferMap);
+
+		Map<String, Customer> diningCustomer = buffer.getDiningCustomer();
+
+		Map<String, CustomerDTO> diningCustomerDTO = new HashMap<String, CustomerDTO>();
+		Iterator iter = diningCustomer.entrySet().iterator();
+		while (iter.hasNext()) {
+			Map.Entry pair = (Entry) iter.next();
+			String customerId = (String) pair.getKey();
+			Customer customerPO = (Customer) pair.getValue();
+			diningCustomerDTO.put(customerId,
+					objConverter.customerPOtoDTO(customerPO));
+		}
+
+		this.messageTemplate.convertAndSend("/topic/customerUpdate",
+				diningCustomerDTO);
+	}
+
+	/**
+	 * specify customer update.
+	 * 
+	 * @param customerId
+	 */
+	public void customerInfoUpdateNotification(Customer customer) {
+		this.messageTemplate.convertAndSend("/topic/specifyCustomerUpdate",
+				objConverter.customerPOtoDTO(customer));
+	}
+
+	/**
+	 * 進場
+	 * 
+	 * @param tableNumber
+	 */
+	public void customerCheckInNotification(String tableNumber) {
+		this.messageTemplate.convertAndSend("/topic/customerCheckIn",
+				tableNumber);
+	}
+	
+	/**
+	 * 出場
+	 * 
+	 * @param tableNumber
+	 */
+	public void customerCheckOutNotification(String tableNumber) {
+		this.messageTemplate.convertAndSend("/topic/customerCheckOut",
+				tableNumber);
 	}
 }
