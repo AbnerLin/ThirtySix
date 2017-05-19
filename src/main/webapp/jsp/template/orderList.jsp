@@ -1,7 +1,7 @@
 <%@page language="java" pageEncoding="UTF-8"%>
 
 <script id="orderListTableTemplate" type="text/html">
-	<tr>
+	<tr isSend="{{= isSend}}">
 		<td class="col-md-3">{{= itemName}}</td>
 		<td class="col-md-3">{{= orderTime}}</td>
 		<td class="col-md-3">{{= deliveryTime}}</td>

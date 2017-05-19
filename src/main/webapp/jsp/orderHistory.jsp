@@ -14,7 +14,7 @@
 				<th class="text-center">下單時間</th>
 				<th class="text-center">出餐時間</th>
 				<th class="text-center">數量</th>
-				<th class="text-center">動作</th>
+				<th class="text-center"></th>
 			</tr>
 		</thead>
 		<tbody id="orderListTable">

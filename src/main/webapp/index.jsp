@@ -103,18 +103,17 @@
 				</div>
 
 				<div class="row">
-					<div class="col-md-2 col-sm-2">
-						<img id="tableIconSM"
-							src="<c:url value="images/table-mini.png" />"> 使用中
-					</div>
-					<div class="col-md-2 col-sm-2">
-						<img id="tableIconSM"
-							src="<c:url value="images/empty-table-mini.png" />"> 空桌
-					</div>
-				</div>
-
-				<div class="row">
 					<div id="seatMap">
+						<div class="row">
+							<div class="col-md-2 col-sm-6 col-6">
+								<img id="tableIconSM"
+									src="<c:url value="images/table-mini.png" />"> 使用中
+							</div>
+							<div class="col-md-2 col-sm-6 col-6">
+								<img id="tableIconSM"
+									src="<c:url value="images/empty-table-mini.png" />"> 空桌
+							</div>
+						</div>
 						<input id="mapLocation" type="hidden" value=""> <input
 							id="mapID" type="hidden" value="">
 						<div id="garbageBlock" class="glyphicon glyphicon-trash"></div>

@@ -22,7 +22,7 @@ function getDiningCustomer() {
 		success : function(response, status, jqXHR) {
 			var data = response.data;
 			diningCustomer = data;
-			
+
 			/** init seatMap */
 			initSeatMap(data);
 
@@ -36,10 +36,50 @@ function getDiningCustomer() {
  * 
  * @param customerData
  */
-function checkOut(tableNumber) {
+function checkOut() {
+	// TODO
+	var customerID = $("#orderCustomerId").val();
+	var tableNumber = $("#orderTableNumber").val();
+
+	alertify.confirm("確定結帳？", function(e) {
+		if (e) {
+			var action = "customerCheckOut";
+			$.ajax({
+				url : appUrl + action,
+				async : true,
+				method : "POST",
+				data : {
+					customerID : customerID,
+					tableNumber : tableNumber
+				},
+				success : function(response, status, jqXHR) {
+					alertify.success("checkOut 成功！");
+				}
+			});
+		}
+	});
+}
+
+/**
+ * init seat icon after checkout. update buffer.
+ */
+function resetSeat(info) {
+	var tableNumber = info.tableNumber;
+	var customerID = info.customerID;
 	$("#" + tableNumber).removeClass("diningTable");
 	$("#" + tableNumber).addClass("emptyTable");
 	$("#" + tableNumber).find(".seatMapBadge").remove();
+	
+	alertify.success(tableNumber + "結帳出場！");
+	
+//	diningCustomer.remove(customerID);
+//	console.log(JSON.stringify(diningCustomer));
+//	console.log(customerID);
+//	console.log(diningCustomer[customerID]);
+	
+	delete diningCustomer[customerID];
+	
+	console.log(JSON.stringify(diningCustomer));
 }
 
 /**
@@ -50,13 +90,13 @@ function checkOut(tableNumber) {
 function checkIn(tableNumber) {
 	$("#" + tableNumber).removeClass("emptyTable");
 	$("#" + tableNumber).addClass("diningTable");
-	
+
 	alertify.success("桌號：" + tableNumber + " 客人進場。");
 }
 
 /** 更新座位表 */
 function updateSeatMapBadge(customerData) {
-	
+
 	/** add badge(unSend) */
 	var id = customerData.tableNumber.trim();
 
@@ -204,8 +244,6 @@ function subscribeWebSocket() {
 			var jsonObj = JSON.parse(data.body);
 			diningCustomer = jsonObj;
 
-			/** update seatMap */
-			// updateSeatMap(jsonObj);
 		});
 
 		stompClient.subscribe('/topic/specifyCustomerUpdate', function(data) {
@@ -218,7 +256,7 @@ function subscribeWebSocket() {
 			/** update modal display data */
 			if (modalShowUpCacheCustomerID == customerData.customerID)
 				setServiceInfo(customerData);
-			
+
 			/** update buffer */
 			diningCustomer[customerData.customerID] = customerData;
 		});
@@ -228,7 +266,12 @@ function subscribeWebSocket() {
 		});
 
 		stompClient.subscribe('/topic/customerCheckOut', function(data) {
-			checkOut(data.body);
+			// checkOut(data.body);
+
+			// TODO
+			resetSeat(JSON.parse(data.body));
+//			console.log(JSON.stringify(data));
+//			alertify.success("checkOut 成功!" + JSON.stringify(data));
 		});
 
 		/** server time listener */
@@ -515,6 +558,8 @@ function tableClickHandler() {
 
 		$("#serviceModal").modal("show");
 
+		$("#service-orderHistory").removeClass("in");
+
 		/** set value into service modal */
 		setServiceInfo(diningCustomer[customerId]);
 	} else {
@@ -533,8 +578,16 @@ function setServiceInfo(customerData) {
 
 	/** set value for order history. */
 	var orderHistory = customerData.bookingList;
+
+	var checkOutAmount = 0;
 	var dataArray = [];
 	$.each(orderHistory, function(key, value) {
+		/** calc checkOutAmount */
+		if (value.isSend == 1) {
+			checkOutAmount += (value.volume * value.item.price);
+		}
+
+		/** build order history list */
 		dataArray.push({
 			itemName : value.item.name,
 			orderTime : value.orderTimeStringFormat,
@@ -551,11 +604,19 @@ function setServiceInfo(customerData) {
 				else
 					return "none;";
 			},
+			isSend : value.isSend,
 			bookingID : value.bookingID,
 			customerID : key
 		});
 	});
 	$("#orderListTableTemplate").tmpl(dataArray).appendTo("#orderListTable");
+	$(".service-checkout-amount").html(checkOutAmount);
+
+	/** hide isSend delivery */
+	$("#orderListTable").find("tr").each(function() {
+		if ($(this).attr("isSend") == 1)
+			$(this).hide();
+	});
 
 	/** set value for customer info */
 	$(".service-customerName").html(customerData.customerName);
@@ -563,6 +624,27 @@ function setServiceInfo(customerData) {
 	$(".service-tableNumber").html(customerData.tableNumber);
 	$(".service-checkInTime").html(customerData.checkInTimeStringFormat);
 	$(".service-customerPhone").html(customerData.phoneNumber);
+}
+
+/**
+ * show whether the dishes was send.
+ * 
+ * @param isDelivery
+ */
+function displayOrderList(isDelivery) {
+	var isSend;
+	if (isDelivery == true) {
+		isSend = 1;
+	} else {
+		isSend = 0;
+	}
+
+	$("#orderListTable").find("tr").each(function() {
+		if ($(this).attr("isSend") == isSend)
+			$(this).show();
+		else
+			$(this).hide();
+	});
 }
 
 /** lock canvas */

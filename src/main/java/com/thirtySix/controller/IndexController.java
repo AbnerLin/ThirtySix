@@ -24,6 +24,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.thirtySix.Core.Buffer;
 import com.thirtySix.Core.DBManager;
 import com.thirtySix.dto.AjaxDTO;
+import com.thirtySix.dto.CheckOutDTO;
 import com.thirtySix.dto.CustomerDTO;
 import com.thirtySix.dto.ItemDTO;
 import com.thirtySix.dto.OrderDTO;
@@ -84,6 +85,41 @@ public class IndexController {
 	}
 
 	/**
+	 * 顧客check out
+	 * 
+	 * @param request
+	 * @param response
+	 * @param checkOutDto
+	 * @return
+	 */
+	@ResponseBody
+	@RequestMapping(value = { "/customerCheckOut" })
+	public AjaxDTO customerCheckOut(HttpServletRequest request,
+			HttpServletResponse response,
+			@ModelAttribute CheckOutDTO checkOutDto) {
+		AjaxDTO result = new AjaxDTO();
+
+		Customer customer = this.buffer.getDiningCustomer().get(checkOutDto.getCustomerID());
+		
+		Calendar nowCalendar = Calendar.getInstance();
+		Timestamp now = new Timestamp(nowCalendar.getTimeInMillis());
+		customer.setCheckOutTime(now);
+		
+		/** update db */
+		this.dbManager.updateCustomer(customer);
+		
+		/** update buffer */
+		this.buffer.getDiningCustomer().remove(customer.getCustomerID());
+		
+		result.setStatusOK();
+		
+		/** push socket to every client */
+		customerCheckOutNotification(checkOutDto);
+		
+		return result;
+	}
+
+	/**
 	 * 顧客check in
 	 * 
 	 * @param request
@@ -113,6 +149,7 @@ public class IndexController {
 
 		/** push socket to every client */
 		this.customerCheckInNotification(customerDTO.getTableNumber());
+		this.customerInfoUpdateNotification(po);
 
 		result.setStatusOK();
 		return result;
@@ -313,14 +350,14 @@ public class IndexController {
 		this.messageTemplate.convertAndSend("/topic/customerCheckIn",
 				tableNumber);
 	}
-	
+
 	/**
 	 * 出場
 	 * 
 	 * @param tableNumber
 	 */
-	public void customerCheckOutNotification(String tableNumber) {
+	public void customerCheckOutNotification(CheckOutDTO checkOutDto) {
 		this.messageTemplate.convertAndSend("/topic/customerCheckOut",
-				tableNumber);
+				checkOutDto);
 	}
 }

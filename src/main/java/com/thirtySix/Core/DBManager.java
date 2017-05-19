@@ -84,6 +84,15 @@ public class DBManager {
 	public Serializable insertCustomer(Customer po) {
 		return customerDAO.insert(po);
 	}
+	
+	/**
+	 * 更新顧客資訊(check-out)
+	 * 
+	 * @param po
+	 */
+	public void updateCustomer(Customer po) {
+		customerDAO.update(po);
+	}
 
 	/**
 	 * 取得所有項目種類
