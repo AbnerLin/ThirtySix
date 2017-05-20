@@ -18,6 +18,7 @@
 		<property name="driverUrl">
 			<value>jdbc:postgresql://localhost/thirtysix</value>
 		</property>
+		<!-- login info for testing. -->
 		<property name="user" value="admin36" />
 		<property name="password" value="admin36@DB" />
 		<property name="alias" value="proxoolPool" />

@@ -24,12 +24,12 @@ import com.thirtySix.po.Item;
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = TestConfig.class)
 public class DaoTest {
-//
-//	@Autowired
-//	private CustomerDAO customerDAO = null;
-//
-//	@Autowired
-//	private ItemDAO itemDAO = null;
+
+	@Autowired
+	private CustomerDAO customerDAO = null;
+
+	@Autowired
+	private ItemDAO itemDAO = null;
 
 	private Customer customer = null;
 
@@ -49,18 +49,18 @@ public class DaoTest {
 	}
 
 	@Test
-//	@Rollback(true)
-//	@Transactional
+	@Rollback(true)
+	@Transactional
 	public void testCustomerDAO() {
-//		customerDAO.insert(customer);
-//
-//		assertNotNull(customer.getCustomerID());
-//
-//		List<Customer> customerList = customerDAO.getAll();
-//
-//		assertThat(customerList, CoreMatchers.hasItem(customer));
+		customerDAO.insert(customer);
+
+		assertNotNull(customer.getCustomerID());
+
+		List<Customer> customerList = customerDAO.getAll();
+
+		assertThat(customerList, CoreMatchers.hasItem(customer));
 		
-		assertTrue(true);
+//		assertTrue(true);
 	}
 
 	public void testItemDAO() {

@@ -6,3 +6,8 @@ notifications:
         - shaoyang0805@gmail.com
     on_success: always
     on_failure: always
+serivce:
+    - postgresql
+before_script:
+    - psql -c "CREATE DATABASE thirtysix;" -U postgres
+    - psql -c "CREATE USER admin36 WITH PASSWORD 'admin36@DB';" -U postgres
