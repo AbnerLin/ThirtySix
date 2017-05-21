@@ -37,7 +37,6 @@ function getDiningCustomer() {
  * @param customerData
  */
 function checkOut() {
-	// TODO
 	var customerID = $("#orderCustomerId").val();
 	var tableNumber = $("#orderTableNumber").val();
 
@@ -70,16 +69,12 @@ function resetSeat(info) {
 	$("#" + tableNumber).addClass("emptyTable");
 	$("#" + tableNumber).find(".seatMapBadge").remove();
 	
-	alertify.success(tableNumber + "結帳出場！");
-	
-//	diningCustomer.remove(customerID);
-//	console.log(JSON.stringify(diningCustomer));
-//	console.log(customerID);
-//	console.log(diningCustomer[customerID]);
-	
+	if(modalShowUpCacheCustomerID == customerID)
+		$("#serviceModal").modal("hide");
+
+	alertify.success("桌號" + tableNumber + "結帳出場！");
+
 	delete diningCustomer[customerID];
-	
-	console.log(JSON.stringify(diningCustomer));
 }
 
 /**
@@ -266,12 +261,7 @@ function subscribeWebSocket() {
 		});
 
 		stompClient.subscribe('/topic/customerCheckOut', function(data) {
-			// checkOut(data.body);
-
-			// TODO
 			resetSeat(JSON.parse(data.body));
-//			console.log(JSON.stringify(data));
-//			alertify.success("checkOut 成功!" + JSON.stringify(data));
 		});
 
 		/** server time listener */

@@ -99,23 +99,24 @@ public class IndexController {
 			@ModelAttribute CheckOutDTO checkOutDto) {
 		AjaxDTO result = new AjaxDTO();
 
-		Customer customer = this.buffer.getDiningCustomer().get(checkOutDto.getCustomerID());
-		
+		Customer customer = this.buffer.getDiningCustomer().get(
+				checkOutDto.getCustomerID());
+
 		Calendar nowCalendar = Calendar.getInstance();
 		Timestamp now = new Timestamp(nowCalendar.getTimeInMillis());
 		customer.setCheckOutTime(now);
-		
+
 		/** update db */
 		this.dbManager.updateCustomer(customer);
-		
+
 		/** update buffer */
 		this.buffer.getDiningCustomer().remove(customer.getCustomerID());
-		
+
 		result.setStatusOK();
-		
+
 		/** push socket to every client */
 		customerCheckOutNotification(checkOutDto);
-		
+
 		return result;
 	}
 

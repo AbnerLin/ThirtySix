@@ -59,8 +59,6 @@ public class DaoTest {
 		List<Customer> customerList = customerDAO.getAll();
 
 		assertThat(customerList, CoreMatchers.hasItem(customer));
-		
-//		assertTrue(true);
 	}
 
 	public void testItemDAO() {
