@@ -25,6 +25,11 @@ public class SeatPositionDTO {
 	private String displayText;
 
 	/**
+	 * 裝飾類別
+	 */
+	private String furnishClassID;
+
+	/**
 	 * 地圖資訊
 	 */
 	private SeatMap seatMap;
@@ -118,4 +123,23 @@ public class SeatPositionDTO {
 	public void setSeatMap(SeatMap seatMap) {
 		this.seatMap = seatMap;
 	}
+
+	/**
+	 * 取得裝飾類別
+	 * 
+	 * @return
+	 */
+	public String getFurnishClassID() {
+		return furnishClassID;
+	}
+
+	/**
+	 * 設定裝飾類別
+	 * 
+	 * @param furnishClass
+	 */
+	public void setFurnishClassID(String furnishClassID) {
+		this.furnishClassID = furnishClassID;
+	}
+
 }

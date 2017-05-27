@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.thirtySix.Core.Buffer;
+import com.thirtySix.Core.DBManager;
 import com.thirtySix.dto.BookingDTO;
 import com.thirtySix.dto.CustomerDTO;
 import com.thirtySix.dto.OrderDTO;
@@ -14,6 +15,7 @@ import com.thirtySix.dto.SeatMapDTO;
 import com.thirtySix.dto.SeatPositionDTO;
 import com.thirtySix.po.Booking;
 import com.thirtySix.po.Customer;
+import com.thirtySix.po.FurnishClass;
 import com.thirtySix.po.Item;
 import com.thirtySix.po.SeatMap;
 import com.thirtySix.po.SeatPosition;
@@ -23,6 +25,9 @@ public class ObjectConverter {
 
 	@Autowired
 	private Buffer buffer = null;
+	
+	@Autowired
+	private DBManager dbManager = null;
 
 	public Customer customerDTOtoPO(CustomerDTO dto) {
 		Customer po = new Customer();
@@ -72,9 +77,14 @@ public class ObjectConverter {
 			SeatPosition po = new SeatPosition();
 
 			po.setSeatMap(mapPO);
-			po.setDisplayText(dto.getDisplayText());
 			po.setX(dto.getX());
 			po.setY(dto.getY());
+			
+			/** get furnish class */
+			String furnishClassID = dto.getFurnishClassID();
+			FurnishClass furnishClass = dbManager.getFurnishClass(furnishClassID);
+			po.setFurnishClass(furnishClass);
+			
 			poList.add(po);
 		}
 

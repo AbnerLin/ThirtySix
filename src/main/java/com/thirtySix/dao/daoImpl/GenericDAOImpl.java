@@ -43,4 +43,9 @@ public class GenericDAOImpl<T> extends HibernateDaoSupport implements
 		return this.getHibernateTemplate().loadAll(this.persistentClass);
 	}
 
+	@Override
+	public T get(String id) {
+		return this.getHibernateTemplate().get(persistentClass, id);
+	}
+
 }

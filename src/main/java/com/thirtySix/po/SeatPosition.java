@@ -38,10 +38,10 @@ public class SeatPosition {
 	private int y;
 
 	/**
-	 * 名稱
+	 * 裝飾類別
 	 */
-	@Column(name = "DISPLAYTEXT")
-	private String displayText;
+	@JoinColumn(name = "FURNISHCLASS", referencedColumnName = "CLASSID", nullable = false)
+	private FurnishClass furnishClass;
 
 	/**
 	 * 地圖資訊
@@ -106,24 +106,6 @@ public class SeatPosition {
 	}
 
 	/**
-	 * 取得名稱
-	 * 
-	 * @return
-	 */
-	public String getDisplayText() {
-		return displayText;
-	}
-
-	/**
-	 * 設定名稱
-	 * 
-	 * @param text
-	 */
-	public void setDisplayText(String displayText) {
-		this.displayText = displayText;
-	}
-
-	/**
 	 * 取得地圖資訊
 	 * 
 	 * @return
@@ -139,6 +121,24 @@ public class SeatPosition {
 	 */
 	public void setSeatMap(SeatMap seatMap) {
 		this.seatMap = seatMap;
+	}
+
+	/**
+	 * 取得裝飾類別
+	 * 
+	 * @return
+	 */
+	public FurnishClass getFurnishClass() {
+		return furnishClass;
+	}
+
+	/**
+	 * 設定裝飾類別
+	 * 
+	 * @param furnishClass
+	 */
+	public void setFurnishClass(FurnishClass furnishClass) {
+		this.furnishClass = furnishClass;
 	}
 
 }

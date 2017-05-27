@@ -9,12 +9,14 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.thirtySix.dao.BookingDAO;
 import com.thirtySix.dao.CustomerDAO;
+import com.thirtySix.dao.FurnishClassDAO;
 import com.thirtySix.dao.ItemClassDAO;
 import com.thirtySix.dao.ItemDAO;
 import com.thirtySix.dao.SeatMapDAO;
 import com.thirtySix.dao.SeatPositionDAO;
 import com.thirtySix.po.Booking;
 import com.thirtySix.po.Customer;
+import com.thirtySix.po.FurnishClass;
 import com.thirtySix.po.Item;
 import com.thirtySix.po.ItemClass;
 import com.thirtySix.po.SeatMap;
@@ -32,16 +34,29 @@ public class DBManager {
 
 	@Autowired
 	private ItemDAO itemDAO = null;
-	
+
 	@Autowired
 	private BookingDAO bookingDAO = null;
-	
+
 	@Autowired
 	private SeatMapDAO seatMapDAO = null;
 
 	@Autowired
 	private SeatPositionDAO seatPositionDAO = null;
-	
+
+	@Autowired
+	private FurnishClassDAO furnishClassDAO = null;
+
+	/**
+	 * 取得該ID的class entity
+	 * 
+	 * @param classID
+	 * @return
+	 */
+	public FurnishClass getFurnishClass(String classID) {
+		return furnishClassDAO.get(classID);
+	}
+
 	/**
 	 * 新增座位表
 	 * 
@@ -50,7 +65,7 @@ public class DBManager {
 	public void insertSeatMap(SeatMap po) {
 		seatMapDAO.insert(po);
 	}
-	
+
 	/**
 	 * 更新座位表
 	 * 
@@ -59,7 +74,7 @@ public class DBManager {
 	public void updateSeatMap(SeatMap po) {
 		seatMapDAO.update(po);
 	}
-	
+
 	/**
 	 * 取得座位表
 	 * 
@@ -68,7 +83,7 @@ public class DBManager {
 	public List<SeatMap> getSeatMap() {
 		return seatMapDAO.getAll();
 	}
-	
+
 	/**
 	 * 取得用餐中顧客
 	 * 
@@ -84,7 +99,7 @@ public class DBManager {
 	public Serializable insertCustomer(Customer po) {
 		return customerDAO.insert(po);
 	}
-	
+
 	/**
 	 * 更新顧客資訊(check-out)
 	 * 
@@ -120,7 +135,7 @@ public class DBManager {
 	public void insertItem(Item po) {
 		itemDAO.insert(po);
 	}
-	
+
 	/**
 	 * 新增訂單
 	 * 
@@ -129,7 +144,7 @@ public class DBManager {
 	public void insertBooking(Booking po) {
 		bookingDAO.insert(po);
 	}
-	
+
 	/**
 	 * 更新訂單
 	 * 
@@ -138,7 +153,7 @@ public class DBManager {
 	public void updateBooking(Booking po) {
 		bookingDAO.update(po);
 	}
-	
+
 	/**
 	 * 新增地圖擺設座標點位
 	 * 
@@ -147,9 +162,9 @@ public class DBManager {
 	public void insertSeatPosition(SeatMap map, List<SeatPosition> poList) {
 		/** delete all */
 		seatPositionDAO.deleteByMapID(map.getMapID());
-		
+
 		/** insert */
-		for(SeatPosition po : poList) {
+		for (SeatPosition po : poList) {
 			seatPositionDAO.insert(po);
 		}
 	}

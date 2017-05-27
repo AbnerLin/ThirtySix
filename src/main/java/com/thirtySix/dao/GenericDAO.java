@@ -6,6 +6,14 @@ import java.util.List;
 public interface GenericDAO<T> {
 
 	/**
+	 * SELECT by ID
+	 * 
+	 * @param id
+	 * @return
+	 */
+	public T get(String id);
+	
+	/**
 	 * SELECT ALL
 	 * 
 	 * @return
