@@ -10,7 +10,7 @@ import org.springframework.stereotype.Repository;
 import com.thirtySix.model.Customer;
 import com.thirtySix.repository.CustomerDAO;
 
-@Repository
+//@Repository
 public class CustomerDAOImpl extends GenericDAOImpl<Customer> implements
 		CustomerDAO {
 

@@ -7,7 +7,7 @@ import org.springframework.stereotype.Repository;
 import com.thirtySix.model.FurnishClass;
 import com.thirtySix.repository.FurnishClassDAO;
 
-@Repository
+//@Repository
 public class FurnishDAOImpl extends GenericDAOImpl<FurnishClass> implements
 		FurnishClassDAO {
 

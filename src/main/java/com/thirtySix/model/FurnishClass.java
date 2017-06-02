@@ -1,9 +1,13 @@
 package com.thirtySix.model;
 
+import java.util.List;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import org.hibernate.annotations.GenericGenerator;
@@ -32,6 +36,12 @@ public class FurnishClass {
 	 */
 	@Column(name = "IMAGEPATH")
 	private String imagePath;
+
+	/**
+	 * 座位清單
+	 */
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "furnishClass")
+	private List<SeatPosition> seatList;
 
 	/**
 	 * 取得類別編號
@@ -85,6 +95,24 @@ public class FurnishClass {
 	 */
 	public void setDisplayText(String displayText) {
 		this.displayText = displayText;
+	}
+
+	/**
+	 * 取得屬於該類別的項目
+	 * 
+	 * @return
+	 */
+	public List<SeatPosition> getSeatList() {
+		return seatList;
+	}
+
+	/**
+	 * 設定該類別的所屬項目
+	 * 
+	 * @param seatList
+	 */
+	public void setSeatList(List<SeatPosition> seatList) {
+		this.seatList = seatList;
 	}
 
 }

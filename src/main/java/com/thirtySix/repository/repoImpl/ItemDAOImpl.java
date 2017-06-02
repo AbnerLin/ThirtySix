@@ -11,7 +11,7 @@ import org.springframework.stereotype.Repository;
 import com.thirtySix.model.Item;
 import com.thirtySix.repository.ItemDAO;
 
-@Repository
+//@Repository
 public class ItemDAOImpl extends GenericDAOImpl<Item> implements ItemDAO {
 
 	public ItemDAOImpl() {

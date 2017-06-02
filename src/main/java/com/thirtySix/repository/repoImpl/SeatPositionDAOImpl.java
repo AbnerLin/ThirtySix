@@ -6,7 +6,7 @@ import org.springframework.stereotype.Repository;
 import com.thirtySix.model.SeatPosition;
 import com.thirtySix.repository.SeatPositionDAO;
 
-@Repository
+//@Repository
 public class SeatPositionDAOImpl extends GenericDAOImpl<SeatPosition> implements
 		SeatPositionDAO {
 

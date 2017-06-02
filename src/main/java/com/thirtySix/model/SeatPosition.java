@@ -40,6 +40,7 @@ public class SeatPosition {
 	/**
 	 * 裝飾類別
 	 */
+	@ManyToOne
 	@JoinColumn(name = "FURNISHCLASS", referencedColumnName = "CLASSID", nullable = false)
 	private FurnishClass furnishClass;
 

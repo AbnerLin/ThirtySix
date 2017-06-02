@@ -7,14 +7,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.thirtySix.model.Booking;
 import com.thirtySix.model.Customer;
 import com.thirtySix.model.FurnishClass;
 import com.thirtySix.model.Item;
 import com.thirtySix.model.ItemClass;
 import com.thirtySix.model.SeatMap;
 import com.thirtySix.model.SeatPosition;
-import com.thirtySix.repository.BookingDAO;
 import com.thirtySix.repository.CustomerDAO;
 import com.thirtySix.repository.FurnishClassDAO;
 import com.thirtySix.repository.ItemClassDAO;
@@ -35,8 +33,8 @@ public class DBManager {
 	@Autowired
 	private ItemDAO itemDAO = null;
 
-	@Autowired
-	private BookingDAO bookingDAO = null;
+//	@Autowired
+//	private BookingDAO bookingDAO = null;
 
 	@Autowired
 	private SeatMapDAO seatMapDAO = null;
@@ -141,18 +139,18 @@ public class DBManager {
 	 * 
 	 * @param po
 	 */
-	public void insertBooking(Booking po) {
-		bookingDAO.insert(po);
-	}
+//	public void insertBooking(Booking po) {
+//		bookingDAO.insert(po);
+//	}
 
 	/**
 	 * 更新訂單
 	 * 
 	 * @param po
 	 */
-	public void updateBooking(Booking po) {
-		bookingDAO.update(po);
-	}
+//	public void updateBooking(Booking po) {
+//		bookingDAO.update(po);
+//	}
 
 	/**
 	 * 新增地圖擺設座標點位
