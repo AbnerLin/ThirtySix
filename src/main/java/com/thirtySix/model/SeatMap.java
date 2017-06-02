@@ -1,4 +1,4 @@
-package com.thirtySix.po;
+package com.thirtySix.model;
 
 import java.util.List;
 

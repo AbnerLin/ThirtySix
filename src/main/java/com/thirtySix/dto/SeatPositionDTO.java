@@ -1,6 +1,6 @@
 package com.thirtySix.dto;
 
-import com.thirtySix.po.SeatMap;
+import com.thirtySix.model.SeatMap;
 
 public class SeatPositionDTO {
 

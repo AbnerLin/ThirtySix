@@ -1,8 +1,8 @@
-package com.thirtySix.dao;
+package com.thirtySix.repository;
 
 import java.util.List;
 
-import com.thirtySix.po.Item;
+import com.thirtySix.model.Item;
 
 public interface ItemDAO extends GenericDAO<Item> {
 

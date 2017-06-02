@@ -29,11 +29,11 @@ import com.thirtySix.dto.CustomerDTO;
 import com.thirtySix.dto.ItemDTO;
 import com.thirtySix.dto.OrderDTO;
 import com.thirtySix.dto.SeatMapDTO;
-import com.thirtySix.po.Booking;
-import com.thirtySix.po.Customer;
-import com.thirtySix.po.ItemClass;
-import com.thirtySix.po.SeatMap;
-import com.thirtySix.po.SeatPosition;
+import com.thirtySix.model.Booking;
+import com.thirtySix.model.Customer;
+import com.thirtySix.model.ItemClass;
+import com.thirtySix.model.SeatMap;
+import com.thirtySix.model.SeatPosition;
 import com.thirtySix.util.ObjectConverter;
 
 @Controller

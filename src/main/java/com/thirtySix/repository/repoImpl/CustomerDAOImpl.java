@@ -1,4 +1,4 @@
-package com.thirtySix.dao.daoImpl;
+package com.thirtySix.repository.repoImpl;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -7,8 +7,8 @@ import org.hibernate.Criteria;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.stereotype.Repository;
 
-import com.thirtySix.dao.CustomerDAO;
-import com.thirtySix.po.Customer;
+import com.thirtySix.model.Customer;
+import com.thirtySix.repository.CustomerDAO;
 
 @Repository
 public class CustomerDAOImpl extends GenericDAOImpl<Customer> implements

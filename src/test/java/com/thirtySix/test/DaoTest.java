@@ -16,10 +16,10 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.thirtySix.dao.CustomerDAO;
-import com.thirtySix.dao.ItemDAO;
-import com.thirtySix.po.Customer;
-import com.thirtySix.po.Item;
+import com.thirtySix.model.Customer;
+import com.thirtySix.model.Item;
+import com.thirtySix.repository.CustomerDAO;
+import com.thirtySix.repository.ItemDAO;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = TestConfig.class)

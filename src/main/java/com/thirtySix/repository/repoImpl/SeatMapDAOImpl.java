@@ -1,9 +1,9 @@
-package com.thirtySix.dao.daoImpl;
+package com.thirtySix.repository.repoImpl;
 
 import org.springframework.stereotype.Repository;
 
-import com.thirtySix.dao.SeatMapDAO;
-import com.thirtySix.po.SeatMap;
+import com.thirtySix.model.SeatMap;
+import com.thirtySix.repository.SeatMapDAO;
 
 @Repository
 public class SeatMapDAOImpl extends GenericDAOImpl<SeatMap> implements

@@ -7,20 +7,20 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.thirtySix.dao.BookingDAO;
-import com.thirtySix.dao.CustomerDAO;
-import com.thirtySix.dao.FurnishClassDAO;
-import com.thirtySix.dao.ItemClassDAO;
-import com.thirtySix.dao.ItemDAO;
-import com.thirtySix.dao.SeatMapDAO;
-import com.thirtySix.dao.SeatPositionDAO;
-import com.thirtySix.po.Booking;
-import com.thirtySix.po.Customer;
-import com.thirtySix.po.FurnishClass;
-import com.thirtySix.po.Item;
-import com.thirtySix.po.ItemClass;
-import com.thirtySix.po.SeatMap;
-import com.thirtySix.po.SeatPosition;
+import com.thirtySix.model.Booking;
+import com.thirtySix.model.Customer;
+import com.thirtySix.model.FurnishClass;
+import com.thirtySix.model.Item;
+import com.thirtySix.model.ItemClass;
+import com.thirtySix.model.SeatMap;
+import com.thirtySix.model.SeatPosition;
+import com.thirtySix.repository.BookingDAO;
+import com.thirtySix.repository.CustomerDAO;
+import com.thirtySix.repository.FurnishClassDAO;
+import com.thirtySix.repository.ItemClassDAO;
+import com.thirtySix.repository.ItemDAO;
+import com.thirtySix.repository.SeatMapDAO;
+import com.thirtySix.repository.SeatPositionDAO;
 
 @Component
 @Transactional

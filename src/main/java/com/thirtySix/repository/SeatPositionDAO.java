@@ -1,6 +1,6 @@
-package com.thirtySix.dao;
+package com.thirtySix.repository;
 
-import com.thirtySix.po.SeatPosition;
+import com.thirtySix.model.SeatPosition;
 
 public interface SeatPositionDAO extends GenericDAO<SeatPosition> {
 	

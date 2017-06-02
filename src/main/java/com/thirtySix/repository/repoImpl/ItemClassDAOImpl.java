@@ -1,9 +1,9 @@
-package com.thirtySix.dao.daoImpl;
+package com.thirtySix.repository.repoImpl;
 
 import org.springframework.stereotype.Repository;
 
-import com.thirtySix.dao.ItemClassDAO;
-import com.thirtySix.po.ItemClass;
+import com.thirtySix.model.ItemClass;
+import com.thirtySix.repository.ItemClassDAO;
 
 @Repository
 public class ItemClassDAOImpl extends GenericDAOImpl<ItemClass> implements

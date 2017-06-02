@@ -1,4 +1,4 @@
-package com.thirtySix.dao.daoImpl;
+package com.thirtySix.repository.repoImpl;
 
 import java.io.Serializable;
 import java.util.List;
@@ -7,7 +7,7 @@ import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.orm.hibernate5.support.HibernateDaoSupport;
 
-import com.thirtySix.dao.GenericDAO;
+import com.thirtySix.repository.GenericDAO;
 
 public class GenericDAOImpl<T> extends HibernateDaoSupport implements
 		GenericDAO<T> {

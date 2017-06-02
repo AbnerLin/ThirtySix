@@ -4,8 +4,8 @@ import java.io.Serializable;
 import java.sql.Timestamp;
 import java.util.Date;
 
-import com.thirtySix.po.Customer;
-import com.thirtySix.po.Item;
+import com.thirtySix.model.Customer;
+import com.thirtySix.model.Item;
 import com.thirtySix.util.TimeFormatter;
 
 public class BookingDTO implements Serializable {

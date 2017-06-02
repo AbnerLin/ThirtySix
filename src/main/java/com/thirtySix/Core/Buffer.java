@@ -15,9 +15,9 @@ import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import com.thirtySix.po.Customer;
-import com.thirtySix.po.Item;
-import com.thirtySix.po.ItemClass;
+import com.thirtySix.model.Customer;
+import com.thirtySix.model.Item;
+import com.thirtySix.model.ItemClass;
 import com.thirtySix.util.TimeFormatter;
 
 @Component

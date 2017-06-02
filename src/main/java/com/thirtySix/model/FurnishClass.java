@@ -1,4 +1,4 @@
-package com.thirtySix.po;
+package com.thirtySix.model;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;

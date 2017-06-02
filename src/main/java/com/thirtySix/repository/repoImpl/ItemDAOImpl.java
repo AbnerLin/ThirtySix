@@ -1,4 +1,4 @@
-package com.thirtySix.dao.daoImpl;
+package com.thirtySix.repository.repoImpl;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -8,8 +8,8 @@ import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.stereotype.Repository;
 
-import com.thirtySix.dao.ItemDAO;
-import com.thirtySix.po.Item;
+import com.thirtySix.model.Item;
+import com.thirtySix.repository.ItemDAO;
 
 @Repository
 public class ItemDAOImpl extends GenericDAOImpl<Item> implements ItemDAO {

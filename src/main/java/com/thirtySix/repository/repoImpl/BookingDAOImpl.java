@@ -1,9 +1,9 @@
-package com.thirtySix.dao.daoImpl;
+package com.thirtySix.repository.repoImpl;
 
 import org.springframework.stereotype.Repository;
 
-import com.thirtySix.dao.BookingDAO;
-import com.thirtySix.po.Booking;
+import com.thirtySix.model.Booking;
+import com.thirtySix.repository.BookingDAO;
 
 @Repository
 public class BookingDAOImpl extends GenericDAOImpl<Booking> implements

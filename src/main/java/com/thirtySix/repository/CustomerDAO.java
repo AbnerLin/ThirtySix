@@ -1,8 +1,8 @@
-package com.thirtySix.dao;
+package com.thirtySix.repository;
 
 import java.util.List;
 
-import com.thirtySix.po.Customer;
+import com.thirtySix.model.Customer;
 
 public interface CustomerDAO extends GenericDAO<Customer> {
 

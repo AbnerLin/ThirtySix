@@ -1,4 +1,4 @@
-package com.thirtySix.po;
+package com.thirtySix.model;
 
 import java.sql.Timestamp;
 import java.util.ArrayList;

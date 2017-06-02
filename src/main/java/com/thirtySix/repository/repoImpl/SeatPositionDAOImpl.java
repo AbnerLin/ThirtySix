@@ -1,10 +1,10 @@
-package com.thirtySix.dao.daoImpl;
+package com.thirtySix.repository.repoImpl;
 
 import org.hibernate.Query;
 import org.springframework.stereotype.Repository;
 
-import com.thirtySix.dao.SeatPositionDAO;
-import com.thirtySix.po.SeatPosition;
+import com.thirtySix.model.SeatPosition;
+import com.thirtySix.repository.SeatPositionDAO;
 
 @Repository
 public class SeatPositionDAOImpl extends GenericDAOImpl<SeatPosition> implements

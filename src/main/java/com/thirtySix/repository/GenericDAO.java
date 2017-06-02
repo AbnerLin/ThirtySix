@@ -1,4 +1,4 @@
-package com.thirtySix.dao;
+package com.thirtySix.repository;
 
 import java.io.Serializable;
 import java.util.List;
