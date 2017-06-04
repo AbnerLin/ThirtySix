@@ -22,7 +22,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.thirtySix.Core.Buffer;
-import com.thirtySix.Core.DBManager;
 import com.thirtySix.dto.AjaxDTO;
 import com.thirtySix.dto.CheckOutDTO;
 import com.thirtySix.dto.CustomerDTO;
@@ -34,6 +33,7 @@ import com.thirtySix.model.Customer;
 import com.thirtySix.model.ItemClass;
 import com.thirtySix.model.SeatMap;
 import com.thirtySix.model.SeatPosition;
+import com.thirtySix.service.CustomerService;
 import com.thirtySix.util.ObjectConverter;
 
 @Controller
@@ -43,7 +43,7 @@ public class IndexController {
 	private Buffer buffer = null;
 
 	@Autowired
-	private DBManager dbManager = null;
+	private CustomerService customerService = null;
 
 	@Autowired
 	private ObjectConverter objConverter = null;
@@ -107,7 +107,7 @@ public class IndexController {
 		customer.setCheckOutTime(now);
 
 		/** update db */
-		this.dbManager.updateCustomer(customer);
+		this.customerService.save(customer);
 
 		/** update buffer */
 		this.buffer.getDiningCustomer().remove(customer.getCustomerID());
@@ -142,7 +142,7 @@ public class IndexController {
 
 		/** 新增資料庫 */
 		Customer po = objConverter.customerDTOtoPO(customerDTO);
-		dbManager.insertCustomer(po);
+		customerService.save(po);
 
 		/** 更新buffer */
 		Map<String, Customer> bufferMap = buffer.getDiningCustomer();

@@ -23,8 +23,8 @@ import com.thirtySix.util.TimeFormatter;
 @Component
 public class Buffer {
 
-	@Autowired
-	private DBManager dbManager = null;
+//	@Autowired
+//	private DBManager dbManager = null;
 
 	private Logger logger = Logger.getLogger(this.getClass());
 

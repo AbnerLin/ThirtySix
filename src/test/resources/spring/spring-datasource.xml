@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:tx="http://www.springframework.org/schema/tx"
+	xmlns:context="http://www.springframework.org/schema/context" xmlns:jdbc="http://www.springframework.org/schema/jdbc"
+	xmlns:jpa="http://www.springframework.org/schema/data/jpa"
+	xsi:schemaLocation="
+		http://www.springframework.org/schema/beans 
+		http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/tx 
+		http://www.springframework.org/schema/tx/spring-tx.xsd
+		http://www.springframework.org/schema/data/jpa
+        http://www.springframework.org/schema/data/jpa/spring-jpa.xsd
+        http://www.springframework.org/schema/jdbc
+        http://www.springframework.org/schema/jdbc/spring-jdbc.xsd
+		http://www.springframework.org/schema/context 
+		http://www.springframework.org/schema/context/spring-context.xsd">
+
+
+	<!-- dataSource -->
+	<!-- <bean id="dataSource" class="org.logicalcobwebs.proxool.ProxoolDataSource"> -->
+	<!-- <property name="driver"> -->
+	<!-- <value>org.postgresql.Driver</value> -->
+	<!-- </property> -->
+	<!-- <property name="driverUrl"> -->
+	<!-- <value>jdbc:postgresql://localhost/thirtysix</value> -->
+	<!-- </property> -->
+	<!-- login info for testing. -->
+	<!-- <property name="user" value="admin36" /> -->
+	<!-- <property name="password" value="admin36@DB" /> -->
+	<!-- <property name="alias" value="proxoolPool" /> -->
+	<!-- <property name="houseKeepingSleepTime" value="90000" /> -->
+	<!-- <property name="prototypeCount" value="0" /> -->
+	<!-- <property name="maximumConnectionCount" value="50" /> -->
+	<!-- <property name="minimumConnectionCount" value="5" /> -->
+	<!-- <property name="simultaneousBuildThrottle" value="50" /> -->
+	<!-- <property name="maximumConnectionLifetime" value="14400000" /> -->
+	<!-- <property name="houseKeepingTestSql" value="select GETDATE()" /> -->
+	<!-- </bean> -->
+
+	<jdbc:embedded-database id="dataSource" type="H2" />
+
+	<!-- jpa entity manager -->
+	<bean id="emf"
+		class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean">
+		<property name="dataSource" ref="dataSource" />
+		<property name="jpaVendorAdapter">
+			<bean class="org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter" />
+		</property>
+		<property name="packagesToScan">
+			<array>
+				<value>com.thirtySix.model</value>
+			</array>
+		</property>
+		<property name="jpaProperties">
+			<props>
+				<prop key="hibernate.dialect">
+					org.hibernate.dialect.PostgreSQLDialect
+				</prop>
+				<!-- <prop key="hibernate.max_fetch_depth">3</prop> -->
+				<prop key="hibernate.jdbc.fetch_size">50</prop>
+				<prop key="hibernate.jdbc.batch_size">10</prop>
+				<prop key="hibernate.show_sql">true</prop>
+				<prop key="hibernate.hbm2ddl.auto">create</prop>
+			</props>
+		</property>
+	</bean>
+
+	<bean id="transactionManager" class="org.springframework.orm.jpa.JpaTransactionManager">
+		<property name="entityManagerFactory" ref="emf" />
+	</bean>
+
+	<jpa:repositories base-package="com.thirtySix.repository"
+		entity-manager-factory-ref="emf" transaction-manager-ref="transactionManager" />
+
+	<tx:annotation-driven transaction-manager="transactionManager" />
+
+</beans>
