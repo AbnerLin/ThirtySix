@@ -172,6 +172,7 @@ public class IndexController {
 
 		/** map save */
 		SeatMap mapPO = objConverter.seatMapDTOtoPO(seatMapDTO);
+		
 		if (mapPO.getMapID() == null)
 			dbManager.insertSeatMap(mapPO);
 		else

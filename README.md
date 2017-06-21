@@ -1,10 +1,10 @@
 [![Build Status](https://travis-ci.org/AbnerLin/ThirtySix.svg?branch=master)](https://travis-ci.org/AbnerLin/ThirtySix) 
 # ThirtySix
-The ThirtySix is the web-base application for restaurant which can monitor dishes serving status, customer check in/out time, and also provide the feature for operator design the seat map.
+The ThirtySix is the web-base application for restaurant which can monitor dishes serving status, customer check in/out time.
 
 ## Features
-* Check-in/out for customer.
-* Order the dishes, and update the serving status.
-* design seat map by self.
-* All of about customer, dishes information will display on seat map in real-time dynamically.
+* Customer Check-in/out.
+* Order the meal, and update the serving status.
+* Arrange seat map by self.
+* All of information about customer, meals will display on seat map in real-time dynamically.
 
