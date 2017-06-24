@@ -18,21 +18,27 @@ import org.springframework.stereotype.Component;
 import com.thirtySix.model.Customer;
 import com.thirtySix.model.Item;
 import com.thirtySix.model.ItemClass;
+import com.thirtySix.service.CustomerService;
+import com.thirtySix.service.ItemService;
 import com.thirtySix.util.TimeFormatter;
 
 @Component
 public class Buffer {
 
-//	@Autowired
-//	private DBManager dbManager = null;
-
 	private Logger logger = Logger.getLogger(this.getClass());
 
+	@Autowired
+	private ItemService itemService = null;
+	
+	@Autowired 
+	private CustomerService customerService = null;
+	
 	/** 用餐中顧客Buffer <customerId, po> */
 	private Map<String, Customer> diningCustomerBuffer = new ConcurrentHashMap<String, Customer>();
 
 	/** 菜單(分類)<String, ItemClass> */
 	private Map<String, ItemClass> itemMenuBuffer = new HashMap<String, ItemClass>();
+	
 	/** 菜單 <String, Item> */
 	private Map<String, Item> itemBuffer = new HashMap<String, Item>();
 
@@ -50,7 +56,8 @@ public class Buffer {
 	 * 載入菜單
 	 */
 	private void loadItemMenu() {
-		List<ItemClass> itemClassList = dbManager.getAllItemClass();
+		List<ItemClass> itemClassList = itemService.findAllItemClass();
+		
 		logger.info("載入菜單...");
 		for (ItemClass itemClass : itemClassList) {
 			this.itemMenuBuffer.put(itemClass.getClassID(), itemClass);
@@ -71,7 +78,8 @@ public class Buffer {
 	 * 載入用餐中顧客
 	 */
 	private void loadDiningCustomer() {
-		List<Customer> diningCustomerList = dbManager.getDiningCustomer();
+		List<Customer> diningCustomerList = customerService.findDiningCustomer(); 
+				
 		logger.info("載入用餐中顧客...");
 		int count = 0;
 		for (Customer customer : diningCustomerList) {

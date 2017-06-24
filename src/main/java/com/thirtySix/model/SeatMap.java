@@ -47,7 +47,7 @@ public class SeatMap {
 	 * 擺設座標位置
 	 */
 	@OneToMany(fetch = FetchType.EAGER, mappedBy = "seatMap")
-	private List<SeatPosition> seatPositionList;
+	private List<Furnish> seatPositionList;
 
 	/**
 	 * 取得地圖編號
@@ -126,7 +126,7 @@ public class SeatMap {
 	 * 
 	 * @return
 	 */
-	public List<SeatPosition> getSeatPositionList() {
+	public List<Furnish> getSeatPositionList() {
 		return seatPositionList;
 	}
 
@@ -135,7 +135,7 @@ public class SeatMap {
 	 * 
 	 * @param seatPositionList
 	 */
-	public void setSeatPositionList(List<SeatPosition> seatPositionList) {
+	public void setSeatPositionList(List<Furnish> seatPositionList) {
 		this.seatPositionList = seatPositionList;
 	}
 

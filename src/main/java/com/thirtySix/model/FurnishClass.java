@@ -28,8 +28,8 @@ public class FurnishClass {
 	/**
 	 * 名稱
 	 */
-	@Column(name = "DISPLAYTEXT")
-	private String displayText;
+	@Column(name = "NAME")
+	private String name;
 
 	/**
 	 * 圖檔路徑
@@ -41,7 +41,7 @@ public class FurnishClass {
 	 * 座位清單
 	 */
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "furnishClass")
-	private List<SeatPosition> seatList;
+	private List<Furnish> seatList;
 
 	/**
 	 * 取得類別編號
@@ -84,8 +84,8 @@ public class FurnishClass {
 	 * 
 	 * @return
 	 */
-	public String getDisplayText() {
-		return displayText;
+	public String getName() {
+		return name;
 	}
 
 	/**
@@ -93,8 +93,8 @@ public class FurnishClass {
 	 * 
 	 * @param text
 	 */
-	public void setDisplayText(String displayText) {
-		this.displayText = displayText;
+	public void setName(String name) {
+		this.name = name;
 	}
 
 	/**
@@ -102,7 +102,7 @@ public class FurnishClass {
 	 * 
 	 * @return
 	 */
-	public List<SeatPosition> getSeatList() {
+	public List<Furnish> getSeatList() {
 		return seatList;
 	}
 
@@ -111,7 +111,7 @@ public class FurnishClass {
 	 * 
 	 * @param seatList
 	 */
-	public void setSeatList(List<SeatPosition> seatList) {
+	public void setSeatList(List<Furnish> seatList) {
 		this.seatList = seatList;
 	}
 

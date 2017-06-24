@@ -1,55 +1,37 @@
-package com.thirtySix.model;
+package com.thirtySix.dto;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.Table;
+import com.thirtySix.model.SeatMap;
 
-import org.hibernate.annotations.GenericGenerator;
-
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
-@Entity
-@Table(name = "SEATPOSITION")
-public class SeatPosition {
+public class FurnishDTO {
 
 	/**
 	 * 擺設編號
 	 */
-	@Id
-	@GeneratedValue(generator = "UUID")
-	@GenericGenerator(name = "UUID", strategy = "org.hibernate.id.UUIDGenerator")
-	@Column(name = "FURNISHID")
 	private String furnishID;
 
 	/**
 	 * X座標
 	 */
-	@Column(name = "X")
 	private int x;
 
 	/**
 	 * Y座標
 	 */
-	@Column(name = "Y")
 	private int y;
+
+	/**
+	 * 名稱
+	 */
+	private String name;
 
 	/**
 	 * 裝飾類別
 	 */
-	@ManyToOne
-	@JoinColumn(name = "FURNISHCLASS", referencedColumnName = "CLASSID", nullable = false)
-	private FurnishClass furnishClass;
+	private String furnishClassID;
 
 	/**
 	 * 地圖資訊
 	 */
-	@JsonIgnore
-	@ManyToOne
-	@JoinColumn(name = "MAPID", referencedColumnName = "MAPID", nullable = false)
 	private SeatMap seatMap;
 
 	/**
@@ -107,6 +89,24 @@ public class SeatPosition {
 	}
 
 	/**
+	 * 取得名稱
+	 * 
+	 * @return
+	 */
+	public String getName() {
+		return this.name;
+	}
+
+	/**
+	 * 設定名稱
+	 * 
+	 * @param text
+	 */
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	/**
 	 * 取得地圖資訊
 	 * 
 	 * @return
@@ -129,8 +129,8 @@ public class SeatPosition {
 	 * 
 	 * @return
 	 */
-	public FurnishClass getFurnishClass() {
-		return furnishClass;
+	public String getFurnishClassID() {
+		return furnishClassID;
 	}
 
 	/**
@@ -138,8 +138,8 @@ public class SeatPosition {
 	 * 
 	 * @param furnishClass
 	 */
-	public void setFurnishClass(FurnishClass furnishClass) {
-		this.furnishClass = furnishClass;
+	public void setFurnishClassID(String furnishClassID) {
+		this.furnishClassID = furnishClassID;
 	}
 
 }

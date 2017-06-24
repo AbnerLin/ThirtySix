@@ -7,18 +7,19 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.thirtySix.Core.Buffer;
-import com.thirtySix.Core.DBManager;
 import com.thirtySix.dto.BookingDTO;
 import com.thirtySix.dto.CustomerDTO;
+import com.thirtySix.dto.FurnishDTO;
+import com.thirtySix.dto.ItemDTO;
 import com.thirtySix.dto.OrderDTO;
 import com.thirtySix.dto.SeatMapDTO;
-import com.thirtySix.dto.SeatPositionDTO;
 import com.thirtySix.model.Booking;
 import com.thirtySix.model.Customer;
+import com.thirtySix.model.Furnish;
 import com.thirtySix.model.FurnishClass;
 import com.thirtySix.model.Item;
 import com.thirtySix.model.SeatMap;
-import com.thirtySix.model.SeatPosition;
+import com.thirtySix.service.MapService;
 
 @Component
 public class ObjectConverter {
@@ -26,8 +27,11 @@ public class ObjectConverter {
 	@Autowired
 	private Buffer buffer = null;
 	
+//	@Autowired
+//	private DBManager dbManager = null;
+	
 	@Autowired
-	private DBManager dbManager = null;
+	private MapService mapService = null;
 
 	public Customer customerDTOtoPO(CustomerDTO dto) {
 		Customer po = new Customer();
@@ -44,17 +48,37 @@ public class ObjectConverter {
 		return po;
 	}
 
-	public Booking bookingDTOtoPO(OrderDTO dto, String itemId, int volume) {
-		Booking po = new Booking();
-		Customer customer = buffer.getDiningCustomer().get(dto.getCustomerId());
-		po.setCustomer(customer);
-		po.setOrderTime(dto.getTime());
-		Item item = this.buffer.getItems().get(itemId);
-		po.setItem(item);
-		po.setVolume(volume);
-
-		return po;
+	
+	public List<Booking> bookingDTOtoPO(OrderDTO order) {
+		List<Booking> bookingList = new ArrayList<Booking>();
+		Customer customer = buffer.getDiningCustomer().get(order.getCustomerId());
+		
+		for(ItemDTO item : order.getItemList()) {
+			Booking booking = new Booking();
+			booking.setCustomer(customer);
+			booking.setOrderTime(order.getTime());
+			Item _item = this.buffer.getItems().get(item.getItemId());
+			booking.setItem(_item);
+			booking.setVolume(item.getVolume());
+			
+			bookingList.add(booking);
+		}
+		
+		return bookingList;
 	}
+	
+	
+//	public Booking bookingDTOtoPO(OrderDTO dto, String itemId, int volume) {
+//		Booking po = new Booking();
+//		Customer customer = buffer.getDiningCustomer().get(dto.getCustomerId());
+//		po.setCustomer(customer);
+//		po.setOrderTime(dto.getTime());
+//		Item item = this.buffer.getItems().get(itemId);
+//		po.setItem(item);
+//		po.setVolume(volume);
+//
+//		return po;
+//	}
 
 	public SeatMap seatMapDTOtoPO(SeatMapDTO dto) {
 		SeatMap po = new SeatMap();
@@ -69,20 +93,22 @@ public class ObjectConverter {
 		return po;
 	}
 
-	public List<SeatPosition> seatPositionDTOtoPO(SeatMap mapPO,
-			List<SeatPositionDTO> dtos) {
-		List<SeatPosition> poList = new ArrayList<SeatPosition>();
+	public List<Furnish> furnishDTOtoPO(SeatMap mapPO,
+			List<FurnishDTO> dtos) {
+		List<Furnish> poList = new ArrayList<Furnish>();
 
-		for (SeatPositionDTO dto : dtos) {
-			SeatPosition po = new SeatPosition();
+		for (FurnishDTO dto : dtos) {
+			Furnish po = new Furnish();
 
 			po.setSeatMap(mapPO);
 			po.setX(dto.getX());
 			po.setY(dto.getY());
+			po.setName(dto.getName());
 			
 			/** get furnish class */
 			String furnishClassID = dto.getFurnishClassID();
-			FurnishClass furnishClass = dbManager.getFurnishClass(furnishClassID);
+			FurnishClass furnishClass = mapService.findFurnishClass(furnishClassID);
+			
 			po.setFurnishClass(furnishClass);
 			
 			poList.add(po);

@@ -14,6 +14,6 @@ public interface CustomerRepository extends
 	 * 
 	 * @return
 	 */
-	public List<Customer> findByCheckouttimeIsNull();
+	public List<Customer> findByCheckOutTimeIsNull();
 
 }

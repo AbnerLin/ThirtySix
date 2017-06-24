@@ -11,25 +11,25 @@ import com.thirtySix.repository.BookingRepository;
 import com.thirtySix.service.BookingService;
 
 @Service
-public class BookingServiceImpl extends CommonServiceImpl<Booking> implements
-		BookingService {
+public class BookingServiceImpl implements BookingService {
 
 	@Autowired
-	private static BookingRepository repository;
+	private BookingRepository repository;
 
-	public BookingServiceImpl() {
-		super(repository);
+	@Override
+	public List<Booking> findAllBooking() {
+		return (List<Booking>) repository.findAll();
 	}
 
 	@Override
 	@Transactional
-	public void save(Booking po) {
-		repository.save(po);
+	public void saveBooking(List<Booking> poList) {
+		repository.save(poList);
 	}
 
 	@Override
-	public List<Booking> findAll() {
-		return (List<Booking>) repository.findAll();
+	public void saveBooking(Booking po) {
+		repository.save(po);
 	}
 
 }

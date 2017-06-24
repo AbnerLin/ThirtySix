@@ -27,7 +27,7 @@ public class SeatMapDTO {
 	/**
 	 * 擺設座標位置
 	 */
-	private List<SeatPositionDTO> seatPositionList;
+	private List<FurnishDTO> seatPositionList;
 
 	/**
 	 * 取得地圖編號
@@ -106,7 +106,7 @@ public class SeatMapDTO {
 	 * 
 	 * @return
 	 */
-	public List<SeatPositionDTO> getSeatPositionList() {
+	public List<FurnishDTO> getSeatPositionList() {
 		return seatPositionList;
 	}
 
@@ -115,7 +115,7 @@ public class SeatMapDTO {
 	 * 
 	 * @param seatPositionList
 	 */
-	public void setSeatPositionList(List<SeatPositionDTO> seatPositionList) {
+	public void setSeatPositionList(List<FurnishDTO> seatPositionList) {
 		this.seatPositionList = seatPositionList;
 	}
 }

@@ -238,7 +238,6 @@ function subscribeWebSocket() {
 		stompClient.subscribe('/topic/customerUpdate', function(data) {
 			var jsonObj = JSON.parse(data.body);
 			diningCustomer = jsonObj;
-
 		});
 
 		stompClient.subscribe('/topic/specifyCustomerUpdate', function(data) {
