@@ -13,14 +13,14 @@ import com.thirtySix.model.Booking;
 import com.thirtySix.model.Customer;
 import com.thirtySix.model.Item;
 import com.thirtySix.model.ItemClass;
-import com.thirtySix.service.serviceImpl.BookingServiceImpl;
+import com.thirtySix.service.BookingService;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = TestConfig.class)
 public class BookingServiceTest {
 
 	@Autowired
-	private BookingServiceImpl bookService;
+	private BookingService bookService = null;
 	
 	@Test
 	public void test1() {
