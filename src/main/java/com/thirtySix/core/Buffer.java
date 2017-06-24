@@ -1,4 +1,4 @@
-package com.thirtySix.Core;
+package com.thirtySix.core;
 
 import java.util.Date;
 import java.util.HashMap;

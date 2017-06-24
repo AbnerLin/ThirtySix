@@ -1,3 +1,4 @@
+package com.thirtySix.core;
 //package com.thirtySix.Core;
 //
 //import java.io.Serializable;

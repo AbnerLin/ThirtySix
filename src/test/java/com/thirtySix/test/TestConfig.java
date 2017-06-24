@@ -6,19 +6,7 @@ import org.springframework.context.annotation.ImportResource;
 
 @Configuration
 @ImportResource("classpath:/spring/spring-datasource.xml")
-@ComponentScan({ "com.thirtySix.service" })
+@ComponentScan({ "com.thirtySix.service", "com.thirtySix.core" })
 public class TestConfig {
-
-//	@Bean
-//	@Scope("singleton")
-//	public Buffer getBuffer() {
-//		return new Buffer();
-//	}
-
-	// @Bean
-	// @Scope("singleton")
-	// public DBManager getDBManager() {
-	// return new DBManager();
-	// }
 
 }

@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:tx="http://www.springframework.org/schema/tx"
-	xmlns:context="http://www.springframework.org/schema/context" xmlns:jdbc="http://www.springframework.org/schema/jdbc"
-	xmlns:jpa="http://www.springframework.org/schema/data/jpa"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:jdbc="http://www.springframework.org/schema/jdbc" xmlns:jpa="http://www.springframework.org/schema/data/jpa"
 	xsi:schemaLocation="
 		http://www.springframework.org/schema/beans 
 		http://www.springframework.org/schema/beans/spring-beans.xsd
@@ -14,28 +14,6 @@
         http://www.springframework.org/schema/jdbc/spring-jdbc.xsd
 		http://www.springframework.org/schema/context 
 		http://www.springframework.org/schema/context/spring-context.xsd">
-
-
-	<!-- dataSource -->
-	<!-- <bean id="dataSource" class="org.logicalcobwebs.proxool.ProxoolDataSource"> -->
-	<!-- <property name="driver"> -->
-	<!-- <value>org.postgresql.Driver</value> -->
-	<!-- </property> -->
-	<!-- <property name="driverUrl"> -->
-	<!-- <value>jdbc:postgresql://localhost/thirtysix</value> -->
-	<!-- </property> -->
-	<!-- login info for testing. -->
-	<!-- <property name="user" value="admin36" /> -->
-	<!-- <property name="password" value="admin36@DB" /> -->
-	<!-- <property name="alias" value="proxoolPool" /> -->
-	<!-- <property name="houseKeepingSleepTime" value="90000" /> -->
-	<!-- <property name="prototypeCount" value="0" /> -->
-	<!-- <property name="maximumConnectionCount" value="50" /> -->
-	<!-- <property name="minimumConnectionCount" value="5" /> -->
-	<!-- <property name="simultaneousBuildThrottle" value="50" /> -->
-	<!-- <property name="maximumConnectionLifetime" value="14400000" /> -->
-	<!-- <property name="houseKeepingTestSql" value="select GETDATE()" /> -->
-	<!-- </bean> -->
 
 	<jdbc:embedded-database id="dataSource" type="H2" />
 
@@ -61,6 +39,7 @@
 				<prop key="hibernate.jdbc.batch_size">10</prop>
 				<prop key="hibernate.show_sql">true</prop>
 				<prop key="hibernate.hbm2ddl.auto">create</prop>
+				<prop key="hibernate.hbm2ddl.import_files">sql/test-data.sql</prop>
 			</props>
 		</property>
 	</bean>

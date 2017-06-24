@@ -21,7 +21,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.thirtySix.Core.Buffer;
+import com.thirtySix.core.Buffer;
 import com.thirtySix.dto.AjaxDTO;
 import com.thirtySix.dto.CheckOutDTO;
 import com.thirtySix.dto.CustomerDTO;

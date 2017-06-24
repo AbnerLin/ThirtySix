@@ -6,7 +6,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import com.thirtySix.Core.Buffer;
+import com.thirtySix.core.Buffer;
 import com.thirtySix.dto.BookingDTO;
 import com.thirtySix.dto.CustomerDTO;
 import com.thirtySix.dto.FurnishDTO;
