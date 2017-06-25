@@ -2,11 +2,8 @@ package com.thirtySix.core;
 
 import java.util.Date;
 import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
 import javax.annotation.PostConstruct;
@@ -16,10 +13,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.thirtySix.model.Customer;
+import com.thirtySix.model.Furnish;
 import com.thirtySix.model.Item;
 import com.thirtySix.model.ItemClass;
 import com.thirtySix.service.CustomerService;
 import com.thirtySix.service.ItemService;
+import com.thirtySix.service.MapService;
 import com.thirtySix.util.TimeFormatter;
 
 @Component
@@ -29,18 +28,24 @@ public class Buffer {
 
 	@Autowired
 	private ItemService itemService = null;
-	
-	@Autowired 
+
+	@Autowired
 	private CustomerService customerService = null;
 	
+	@Autowired
+	private MapService mapService = null;
+
 	/** 用餐中顧客Buffer <customerId, po> */
 	private Map<String, Customer> diningCustomerBuffer = new ConcurrentHashMap<String, Customer>();
 
 	/** 菜單(分類)<String, ItemClass> */
 	private Map<String, ItemClass> itemMenuBuffer = new HashMap<String, ItemClass>();
-	
+
 	/** 菜單 <String, Item> */
 	private Map<String, Item> itemBuffer = new HashMap<String, Item>();
+	
+	/** Furnish Buffer */
+	private Map<String, Furnish> furnishBuffer = new HashMap<String, Furnish>();
 
 	@PostConstruct
 	public void init() {
@@ -50,6 +55,20 @@ public class Buffer {
 
 		/** 載入菜單 */
 		this.loadItemMenu();
+		
+		/** load furnish */
+		this.loadFurnish();
+	}
+	
+	/**
+	 * load furnish to buffer.
+	 */
+	private void loadFurnish() {
+		List<Furnish> furnishList = mapService.findAllFurnish();
+		
+		for(Furnish furnish : furnishList) {
+			this.furnishBuffer.put(furnish.getFurnishID(), furnish);
+		}
 	}
 
 	/**
@@ -57,18 +76,16 @@ public class Buffer {
 	 */
 	private void loadItemMenu() {
 		List<ItemClass> itemClassList = itemService.findAllItemClass();
-		
+
 		logger.info("載入菜單...");
 		for (ItemClass itemClass : itemClassList) {
 			this.itemMenuBuffer.put(itemClass.getClassID(), itemClass);
-			logger.info("菜單種類編號：" + itemClass.getClassID() + " 種類："
-					+ itemClass.getClassName());
+			logger.info("菜單種類編號：" + itemClass.getClassID() + " 種類：" + itemClass.getClassName());
 
 			for (Item item : itemClass.getItemList()) {
 				this.itemBuffer.put(item.getItemID(), item);
 
-				logger.info("菜色編號：" + item.getItemID() + " 名稱："
-						+ item.getName());
+				logger.info("菜色編號：" + item.getItemID() + " 名稱：" + item.getName());
 			}
 		}
 		logger.info("菜單載入完畢。");
@@ -78,16 +95,15 @@ public class Buffer {
 	 * 載入用餐中顧客
 	 */
 	private void loadDiningCustomer() {
-		List<Customer> diningCustomerList = customerService.findDiningCustomer(); 
-				
+		List<Customer> diningCustomerList = customerService.findDiningCustomer();
+
 		logger.info("載入用餐中顧客...");
 		int count = 0;
 		for (Customer customer : diningCustomerList) {
 			String id = customer.getCustomerID();
 
 			Date date = new Date(customer.getCheckInTime().getTime());
-			customer.setCheckInTimeStringFormat(TimeFormatter.getInstance()
-					.getTime(date));
+			customer.setCheckInTimeStringFormat(TimeFormatter.getInstance().getTime(date));
 
 			this.diningCustomerBuffer.put(id, customer);
 			count++;
@@ -122,26 +138,14 @@ public class Buffer {
 	public Map<String, Item> getItems() {
 		return this.itemBuffer;
 	}
-
+	
 	/**
-	 * 取得使用中桌號
+	 * Get furnish from buffer.
 	 * 
 	 * @return
 	 */
-	@SuppressWarnings("rawtypes")
-	public Set<String> getDiningTable() {
-		Set<String> table = new HashSet<String>();
-
-		Iterator iter = this.diningCustomerBuffer.entrySet().iterator();
-		while (iter.hasNext()) {
-			Map.Entry pair = (Map.Entry) iter.next();
-			Customer customer = (Customer) pair.getValue();
-			String tableNumber = customer.getTableNumber();
-
-			table.add(tableNumber);
-		}
-
-		return table;
+	public Map<String, Furnish> getFurnish() {
+		return this.furnishBuffer;
 	}
 
 }

@@ -718,7 +718,9 @@ function initSeatMap(customerData) {
 		method : "POST",
 		success : function(response, status, jqXHR) {
 			var data = response.data[0];
-
+			if(data == null)
+				return;
+			
 			/** set map ID */
 			var mapID = data.mapID;
 			$("#mapID").val(mapID)

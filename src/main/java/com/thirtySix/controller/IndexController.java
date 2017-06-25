@@ -151,7 +151,7 @@ public class IndexController {
 		bufferMap.put(po.getCustomerID(), po);
 
 		/** push socket to every client */
-		this.customerCheckInNotification(customerDTO.getTableNumber());
+		this.customerCheckInNotification(customerDTO.getFurnishID());
 		this.customerInfoUpdateNotification(po);
 
 		result.setStatusOK();

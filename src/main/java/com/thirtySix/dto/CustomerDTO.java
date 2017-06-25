@@ -19,7 +19,7 @@ public class CustomerDTO implements Serializable {
 	/**
 	 * 桌號
 	 */
-	private String tableNumber;
+	private String furnishID;
 
 	/**
 	 * 進場時間
@@ -89,8 +89,8 @@ public class CustomerDTO implements Serializable {
 	 * 
 	 * @return
 	 */
-	public String getTableNumber() {
-		return tableNumber;
+	public String getFurnishID() {
+		return furnishID;
 	}
 
 	/**
@@ -98,8 +98,8 @@ public class CustomerDTO implements Serializable {
 	 * 
 	 * @param tableNumber
 	 */
-	public void setTableNumber(String tableNumber) {
-		this.tableNumber = tableNumber;
+	public void setFurnishID(String furnishID) {
+		this.furnishID = furnishID;
 	}
 
 	/**
@@ -174,8 +174,7 @@ public class CustomerDTO implements Serializable {
 		this.checkInTime = checkInTime;
 
 		Date time = new Date(checkInTime.getTime());
-		this.setCheckInTimeStringFormat(TimeFormatter.getInstance().getTime(
-				time));
+		this.setCheckInTimeStringFormat(TimeFormatter.getInstance().getTime(time));
 	}
 
 	/**
@@ -197,8 +196,7 @@ public class CustomerDTO implements Serializable {
 
 		if (this.checkOutTime != null) {
 			Date time = new Date(checkOutTime.getTime());
-			this.setCheckInTimeStringFormat(TimeFormatter.getInstance()
-					.getTime(time));
+			this.setCheckInTimeStringFormat(TimeFormatter.getInstance().getTime(time));
 		}
 	}
 
@@ -278,11 +276,9 @@ public class CustomerDTO implements Serializable {
 	public String toString() {
 		String result = "";
 
-		result += "ID: " + this.customerID + "\n" + "NAME: "
-				+ this.customerName + "\n" + "CheckInTime: " + this.checkInTime
-				+ "\n" + "CheckOutTime: " + this.checkOutTime + "\n"
-				+ "DeskNumber: " + this.tableNumber + "\n" + "PeopleCount:"
-				+ this.peopleCount + "\n" + "Remark: " + this.remark + "\n"
+		result += "ID: " + this.customerID + "\n" + "NAME: " + this.customerName + "\n" + "CheckInTime: "
+				+ this.checkInTime + "\n" + "CheckOutTime: " + this.checkOutTime + "\n" + "DeskNumber: "
+				+ this.furnishID + "\n" + "PeopleCount:" + this.peopleCount + "\n" + "Remark: " + this.remark + "\n"
 				+ "PhoneNumber: " + this.phoneNumber + "\n";
 
 		return result;

@@ -9,6 +9,8 @@ import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Transient;
@@ -27,12 +29,6 @@ public class Customer {
 	@GenericGenerator(name = "UUID", strategy = "org.hibernate.id.UUIDGenerator")
 	@Column(name = "CUSTOMERID")
 	private String customerID;
-
-	/**
-	 * 桌號
-	 */
-	@Column(name = "TABLENUMBER")
-	private String tableNumber;
 
 	/**
 	 * 進場時間
@@ -71,6 +67,13 @@ public class Customer {
 	private String remark;
 
 	/**
+	 * table number.
+	 */
+	@ManyToOne
+	@JoinColumn(name = "FURNISH", referencedColumnName = "FURNISHID", nullable = false)
+	private Furnish furnish;
+
+	/**
 	 * 訂單列表
 	 */
 	@OneToMany(fetch = FetchType.EAGER, mappedBy = "customer")
@@ -101,21 +104,21 @@ public class Customer {
 	}
 
 	/**
-	 * 取得桌號
+	 * Get which table customer use.
 	 * 
 	 * @return
 	 */
-	public String getTableNumber() {
-		return tableNumber;
+	public Furnish getFurnish() {
+		return furnish;
 	}
 
 	/**
-	 * 設定桌號
+	 * Set which table customer use.
 	 * 
-	 * @param deskNumber
+	 * @param furnish
 	 */
-	public void setTableNumber(String tableNumber) {
-		this.tableNumber = tableNumber;
+	public void setFurnish(Furnish furnish) {
+		this.furnish = furnish;
 	}
 
 	/**

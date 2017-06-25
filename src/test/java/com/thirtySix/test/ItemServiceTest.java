@@ -53,6 +53,7 @@ public class ItemServiceTest {
 		Map<String, ItemClass> itemClass = buffer.getMenu();
 		ItemClass _itemClass = itemClass.get("9ed2071e-93b1-42bb-8687-3ccdc87decb8");
 
+		/** item */
 		Item item = new Item();
 		item.setName("測試");
 		item.setImagePath("./image.jpg");
@@ -63,8 +64,15 @@ public class ItemServiceTest {
 		itemService.saveItem(item);
 
 		int itemSize = itemService.findAllItem().size();
-
 		Assert.assertEquals(12, itemSize);
+
+		/** item class */
+		ItemClass newItemClass = new ItemClass();
+		newItemClass.setClassName("測試");
+		itemService.saveItemClass(newItemClass);
+
+		int itemClassSize = itemService.findAllItemClass().size();
+		Assert.assertEquals(6, itemClassSize);
 	}
 
 	@Test
@@ -80,7 +88,7 @@ public class ItemServiceTest {
 
 		int itemSize = itemService.findAllItem().size();
 		Assert.assertEquals(9, itemSize);
-		
+
 		/** test itemClass */
 		String itemClassID = "9ed2071e-93b1-42bb-8687-3ccdc87decb8";
 		itemService.deleteItemClass(itemClassID);

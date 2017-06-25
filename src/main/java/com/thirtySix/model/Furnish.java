@@ -1,11 +1,15 @@
 package com.thirtySix.model;
 
+import java.util.List;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import org.hibernate.annotations.GenericGenerator;
@@ -46,6 +50,12 @@ public class Furnish {
 	@ManyToOne
 	@JoinColumn(name = "FURNISHCLASS", referencedColumnName = "CLASSID", nullable = false)
 	private FurnishClass furnishClass;
+
+	/**
+	 * customer whom use this furnish
+	 */
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "furnish")
+	private List<Customer> customerList;
 
 	/**
 	 * 地圖資訊
@@ -161,6 +171,15 @@ public class Furnish {
 	 */
 	public void setName(String name) {
 		this.name = name;
+	}
+
+	/**
+	 * Get customer whom use the furnish.
+	 * 
+	 * @return
+	 */
+	public List<Customer> getCustomerList() {
+		return customerList;
 	}
 
 }

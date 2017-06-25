@@ -6,17 +6,16 @@
 <meta charset="UTF-8">
 <meta name="viewport"
 	content="width=device-width initial-scale=1 maximum-scale=2">
-<!-- bootstrap -->
-<link type="text/css"
-	href="<c:url value="/plugin/bootstrap-3.3.7/css/bootstrap.min.css" />"
-	rel="stylesheet">
-<link type="text/css"
-	href="<c:url value="/plugin/bootstrap-3.3.7/css/bootstrap.min.css.map" />"
-	rel="stylesheet">
-<!-- bootstrap toggle -->
+
+<link rel="stylesheet"
+	href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css"
+	integrity="sha384-rwoIResjU2yc3z8GV/NPeZWAv56rSmLldC3R/AZzGRnGxQQKnKkoFVhFQhNUwEyJ"
+	crossorigin="anonymous">
+
 <link type="text/css"
 	href="<c:url value="/plugin/bootstrap-toggle/css/bootstrap-toggle.min.css" />"
 	rel="stylesheet">
+
 <!-- alertify -->
 <link type="text/css"
 	href="<c:url value="/plugin/alertify/css/alertify.core.css" />"
@@ -24,6 +23,7 @@
 <link type="text/css"
 	href="<c:url value="/plugin/alertify/css/alertify.bootstrap.css" />"
 	rel="stylesheet">
+
 <!-- jquery ui -->
 <link type="text/css"
 	href="<c:url value="/plugin/jquery-ui-1.12.1.custom/jquery-ui.min.css" />"
@@ -34,68 +34,42 @@
 <link type="text/css"
 	href="<c:url value="/plugin/jquery-ui-1.12.1.custom/jquery-ui.theme.min.css" />"
 	rel="stylesheet">
+
 <!-- index -->
 <link type="text/css" href="<c:url value="/css/index.css" />"
 	rel="stylesheet">
-<!-- jquery -->
-<script src="<c:url value="/plugin/jquery/js/jquery-3.2.1.min.js" />"></script>
-<!-- jquery ui -->
-<script
-	src="<c:url value="/plugin/jquery-ui-1.12.1.custom/jquery-ui.min.js" />"></script>
-<script
-	src="<c:url value="/plugin/jquery-ui-1.12.1.custom/jquery-ui.touch-punch.min.js" />"></script>
-<!-- jquery tmpl -->
-<script src="<c:url value="/plugin/jquery/js/jquery-tmpl.min.js" />"></script>
-<!-- socket -->
-<script src="<c:url value="/plugin/socket/sockjs-1.1.1.js" />"></script>
-<script src="<c:url value="/plugin/socket/stomp.min.js" />"></script>
-<!-- bootstrap -->
-<script
-	src="<c:url value="/plugin/bootstrap-3.3.7/js/bootstrap.min.js" />"></script>
-<!-- bootstrap-toggle -->
-<script
-	src="<c:url value="/plugin/bootstrap-toggle/js/bootstrap-toggle.min.js" />"></script>
-<!-- alertify -->
-<script src="<c:url value="/plugin/alertify/js/alertify.min.js" />"></script>
-<!-- index -->
-<script src="<c:url value="/js/index.js" />"></script>
-
 </head>
 <body>
-	<div id="main">
+	<div id="main" class="container-fluid">
 
 		<div class="row">
-			<div class="col-md-3 col-sm-3">
-				<div id="info">current information +++ open server tim sync...</div>
-			</div>
-			<div class="col-md-9 col-sm-9 text-center">
+			<div class="col-12 text-center">
 				<div id="option" class="row">
-					<div class="col-md-3 text-left">
+					<div class="col-6 text-left">
 						<input type="checkbox" id="seatMap-toggle" data-size="mini"
 							data-toggle="toggle" data-onstyle="success"
 							data-offstyle="danger" /> 調整座位表
 					</div>
-					<div class="col-md-3"></div>
-					<div class="col-md-6 text-right">
+					<div class="col-6 text-right">
 						<button id="saveSeatMap" onclick="saveSeatMap();" type="button"
 							class="default-none btn btn-success">存檔</button>
 					</div>
 				</div>
 
 				<div class="row">
-					<div id="imageSelection" class="col-md-12 default-none">
+					<div id="imageSelection" class="col-12 default-none">
 						<img id="tableIconSM" class="canvasInnerObj"
 							src="<c:url value="images/table-sm.png" />">
 					</div>
 				</div>
+
 				<div class="row default-none" id="mapSizeOption">
-					<!-- 					<div class="col-md-3 text-right">寬</div> -->
-					<div class="col-md-2">
-						<div class="float-left">寬</div>
-						<input type="number" class="form-control shortInput float-left"
+					<div class="col-6">
+						寬 use input group..
+						<input type="number" class="form-control shortInput"
 							id="mapWidth" value=100 />
 					</div>
-					<div class="col-md-2">
+					<div class="col-6">
 						<div class="float-left">高</div>
 						<input type="number" class="form-control shortInput float-left"
 							id="mapHeight" value=100 />
@@ -105,11 +79,11 @@
 				<div class="row">
 					<div id="seatMap">
 						<div class="row">
-							<div class="col-md-2 col-sm-6 col-6">
+							<div class="col-2">
 								<img id="tableIconSM"
 									src="<c:url value="images/table-mini.png" />"> 使用中
 							</div>
-							<div class="col-md-2 col-sm-6 col-6">
+							<div class="col-2">
 								<img id="tableIconSM"
 									src="<c:url value="images/empty-table-mini.png" />"> 空桌
 							</div>
@@ -121,6 +95,8 @@
 				</div>
 			</div>
 		</div>
+
+
 		<!-- -------------------------------------------------- -->
 		<div class="row">
 			<div id="serverTime" class="col-md-12 text-center"></div>
@@ -241,5 +217,36 @@
 		</div>
 	</div>
 
+	<script src="https://code.jquery.com/jquery-3.2.1.min.js"
+		integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
+		crossorigin="anonymous"></script>
+	<script
+		src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.4.0/js/tether.min.js"
+		integrity="sha384-DztdAPBWPRXSA/3eYEEUWrWCy7G5KFbe8fFjk5JAIxUYHKkDx6Qin1DkWx51bBrb"
+		crossorigin="anonymous"></script>
+	<script
+		src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/js/bootstrap.min.js"
+		integrity="sha384-vBWWzlZJ8ea9aCX4pEW3rVHjgjt7zpkNpZk+02D9phzyeVkE+jo0ieGizqPLForn"
+		crossorigin="anonymous"></script>
+
+
+	<!-- jquery ui -->
+	<script
+		src="<c:url value="/plugin/jquery-ui-1.12.1.custom/jquery-ui.min.js" />"></script>
+	<script
+		src="<c:url value="/plugin/jquery-ui-1.12.1.custom/jquery-ui.touch-punch.min.js" />"></script>
+	<!-- jquery tmpl -->
+	<script src="<c:url value="/plugin/jquery/js/jquery-tmpl.min.js" />"></script>
+	<!-- bootstrap-toggle -->
+	<script
+		src="<c:url value="/plugin/bootstrap-toggle/js/bootstrap-toggle.min.js" />"></script>
+
+	<!-- socket -->
+	<script src="<c:url value="/plugin/socket/sockjs-1.1.1.js" />"></script>
+	<script src="<c:url value="/plugin/socket/stomp.min.js" />"></script>
+	<script src="<c:url value="/plugin/alertify/js/alertify.min.js" />"></script>
+
+	<!-- index -->
+	<script src="<c:url value="/js/index.js" />"></script>
 </body>
 </html>
