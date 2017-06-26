@@ -640,7 +640,8 @@ function displayOrderList(isDelivery) {
 function lockMap() {
 	/** show seat map revise option */
 	$("#saveSeatMap, #deleteTable").fadeOut();
-	$("#imageSelection, #mapSizeOption").slideUp();
+//	$("#imageSelection, #mapSizeOption").slideUp();
+	$("#mapSetting").slideUp();
 
 	/** disable draggable */
 	$(".tableSeat").draggable("disable");
@@ -656,7 +657,8 @@ function lockMap() {
 function unlockMap() {
 	/** show seat map revise option */
 	$("#saveSeatMap, #deleteTable").fadeIn();
-	$("#imageSelection, #mapSizeOption").slideDown();
+//	$("#imageSelection, #mapSizeOption").slideDown();
+	$("#mapSetting").slideDown();
 
 	/** map width trigger */
 	$("#mapWidth").on("keypress keydown keyup", function() {

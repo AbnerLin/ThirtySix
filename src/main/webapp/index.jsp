@@ -5,12 +5,18 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport"
-	content="width=device-width initial-scale=1 maximum-scale=2">
+	content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
 
 <link rel="stylesheet"
 	href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css"
 	integrity="sha384-rwoIResjU2yc3z8GV/NPeZWAv56rSmLldC3R/AZzGRnGxQQKnKkoFVhFQhNUwEyJ"
 	crossorigin="anonymous">
+
+<link rel="stylesheet"
+	href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons"
+	rel="stylesheet">
 
 <link type="text/css"
 	href="<c:url value="/plugin/bootstrap-toggle/css/bootstrap-toggle.min.css" />"
@@ -42,62 +48,72 @@
 <body>
 	<div id="main" class="container-fluid">
 
-		<div class="row">
-			<div class="col-12 text-center">
-				<div id="option" class="row">
-					<div class="col-6 text-left">
-						<input type="checkbox" id="seatMap-toggle" data-size="mini"
-							data-toggle="toggle" data-onstyle="success"
-							data-offstyle="danger" /> 調整座位表
-					</div>
-					<div class="col-6 text-right">
-						<button id="saveSeatMap" onclick="saveSeatMap();" type="button"
-							class="default-none btn btn-success">存檔</button>
-					</div>
-				</div>
+		<!-- btn option -->
+		<div id="option" class="row w-100">
+			<div class="col-6 text-left">
+				<input type="checkbox" id="seatMap-toggle" data-size="mini"
+					data-toggle="toggle" data-onstyle="success" data-offstyle="danger" />
+				調整座位表
+			</div>
+			<div class="col-6 text-right">
+				<button id="saveSeatMap" onclick="saveSeatMap();" type="button"
+					class="default-none btn btn-success">存檔</button>
+			</div>
+		</div>
 
+		<div class="row" id="mapSetting" style="display: none;">
+			<!-- furnish selection. -->
+			<div class="col-12">
+				<div id="imageSelection" class="col-12">
+					<img id="tableIconSM" class="canvasInnerObj"
+						src="<c:url value="images/table-sm.png" />">
+				</div>
+			</div>
+
+			<!-- map size info -->
+			<div class="col-12 py-3" id="mapSizeOption">
 				<div class="row">
-					<div id="imageSelection" class="col-12 default-none">
-						<img id="tableIconSM" class="canvasInnerObj"
-							src="<c:url value="images/table-sm.png" />">
-					</div>
-				</div>
-
-				<div class="row default-none" id="mapSizeOption">
 					<div class="col-6">
-						寬 use input group..
-						<input type="number" class="form-control shortInput"
-							id="mapWidth" value=100 />
-					</div>
-					<div class="col-6">
-						<div class="float-left">高</div>
-						<input type="number" class="form-control shortInput float-left"
-							id="mapHeight" value=100 />
-					</div>
-				</div>
-
-				<div class="row">
-					<div id="seatMap">
-						<div class="row">
-							<div class="col-2">
-								<img id="tableIconSM"
-									src="<c:url value="images/table-mini.png" />"> 使用中
-							</div>
-							<div class="col-2">
-								<img id="tableIconSM"
-									src="<c:url value="images/empty-table-mini.png" />"> 空桌
-							</div>
+						<div class="input-group">
+							<span class="input-group-addon" id="basic-addon1">寬</span> <input
+								type="text" class="form-control" id="mapWidth"
+								placeholder="witdh" aria-describedby="basic-addon1" value="100">
 						</div>
-						<input id="mapLocation" type="hidden" value=""> <input
-							id="mapID" type="hidden" value="">
-						<div id="garbageBlock" class="glyphicon glyphicon-trash"></div>
+					</div>
+					<div class="col-6">
+						<div class="input-group">
+							<span class="input-group-addon" id="basic-addon1">高</span> <input
+								type="text" class="form-control" id="mapHeight"
+								placeholder="height" aria-describedby="basic-addon1" value="100">
+						</div>
 					</div>
 				</div>
 			</div>
 		</div>
 
+		<div class="row">
+			<div class="col-12 row">
+				<div class="mx-3">
+					<img id="tableIconSM" src="<c:url value="images/table-mini.png" />">
+					使用中
+				</div>
+				<div class="mx-3">
+					<img id="tableIconSM"
+						src="<c:url value="images/empty-table-mini.png" />"> 空桌
+				</div>
+			</div>
+			<div class="col-12">
+				<div id="seatMap">
+					<input id="mapLocation" type="hidden" value=""> <input
+						id="mapID" type="hidden" value="">
+					<div id="garbageBlock">
+						<i class="material-icons">&#xe872;</i>
+					</div>
+				</div>
+			</div>
+		</div>
 
-		<!-- -------------------------------------------------- -->
+		<!-- -----------------------以下未修改 bootstrap4------------------------- -->
 		<div class="row">
 			<div id="serverTime" class="col-md-12 text-center"></div>
 		</div>
