@@ -2,6 +2,8 @@ package com.thirtySix.dto;
 
 import java.io.Serializable;
 
+import com.thirtySix.model.FurnishClass;
+
 public class FurnishClassDTO implements Serializable {
 
 	private static final long serialVersionUID = -1379112567946869030L;
@@ -12,17 +14,17 @@ public class FurnishClassDTO implements Serializable {
 	private String classID;
 
 	/**
-	 * 名稱
+	 * If true, it can operator. etc table.
 	 */
-	private String displayText;
+	private boolean enable;
 
 	/**
-	 * 圖檔路徑
+	 * furnish class detail
 	 */
-	private String imagePath;
+	private FurnishClass detail;
 
 	/**
-	 * 取得類別編號
+	 * Get class id.
 	 * 
 	 * @return
 	 */
@@ -31,7 +33,7 @@ public class FurnishClassDTO implements Serializable {
 	}
 
 	/**
-	 * 設定類別編號
+	 * Set class id.
 	 * 
 	 * @param classID
 	 */
@@ -40,39 +42,39 @@ public class FurnishClassDTO implements Serializable {
 	}
 
 	/**
-	 * 取得圖檔路徑
+	 * Get if element enable, if true, it can operator.
 	 * 
 	 * @return
 	 */
-	public String getImagePath() {
-		return imagePath;
+	public boolean isEnable() {
+		return enable;
 	}
 
 	/**
-	 * 設定圖檔路徑
+	 * Set if this element enable.
 	 * 
-	 * @param imagePath
+	 * @param enable
 	 */
-	public void setImagePath(String imagePath) {
-		this.imagePath = imagePath;
+	public void setEnable(boolean enable) {
+		this.enable = enable;
 	}
 
 	/**
-	 * 取得名稱
+	 * Get furnish detail.
 	 * 
 	 * @return
 	 */
-	public String getDisplayText() {
-		return displayText;
+	public FurnishClass getDetail() {
+		return detail;
 	}
 
 	/**
-	 * 設定名稱
+	 * Set furnish detail.
 	 * 
-	 * @param text
+	 * @param detail
 	 */
-	public void setDisplayText(String displayText) {
-		this.displayText = displayText;
+	public void setDetail(FurnishClass detail) {
+		this.detail = detail;
 	}
 
 }

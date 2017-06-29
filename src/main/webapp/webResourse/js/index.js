@@ -68,8 +68,8 @@ function resetSeat(info) {
 	$("#" + tableNumber).removeClass("diningTable");
 	$("#" + tableNumber).addClass("emptyTable");
 	$("#" + tableNumber).find(".seatMapBadge").remove();
-	
-	if(modalShowUpCacheCustomerID == customerID)
+
+	if (modalShowUpCacheCustomerID == customerID)
 		$("#serviceModal").modal("hide");
 
 	alertify.success("桌號" + tableNumber + "結帳出場！");
@@ -640,7 +640,7 @@ function displayOrderList(isDelivery) {
 function lockMap() {
 	/** show seat map revise option */
 	$("#saveSeatMap, #deleteTable").fadeOut();
-//	$("#imageSelection, #mapSizeOption").slideUp();
+	// $("#imageSelection, #mapSizeOption").slideUp();
 	$("#mapSetting").slideUp();
 
 	/** disable draggable */
@@ -657,7 +657,7 @@ function lockMap() {
 function unlockMap() {
 	/** show seat map revise option */
 	$("#saveSeatMap, #deleteTable").fadeIn();
-//	$("#imageSelection, #mapSizeOption").slideDown();
+	// $("#imageSelection, #mapSizeOption").slideDown();
 	$("#mapSetting").slideDown();
 
 	/** map width trigger */
@@ -720,9 +720,9 @@ function initSeatMap(customerData) {
 		method : "POST",
 		success : function(response, status, jqXHR) {
 			var data = response.data[0];
-			if(data == null)
+			if (data == null)
 				return;
-			
+
 			/** set map ID */
 			var mapID = data.mapID;
 			$("#mapID").val(mapID)
@@ -766,8 +766,8 @@ function initSeatMap(customerData) {
 	});
 
 	/** compoment add */
-	$(".canvasInnerObj").click(function() {
-		var id = $(this).attr("id");
+	$(".mapOption").click(function() {
+
 		/** get table number */
 		alertify.prompt("請輸入桌號", function(e, str) {
 			if (e) {
@@ -938,9 +938,26 @@ function sendItem(bookingID, customerID) {
 
 }
 
+/**
+ * Load furnish option.
+ */
+function getFurnishOption() {
+	var action = "getFurnishClass";
+	$.ajax({
+		url : appUrl + action,
+		async : true,
+		success : function(response, status, jqXHR) {
+			console.log(JSON.stringify(response));
+		}
+	});
+}
+
 $(document).ready(function() {
 	/** 啟動監聽WebSocket */
 	subscribeWebSocket();
+
+	/** load furnish option */
+	getFurnishOption();
 
 	/** 載入菜單列表 */
 	getMenu();

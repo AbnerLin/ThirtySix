@@ -78,16 +78,17 @@ public class Buffer {
 		List<ItemClass> itemClassList = itemService.findAllItemClass();
 
 		logger.info("載入菜單...");
-		for (ItemClass itemClass : itemClassList) {
+		
+		itemClassList.forEach(itemClass -> {
 			this.itemMenuBuffer.put(itemClass.getClassID(), itemClass);
 			logger.info("菜單種類編號：" + itemClass.getClassID() + " 種類：" + itemClass.getClassName());
-
-			for (Item item : itemClass.getItemList()) {
+			
+			itemClass.getItemList().forEach(item -> {
 				this.itemBuffer.put(item.getItemID(), item);
-
 				logger.info("菜色編號：" + item.getItemID() + " 名稱：" + item.getName());
-			}
-		}
+			});
+		});
+		
 		logger.info("菜單載入完畢。");
 	}
 
@@ -98,18 +99,15 @@ public class Buffer {
 		List<Customer> diningCustomerList = customerService.findDiningCustomer();
 
 		logger.info("載入用餐中顧客...");
-		int count = 0;
-		for (Customer customer : diningCustomerList) {
-			String id = customer.getCustomerID();
-
+		diningCustomerList.forEach(customer -> {
 			Date date = new Date(customer.getCheckInTime().getTime());
 			customer.setCheckInTimeStringFormat(TimeFormatter.getInstance().getTime(date));
+			
+			this.diningCustomerBuffer.put(customer.getCustomerID(), customer);
+			logger.info("顧客編號" + customer.getCustomerID() + " 進場時間" + customer.getCheckInTime());
+		});
 
-			this.diningCustomerBuffer.put(id, customer);
-			count++;
-			logger.info("顧客編號" + id + " 進場時間" + customer.getCheckInTime());
-		}
-		logger.info("用餐中顧客共" + count + "組。");
+		logger.info("用餐中顧客共" + this.diningCustomerBuffer.size() + "組。");
 	}
 
 	/**

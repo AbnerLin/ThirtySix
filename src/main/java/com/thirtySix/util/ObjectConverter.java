@@ -55,6 +55,7 @@ public class ObjectConverter {
 			Booking booking = new Booking();
 			booking.setCustomer(customer);
 			booking.setOrderTime(order.getTime());
+			
 			Item _item = this.buffer.getItems().get(item.getItemId());
 			booking.setItem(_item);
 			booking.setVolume(item.getVolume());

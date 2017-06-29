@@ -25,11 +25,13 @@ import com.thirtySix.core.Buffer;
 import com.thirtySix.dto.AjaxDTO;
 import com.thirtySix.dto.CheckOutDTO;
 import com.thirtySix.dto.CustomerDTO;
+import com.thirtySix.dto.FurnishClassDTO;
 import com.thirtySix.dto.OrderDTO;
 import com.thirtySix.dto.SeatMapDTO;
 import com.thirtySix.model.Booking;
 import com.thirtySix.model.Customer;
 import com.thirtySix.model.Furnish;
+import com.thirtySix.model.FurnishClass;
 import com.thirtySix.model.ItemClass;
 import com.thirtySix.model.SeatMap;
 import com.thirtySix.service.BookingService;
@@ -59,6 +61,39 @@ public class IndexController {
 	private SimpMessagingTemplate messageTemplate = null;
 
 	private Logger logger = Logger.getLogger(this.getClass());
+
+	/**
+	 * Get Furnish class for design map.
+	 * 
+	 * @param request
+	 * @param response
+	 * @return
+	 */
+	@ResponseBody
+	@RequestMapping(value = { "/getFurnishClass" })
+	public AjaxDTO getFurnishClass(HttpServletRequest request, HttpServletResponse response) {
+		AjaxDTO result = new AjaxDTO();
+
+		List<FurnishClass> furnishClass = mapService.findAllFurnishClass();
+
+		Map<String, FurnishClassDTO> map = new HashMap<String, FurnishClassDTO>();
+		furnishClass.forEach(_class -> {
+			FurnishClassDTO dto = new FurnishClassDTO();
+			dto.setClassID(_class.getClassID());
+			if(_class.getName().equals(FurnishClass.CLASS.TABLE.name()))
+				dto.setEnable(true);
+			else
+				dto.setEnable(false);
+			dto.setDetail(_class);
+			
+			map.put(_class.getClassID(), dto);
+		});
+		
+		result.setStatusOK();
+		result.setData(map);
+
+		return result;
+	}
 
 	/**
 	 * 取得用餐中顧客
@@ -265,7 +300,7 @@ public class IndexController {
 		AjaxDTO result = new AjaxDTO();
 
 		String bookingID = request.getParameter("bookingID").trim();
-		
+
 		Map<String, Customer> diningCustomer = buffer.getDiningCustomer();
 		Customer customerData = null;
 		Iterator iter = diningCustomer.entrySet().iterator();

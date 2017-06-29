@@ -37,6 +37,13 @@ public interface MapService {
 	 * @return
 	 */
 	public FurnishClass findFurnishClass(String classID);
+	
+	/**
+	 * Find all furnish class.
+	 * 
+	 * @return
+	 */
+	public List<FurnishClass> findAllFurnishClass();
 
 	/**
 	 * Find all furnish.

@@ -12,10 +12,16 @@ import javax.persistence.Table;
 
 import org.hibernate.annotations.GenericGenerator;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Entity
 @Table(name = "FURNISHCLASS")
 public class FurnishClass {
 
+	public static enum CLASS {
+		TABLE, TREE, RESTROOM, BAR, DRINK_BLOCK, SAUSE_BLOCK;
+	}
+	
 	/**
 	 * 類別編號
 	 */
@@ -28,7 +34,7 @@ public class FurnishClass {
 	/**
 	 * 名稱
 	 */
-	@Column(name = "NAME")
+	@Column(name = "NAME", unique = true)
 	private String name;
 
 	/**
@@ -40,6 +46,7 @@ public class FurnishClass {
 	/**
 	 * 座位清單
 	 */
+	@JsonIgnore
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "furnishClass")
 	private List<Furnish> seatList;
 

@@ -57,4 +57,9 @@ public class MapServiceImpl implements MapService {
 		return (List<Furnish>) furnishRepo.findAll();
 	}
 
+	@Override
+	public List<FurnishClass> findAllFurnishClass() {
+		return (List<FurnishClass>) furnishClassRepo.findAll();
+	}
+
 }
