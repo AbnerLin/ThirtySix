@@ -15,6 +15,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -62,6 +63,26 @@ public class IndexController {
 
 	private Logger logger = Logger.getLogger(this.getClass());
 
+	@ResponseBody
+	@RequestMapping(value = { "/test_admin" })
+	@Secured("ROLE_ADMIN")
+	public String testADMIN() {
+		return "admin";
+	}
+
+	@ResponseBody
+	@RequestMapping(value = { "/test_staff" })
+	@Secured("ROLE_STAFF")
+	public String testSTAFF() {
+		return "staff";
+	}
+
+	@ResponseBody
+	@RequestMapping(value = { "/test_none" })
+	public String testNone() {
+		return "none";
+	}
+
 	/**
 	 * Get Furnish class for design map.
 	 * 
@@ -71,7 +92,8 @@ public class IndexController {
 	 */
 	@ResponseBody
 	@RequestMapping(value = { "/getFurnishClass" })
-	public AjaxDTO getFurnishClass(HttpServletRequest request, HttpServletResponse response) {
+	public AjaxDTO getFurnishClass(HttpServletRequest request,
+			HttpServletResponse response) {
 		AjaxDTO result = new AjaxDTO();
 
 		List<FurnishClass> furnishClass = mapService.findAllFurnishClass();
@@ -80,15 +102,15 @@ public class IndexController {
 		furnishClass.forEach(_class -> {
 			FurnishClassDTO dto = new FurnishClassDTO();
 			dto.setClassID(_class.getClassID());
-			if(_class.getName().equals(FurnishClass.CLASS.TABLE.name()))
+			if (_class.getName().equals(FurnishClass.CLASS.TABLE.name()))
 				dto.setEnable(true);
 			else
 				dto.setEnable(false);
 			dto.setDetail(_class);
-			
+
 			map.put(_class.getClassID(), dto);
 		});
-		
+
 		result.setStatusOK();
 		result.setData(map);
 
@@ -105,7 +127,8 @@ public class IndexController {
 	@SuppressWarnings("rawtypes")
 	@ResponseBody
 	@RequestMapping(value = { "/getDiningCustomer" })
-	public AjaxDTO getDiningCustomer(HttpServletRequest request, HttpServletResponse response) {
+	public AjaxDTO getDiningCustomer(HttpServletRequest request,
+			HttpServletResponse response) {
 		AjaxDTO result = new AjaxDTO();
 		Map<String, Customer> diningCustomer = buffer.getDiningCustomer();
 
@@ -115,7 +138,8 @@ public class IndexController {
 			Map.Entry pair = (Entry) iter.next();
 			String customerId = (String) pair.getKey();
 			Customer customerPO = (Customer) pair.getValue();
-			diningCustomerDTO.put(customerId, objConverter.customerPOtoDTO(customerPO));
+			diningCustomerDTO.put(customerId,
+					objConverter.customerPOtoDTO(customerPO));
 		}
 
 		result.setStatusOK();
@@ -134,11 +158,13 @@ public class IndexController {
 	 */
 	@ResponseBody
 	@RequestMapping(value = { "/customerCheckOut" })
-	public AjaxDTO customerCheckOut(HttpServletRequest request, HttpServletResponse response,
+	public AjaxDTO customerCheckOut(HttpServletRequest request,
+			HttpServletResponse response,
 			@ModelAttribute CheckOutDTO checkOutDto) {
 		AjaxDTO result = new AjaxDTO();
 
-		Customer customer = this.buffer.getDiningCustomer().get(checkOutDto.getCustomerID());
+		Customer customer = this.buffer.getDiningCustomer()
+				.get(checkOutDto.getCustomerID());
 
 		Calendar nowCalendar = Calendar.getInstance();
 		Timestamp now = new Timestamp(nowCalendar.getTimeInMillis());
@@ -168,7 +194,8 @@ public class IndexController {
 	 */
 	@ResponseBody
 	@RequestMapping(value = { "/customerCheckIn" })
-	public AjaxDTO customerCheckIn(HttpServletRequest request, HttpServletResponse response,
+	public AjaxDTO customerCheckIn(HttpServletRequest request,
+			HttpServletResponse response,
 			@ModelAttribute CustomerDTO customerDTO) {
 		AjaxDTO result = new AjaxDTO();
 
@@ -202,9 +229,10 @@ public class IndexController {
 	 * @return
 	 */
 	@ResponseBody
-	@RequestMapping(value = { "/saveSeatMap" }, consumes = "application/json", produces = "application/json")
-	private AjaxDTO saveSeatMap(HttpServletRequest request, HttpServletResponse response,
-			@RequestBody SeatMapDTO seatMapDTO) {
+	@RequestMapping(value = {
+			"/saveSeatMap" }, consumes = "application/json", produces = "application/json")
+	private AjaxDTO saveSeatMap(HttpServletRequest request,
+			HttpServletResponse response, @RequestBody SeatMapDTO seatMapDTO) {
 		AjaxDTO result = new AjaxDTO();
 
 		/** map save */
@@ -212,7 +240,8 @@ public class IndexController {
 		mapService.saveSeatMap(mapPO);
 
 		/** furnish save */
-		List<Furnish> furnishList = objConverter.furnishDTOtoPO(mapPO, seatMapDTO.getSeatPositionList());
+		List<Furnish> furnishList = objConverter.furnishDTOtoPO(mapPO,
+				seatMapDTO.getSeatPositionList());
 
 		mapService.saveFurnish(mapPO, furnishList);
 
@@ -229,7 +258,8 @@ public class IndexController {
 	 */
 	@ResponseBody
 	@RequestMapping(value = { "/getSeatMap" })
-	private AjaxDTO getSeatMap(HttpServletRequest request, HttpServletResponse response) {
+	private AjaxDTO getSeatMap(HttpServletRequest request,
+			HttpServletResponse response) {
 		AjaxDTO result = new AjaxDTO();
 
 		List<SeatMap> mapList = mapService.getSeatMap();
@@ -249,7 +279,8 @@ public class IndexController {
 	 */
 	@ResponseBody
 	@RequestMapping(value = { "/getMenu" })
-	private AjaxDTO getMenu(HttpServletRequest request, HttpServletResponse response) {
+	private AjaxDTO getMenu(HttpServletRequest request,
+			HttpServletResponse response) {
 		AjaxDTO result = new AjaxDTO();
 
 		Map<String, ItemClass> menu = buffer.getMenu();
@@ -268,9 +299,10 @@ public class IndexController {
 	 * @return
 	 */
 	@ResponseBody
-	@RequestMapping(value = { "/sendOrder" }, consumes = "application/json", produces = "application/json")
-	private AjaxDTO sendOrder(HttpServletRequest request, HttpServletResponse response,
-			@RequestBody OrderDTO orderDTO) {
+	@RequestMapping(value = {
+			"/sendOrder" }, consumes = "application/json", produces = "application/json")
+	private AjaxDTO sendOrder(HttpServletRequest request,
+			HttpServletResponse response, @RequestBody OrderDTO orderDTO) {
 		AjaxDTO result = new AjaxDTO();
 
 		/** save to db */
@@ -278,7 +310,8 @@ public class IndexController {
 		bookingService.saveBooking(bookingList);
 
 		/** update buffer */
-		Customer customer = this.buffer.getDiningCustomer().get(orderDTO.getCustomerId());
+		Customer customer = this.buffer.getDiningCustomer()
+				.get(orderDTO.getCustomerId());
 		customer.getBookingList().addAll(bookingList);
 
 		/** send to client */
@@ -296,7 +329,8 @@ public class IndexController {
 	@SuppressWarnings("rawtypes")
 	@ResponseBody
 	@RequestMapping(value = { "/sendDishes" })
-	private AjaxDTO sendDishes(HttpServletRequest request, HttpServletResponse response) {
+	private AjaxDTO sendDishes(HttpServletRequest request,
+			HttpServletResponse response) {
 		AjaxDTO result = new AjaxDTO();
 
 		String bookingID = request.getParameter("bookingID").trim();
@@ -350,10 +384,12 @@ public class IndexController {
 			Map.Entry pair = (Entry) iter.next();
 			String customerId = (String) pair.getKey();
 			Customer customerPO = (Customer) pair.getValue();
-			diningCustomerDTO.put(customerId, objConverter.customerPOtoDTO(customerPO));
+			diningCustomerDTO.put(customerId,
+					objConverter.customerPOtoDTO(customerPO));
 		}
 
-		this.messageTemplate.convertAndSend("/topic/customerUpdate", diningCustomerDTO);
+		this.messageTemplate.convertAndSend("/topic/customerUpdate",
+				diningCustomerDTO);
 	}
 
 	/**
@@ -362,7 +398,8 @@ public class IndexController {
 	 * @param customerId
 	 */
 	public void customerInfoUpdateNotification(Customer customer) {
-		this.messageTemplate.convertAndSend("/topic/specifyCustomerUpdate", objConverter.customerPOtoDTO(customer));
+		this.messageTemplate.convertAndSend("/topic/specifyCustomerUpdate",
+				objConverter.customerPOtoDTO(customer));
 	}
 
 	/**
@@ -371,7 +408,8 @@ public class IndexController {
 	 * @param tableNumber
 	 */
 	public void customerCheckInNotification(String tableNumber) {
-		this.messageTemplate.convertAndSend("/topic/customerCheckIn", tableNumber);
+		this.messageTemplate.convertAndSend("/topic/customerCheckIn",
+				tableNumber);
 	}
 
 	/**
@@ -380,6 +418,7 @@ public class IndexController {
 	 * @param tableNumber
 	 */
 	public void customerCheckOutNotification(CheckOutDTO checkOutDto) {
-		this.messageTemplate.convertAndSend("/topic/customerCheckOut", checkOutDto);
+		this.messageTemplate.convertAndSend("/topic/customerCheckOut",
+				checkOutDto);
 	}
 }

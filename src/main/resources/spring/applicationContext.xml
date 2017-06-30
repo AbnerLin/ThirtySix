@@ -36,6 +36,8 @@
 
 	<!-- dataSource -->
 	<import resource="spring-datasource.xml" />
+	<!-- spring security -->
+	<import resource="spring-security.xml" />
 
 	<!-- resources mapping -->
 	<mvc:resources mapping="/js/**" location="/webResourse/js/" />
