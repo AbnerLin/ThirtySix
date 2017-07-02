@@ -18,17 +18,14 @@ function getDiningCustomer() {
 	$.ajax({
 		url : appUrl + action,
 		async : true,
-		dataType : "json",
+		data : {
+			j_username : "aa",
+			j_password : "aa",
+		},
 		success : function(response, status, jqXHR) {
-			var data = response.data;
-			diningCustomer = data;
-
-			/** init seatMap */
-			initSeatMap(data);
-
-			alertify.success("用餐中顧客載入成功!");
+			alert(JSON.strinfiy(response));
 		}
-	})
+	});
 }
 
 /**

@@ -77,12 +77,6 @@ public class IndexController {
 		return "staff";
 	}
 
-	@ResponseBody
-	@RequestMapping(value = { "/test_none" })
-	public String testNone() {
-		return "none";
-	}
-
 	/**
 	 * Get Furnish class for design map.
 	 * 

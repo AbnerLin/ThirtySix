@@ -46,6 +46,15 @@
 	rel="stylesheet">
 </head>
 <body>
+	<a href="logout">logout.</a>
+
+	<form action="logout" method="POST">
+		<input type="hidden" name="${_csrf.parameterName}"
+			value="${_csrf.token}" />
+		<button type="submit">aa</button>
+	</form>
+
+
 	<div id="main" class="container-fluid">
 
 		<!-- btn option -->
@@ -65,16 +74,11 @@
 			<!-- furnish selection. -->
 			<div id="imageSelection" class="col-12">
 				<img id="tableIconSM" class="canvasInnerObj"
-					src="images/table-sm.png" />
-					 
-				<img id="tableIconSM"
-					class="canvasInnerObj" src="images/door.png" />
-					
-				<img id="tableIconSM"
-					class="canvasInnerObj" src="images/restroom.png" />
-					
-				<img id="tableIconSM"
-					class="canvasInnerObj" src="images/bar.png" />
+					src="images/table-sm.png" /> <img id="tableIconSM"
+					class="canvasInnerObj" src="images/door.png" /> <img
+					id="tableIconSM" class="canvasInnerObj" src="images/restroom.png" />
+
+				<img id="tableIconSM" class="canvasInnerObj" src="images/bar.png" />
 			</div>
 
 			<!-- map size info -->
