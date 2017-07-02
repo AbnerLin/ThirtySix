@@ -67,6 +67,12 @@ public class IndexController {
 	@RequestMapping(value = { "/test_admin" })
 	@Secured("ROLE_ADMIN")
 	public String testADMIN() {
+		if (this.buffer == null)
+			System.out.println("buffer null");
+
+		if (this.bookingService == null)
+			System.out.println("service null");
+
 		return "admin";
 	}
 
@@ -225,7 +231,7 @@ public class IndexController {
 	@ResponseBody
 	@RequestMapping(value = {
 			"/saveSeatMap" }, consumes = "application/json", produces = "application/json")
-	private AjaxDTO saveSeatMap(HttpServletRequest request,
+	public AjaxDTO saveSeatMap(HttpServletRequest request,
 			HttpServletResponse response, @RequestBody SeatMapDTO seatMapDTO) {
 		AjaxDTO result = new AjaxDTO();
 
@@ -252,7 +258,7 @@ public class IndexController {
 	 */
 	@ResponseBody
 	@RequestMapping(value = { "/getSeatMap" })
-	private AjaxDTO getSeatMap(HttpServletRequest request,
+	public AjaxDTO getSeatMap(HttpServletRequest request,
 			HttpServletResponse response) {
 		AjaxDTO result = new AjaxDTO();
 
@@ -273,7 +279,8 @@ public class IndexController {
 	 */
 	@ResponseBody
 	@RequestMapping(value = { "/getMenu" })
-	private AjaxDTO getMenu(HttpServletRequest request,
+	@Secured("ROLE_ADMIN")
+	public AjaxDTO getMenu(HttpServletRequest request,
 			HttpServletResponse response) {
 		AjaxDTO result = new AjaxDTO();
 
@@ -295,7 +302,7 @@ public class IndexController {
 	@ResponseBody
 	@RequestMapping(value = {
 			"/sendOrder" }, consumes = "application/json", produces = "application/json")
-	private AjaxDTO sendOrder(HttpServletRequest request,
+	public AjaxDTO sendOrder(HttpServletRequest request,
 			HttpServletResponse response, @RequestBody OrderDTO orderDTO) {
 		AjaxDTO result = new AjaxDTO();
 
@@ -323,7 +330,7 @@ public class IndexController {
 	@SuppressWarnings("rawtypes")
 	@ResponseBody
 	@RequestMapping(value = { "/sendDishes" })
-	private AjaxDTO sendDishes(HttpServletRequest request,
+	public AjaxDTO sendDishes(HttpServletRequest request,
 			HttpServletResponse response) {
 		AjaxDTO result = new AjaxDTO();
 

@@ -48,8 +48,8 @@
 	rel="stylesheet">
 
 <!-- spring security csrf -->
-<sec:csrfMetaTags />
-<meta name="_csrf" th:content="${_csrf.token}" />
+<%-- <sec:csrfMetaTags /> --%>
+<%-- <meta name="_csrf" th:content="${_csrf.token}" /> --%>
 </head>
 <body>
 	<sec:authorize access="isAuthenticated()">
