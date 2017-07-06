@@ -1,4 +1,6 @@
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@taglib uri="http://www.springframework.org/security/tags"
+	prefix="sec"%>
 <%@ page contentType="text/html; charset=UTF-8"%>
 <!doctype html>
 <html>
@@ -44,8 +46,19 @@
 <!-- index -->
 <link type="text/css" href="<c:url value="/css/index.css" />"
 	rel="stylesheet">
+<sec:authorize access="hasRole('ROLE_ADMIN')">
+	<script>
+		window.onload = function() {
+			adminTask();
+		}
+	</script>
+</sec:authorize>
 </head>
 <body>
+	<sec:authorize access="hasRole('ROLE_ADMIN')">
+			This content will only be visible to users who have
+			the "supervisor" authority in their list of <tt>GrantedAuthority</tt>s.
+		</sec:authorize>
 	<a href="logout">logout.</a>
 
 	<form action="logout" method="POST">
@@ -56,19 +69,20 @@
 
 
 	<div id="main" class="container-fluid">
-
-		<!-- btn option -->
-		<div id="option" class="row w-100">
-			<div class="col-6 text-left">
-				<input type="checkbox" id="seatMap-toggle" data-size="mini"
-					data-toggle="toggle" data-onstyle="success" data-offstyle="danger" />
-				調整座位表
+		<sec:authorize access="hasRole('ROLE_ADMIN')">
+			<!-- btn option -->
+			<div id="option" class="row w-100">
+				<div class="col-6 text-left">
+					<input type="checkbox" id="seatMap-toggle" data-size="mini"
+						data-toggle="toggle" data-onstyle="success" data-offstyle="danger" />
+					調整座位表
+				</div>
+				<div class="col-6 text-right">
+					<button id="saveSeatMap" onclick="saveSeatMap();" type="button"
+						class="default-none btn btn-success">存檔</button>
+				</div>
 			</div>
-			<div class="col-6 text-right">
-				<button id="saveSeatMap" onclick="saveSeatMap();" type="button"
-					class="default-none btn btn-success">存檔</button>
-			</div>
-		</div>
+		</sec:authorize>
 
 		<div class="row" id="mapSetting" style="display: none;">
 			<!-- furnish selection. -->
@@ -274,6 +288,7 @@
 	<script src="<c:url value="/plugin/alertify/js/alertify.min.js" />"></script>
 
 	<!-- index -->
+	<script src="<c:url value="/js/common.js" />"></script>
 	<script src="<c:url value="/js/index.js" />"></script>
 </body>
 </html>

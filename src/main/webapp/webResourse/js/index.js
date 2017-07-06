@@ -1,5 +1,3 @@
-var appUrl = "/thirtySix/";
-
 /** cache dining customer list */
 var diningCustomer = null;
 
@@ -947,16 +945,23 @@ function getFurnishOption() {
 		async : true,
 		success : function(response, status, jqXHR) {
 			console.log(JSON.stringify(response));
+			//TODO
 		}
 	});
+}
+
+
+/**
+ * if admin role, execute this method. 
+ */
+function adminTask() {
+	/** load furnish option */
+	getFurnishOption();
 }
 
 $(document).ready(function() {
 	/** 啟動監聽WebSocket */
 	subscribeWebSocket();
-
-	/** load furnish option */
-	getFurnishOption();
 
 	/** 載入菜單列表 */
 	getMenu();

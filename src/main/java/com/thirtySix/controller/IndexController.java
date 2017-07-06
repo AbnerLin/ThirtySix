@@ -92,6 +92,7 @@ public class IndexController {
 	 */
 	@ResponseBody
 	@RequestMapping(value = { "/getFurnishClass" })
+	@Secured("ROLE_ADMIN")
 	public AjaxDTO getFurnishClass(HttpServletRequest request,
 			HttpServletResponse response) {
 		AjaxDTO result = new AjaxDTO();
@@ -279,7 +280,7 @@ public class IndexController {
 	 */
 	@ResponseBody
 	@RequestMapping(value = { "/getMenu" })
-	@Secured("ROLE_ADMIN")
+	@Secured("ROLE_STAFF")
 	public AjaxDTO getMenu(HttpServletRequest request,
 			HttpServletResponse response) {
 		AjaxDTO result = new AjaxDTO();

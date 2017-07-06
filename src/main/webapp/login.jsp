@@ -46,10 +46,6 @@
 <!-- index -->
 <link type="text/css" href="<c:url value="/css/index.css" />"
 	rel="stylesheet">
-
-<!-- spring security csrf -->
-<%-- <sec:csrfMetaTags /> --%>
-<%-- <meta name="_csrf" th:content="${_csrf.token}" /> --%>
 </head>
 <body>
 	<sec:authorize access="isAuthenticated()">
@@ -60,47 +56,37 @@
 	<div id="loginPage"
 		class="container-fluid d-flex align-items-center justify-content-center">
 
-		<%-- 		<sec:authorize access="isAuthenticated()"> --%>
-		<%-- 			<% --%>
-		<!--  				response.sendRedirect("index.jsp"); -->
-		<%-- 			%> --%>
-		<!-- 		is authenicated -->
-		<%-- 	</sec:authorize> --%>
-
-		<%-- 		<sec:authorize access="isAnonymous()"> --%>
-		<!-- 			anonymouse -->
-		<%-- 		</sec:authorize> --%>
-
-		<%-- 		<sec:authorize ifAnyGranted="ROLE_ADMIN"> --%>
-		<sec:authorize access="hasRole('ROLE_ADMIN')">
-			This content will only be visible to users who have
-			the "supervisor" authority in their list of <tt>GrantedAuthority</tt>s.
-		</sec:authorize>
-		aa
-
-		<div class="row">
-			<div class="col-6 d-flex align-items-center justify-content-center">
-				<h1>ThirtySix</h1>
-			</div>
-			<div class="col-6 d-flex align-items-center justify-content-center">
-				<div>
-					<div class="input-group m-1 px-1">
-						<span class="input-group-addon">帳號</span> <input type="text"
-							class="form-control" id="username" name="j_username"
-							aria-describedby="basic-addon1" value="" />
-					</div>
-					<div class="input-group m-1 px-1">
-						<span class="input-group-addon">密碼</span> <input type="password"
-							class="form-control" id="password" name="j_password"
-							aria-describedby="basic-addon1" value="" />
-					</div>
-					<div class="d-flex justify-content-end">
-						<button type="submit" class="btn btn-sm btn-secondary"
-							onclick="login();">登入</button>
+		<div class="row d-flex justify-content-center">
+			<div class="row">
+				<div class="col-6 d-flex align-items-center justify-content-center">
+					<h1>ThirtySix</h1>
+				</div>
+				<div class="col-6 d-flex align-items-center justify-content-center">
+					<div>
+						<div class="input-group m-1 px-1">
+							<span class="input-group-addon">帳號</span> <input type="text"
+								class="form-control" id="username" name="j_username"
+								aria-describedby="basic-addon1" value="" />
+						</div>
+						<div class="input-group m-1 px-1">
+							<span class="input-group-addon">密碼</span> <input type="password"
+								class="form-control" id="password" name="j_password"
+								aria-describedby="basic-addon1" value="" />
+						</div>
+						<div class="d-flex justify-content-end">
+							<button type="submit" class="btn btn-sm btn-secondary"
+								onclick="login();">登入</button>
+						</div>
 					</div>
 				</div>
 			</div>
+			<div class="col-12 d-flex align-items-center justify-content-center">
+				<div id="msg" class="alert alert-danger" role="alert" style="display: none;">
+					<strong>Oops!</strong>Username and Password not accepted.
+				</div>
+			</div>
 		</div>
+
 
 	</div>
 	<script src="https://code.jquery.com/jquery-3.2.1.min.js"
@@ -133,6 +119,7 @@
 	<script src="<c:url value="/plugin/alertify/js/alertify.min.js" />"></script>
 
 	<!-- index -->
+	<script src="<c:url value="/js/common.js" />"></script>
 	<script src="<c:url value="/js/login.js" />"></script>
 </body>
 </html>
