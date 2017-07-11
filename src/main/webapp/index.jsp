@@ -62,8 +62,6 @@
 	<a href="logout">logout.</a>
 
 	<form action="logout" method="POST">
-		<input type="hidden" name="${_csrf.parameterName}"
-			value="${_csrf.token}" />
 		<button type="submit">aa</button>
 	</form>
 
@@ -87,12 +85,7 @@
 		<div class="row" id="mapSetting" style="display: none;">
 			<!-- furnish selection. -->
 			<div id="imageSelection" class="col-12">
-				<img id="tableIconSM" class="canvasInnerObj"
-					src="images/table-sm.png" /> <img id="tableIconSM"
-					class="canvasInnerObj" src="images/door.png" /> <img
-					id="tableIconSM" class="canvasInnerObj" src="images/restroom.png" />
-
-				<img id="tableIconSM" class="canvasInnerObj" src="images/bar.png" />
+				<%@ include file="jsp/template/mapOption.jsp"%>
 			</div>
 
 			<!-- map size info -->
@@ -276,8 +269,10 @@
 		src="<c:url value="/plugin/jquery-ui-1.12.1.custom/jquery-ui.min.js" />"></script>
 	<script
 		src="<c:url value="/plugin/jquery-ui-1.12.1.custom/jquery-ui.touch-punch.min.js" />"></script>
-	<!-- jquery tmpl -->
-	<script src="<c:url value="/plugin/jquery/js/jquery-tmpl.min.js" />"></script>
+
+	<!-- jquery-template -->
+	<script src="<c:url value="/plugin/jquery/js/jquery-tmpl.js" />"></script>
+
 	<!-- bootstrap-toggle -->
 	<script
 		src="<c:url value="/plugin/bootstrap-toggle/js/bootstrap-toggle.min.js" />"></script>
@@ -288,7 +283,7 @@
 	<script src="<c:url value="/plugin/alertify/js/alertify.min.js" />"></script>
 
 	<!-- index -->
-	<script src="<c:url value="/js/common.js" />"></script>
+	<script src="<c:url value="/js/core.js" />"></script>
 	<script src="<c:url value="/js/index.js" />"></script>
 </body>
 </html>

@@ -14,35 +14,6 @@
 	integrity="sha384-rwoIResjU2yc3z8GV/NPeZWAv56rSmLldC3R/AZzGRnGxQQKnKkoFVhFQhNUwEyJ"
 	crossorigin="anonymous">
 
-<link rel="stylesheet"
-	href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-
-<link href="https://fonts.googleapis.com/icon?family=Material+Icons"
-	rel="stylesheet">
-
-<link type="text/css"
-	href="<c:url value="/plugin/bootstrap-toggle/css/bootstrap-toggle.min.css" />"
-	rel="stylesheet">
-
-<!-- alertify -->
-<link type="text/css"
-	href="<c:url value="/plugin/alertify/css/alertify.core.css" />"
-	rel="stylesheet">
-<link type="text/css"
-	href="<c:url value="/plugin/alertify/css/alertify.bootstrap.css" />"
-	rel="stylesheet">
-
-<!-- jquery ui -->
-<link type="text/css"
-	href="<c:url value="/plugin/jquery-ui-1.12.1.custom/jquery-ui.min.css" />"
-	rel="stylesheet">
-<link type="text/css"
-	href="<c:url value="/plugin/jquery-ui-1.12.1.custom/jquery-ui.structure.min.css" />"
-	rel="stylesheet">
-<link type="text/css"
-	href="<c:url value="/plugin/jquery-ui-1.12.1.custom/jquery-ui.theme.min.css" />"
-	rel="stylesheet">
-
 <!-- index -->
 <link type="text/css" href="<c:url value="/css/index.css" />"
 	rel="stylesheet">
@@ -81,14 +52,14 @@
 				</div>
 			</div>
 			<div class="col-12 d-flex align-items-center justify-content-center">
-				<div id="msg" class="alert alert-danger" role="alert" style="display: none;">
+				<div id="msg" class="alert alert-danger" role="alert"
+					style="display: none;">
 					<strong>Oops!</strong>Username and Password not accepted.
 				</div>
 			</div>
 		</div>
-
-
 	</div>
+	
 	<script src="https://code.jquery.com/jquery-3.2.1.min.js"
 		integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
 		crossorigin="anonymous"></script>
@@ -101,25 +72,8 @@
 		integrity="sha384-vBWWzlZJ8ea9aCX4pEW3rVHjgjt7zpkNpZk+02D9phzyeVkE+jo0ieGizqPLForn"
 		crossorigin="anonymous"></script>
 
-
-	<!-- jquery ui -->
-	<script
-		src="<c:url value="/plugin/jquery-ui-1.12.1.custom/jquery-ui.min.js" />"></script>
-	<script
-		src="<c:url value="/plugin/jquery-ui-1.12.1.custom/jquery-ui.touch-punch.min.js" />"></script>
-	<!-- jquery tmpl -->
-	<script src="<c:url value="/plugin/jquery/js/jquery-tmpl.min.js" />"></script>
-	<!-- bootstrap-toggle -->
-	<script
-		src="<c:url value="/plugin/bootstrap-toggle/js/bootstrap-toggle.min.js" />"></script>
-
-	<!-- socket -->
-	<script src="<c:url value="/plugin/socket/sockjs-1.1.1.js" />"></script>
-	<script src="<c:url value="/plugin/socket/stomp.min.js" />"></script>
-	<script src="<c:url value="/plugin/alertify/js/alertify.min.js" />"></script>
-
 	<!-- index -->
-	<script src="<c:url value="/js/common.js" />"></script>
+	<script src="<c:url value="/js/core.js" />"></script>
 	<script src="<c:url value="/js/login.js" />"></script>
 </body>
 </html>

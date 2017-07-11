@@ -69,6 +69,12 @@ input[type=number]::-webkit-inner-spin-button, input[type=number]::-webkit-outer
 	background-image: url("../images/table-sm.png");
 }
 
+.emptyTable {
+	background-image: url("../images/empty-table-sm.png");
+}
+
+
+
 #garbageBlock {
 	height: 40px;
 	width: 100%;
@@ -81,9 +87,6 @@ input[type=number]::-webkit-inner-spin-button, input[type=number]::-webkit-outer
 	-webkit-border-radius: 10px 10px 10px 10px;
 }
 
-.emptyTable {
-	background-image: url("../images/empty-table-sm.png");
-}
 
 .default-none {
 	display: none;

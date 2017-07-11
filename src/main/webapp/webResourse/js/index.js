@@ -14,7 +14,7 @@ function getDiningCustomer() {
 	var action = "getDiningCustomer";
 
 	$.ajax({
-		url : appUrl + action,
+		url : App.URL + action,
 		async : true,
 		success : function(response, status, jqXHR) {
 			var data = response.data;
@@ -41,7 +41,7 @@ function checkOut() {
 		if (e) {
 			var action = "customerCheckOut";
 			$.ajax({
-				url : appUrl + action,
+				url : App.URL + action,
 				async : true,
 				method : "POST",
 				data : {
@@ -202,7 +202,7 @@ function customerCheckIn() {
 		if (e) {
 			var action = "customerCheckIn";
 			$.ajax({
-				url : appUrl + action,
+				url : App.URL + action,
 				async : true,
 				method : "POST",
 				data : {
@@ -274,7 +274,7 @@ function getMenu() {
 	var action = "getMenu";
 
 	$.ajax({
-		url : appUrl + action,
+		url : App.URL + action,
 		async : true,
 		method : "POST",
 		success : function(response, status, jqXHR) {
@@ -497,7 +497,7 @@ function sendOrder() {
 		if (e) {
 			var action = "sendOrder";
 			$.ajax({
-				url : appUrl + action,
+				url : App.URL + action,
 				async : true,
 				method : "POST",
 				dataType : "json",
@@ -712,7 +712,7 @@ function initSeatMap(customerData) {
 	var action = "getSeatMap";
 
 	$.ajax({
-		url : appUrl + action,
+		url : App.URL + action,
 		async : true,
 		method : "POST",
 		success : function(response, status, jqXHR) {
@@ -786,7 +786,7 @@ function initSeatMap(customerData) {
 				});
 
 				if (!isDuplicate)
-					addTableToMap(tableNumber, 0, 0);
+					addTableToMap(tableNumber, 0, 0, classStr);
 			}
 		}, "");
 	});
@@ -839,7 +839,7 @@ function initInfoToSeatMap(data) {
  * 
  * @param tableNumber
  */
-function addTableToMap(tableNumber, x, y) {
+function addTableToMap(tableNumber, x, y, classStr) {
 
 	var className = "";
 
@@ -899,7 +899,7 @@ function saveSeatMap() {
 
 	var action = "saveSeatMap";
 	$.ajax({
-		url : appUrl + action,
+		url : App.URL + action,
 		async : true,
 		method : "POST",
 		dataType : "json",
@@ -922,7 +922,7 @@ function sendItem(bookingID, customerID) {
 
 	var action = "sendDishes";
 	$.ajax({
-		url : appUrl + action,
+		url : App.URL + action,
 		async : true,
 		method : "POST",
 		data : {
@@ -941,18 +941,30 @@ function sendItem(bookingID, customerID) {
 function getFurnishOption() {
 	var action = "getFurnishClass";
 	$.ajax({
-		url : appUrl + action,
+		url : App.URL + action,
 		async : true,
 		success : function(response, status, jqXHR) {
-			console.log(JSON.stringify(response));
-			//TODO
+			var dataArray = [];
+			$.each(response.data, function(key, value) {
+				var _data = {
+					imagePath : Images.URL + value.detail.imagePath,
+					classID : value.detail.classID,
+					enable : value.enable
+				}
+				dataArray.push(_data);
+
+				/** Save to buffer. */
+				Images.getInstance().addImage(key, _data);
+			});
+			$("#mapOptionTemplate").tmpl(dataArray).appendTo( //
+			"#imageSelection");
 		}
 	});
+
 }
 
-
 /**
- * if admin role, execute this method. 
+ * if admin role, execute this method.
  */
 function adminTask() {
 	/** load furnish option */

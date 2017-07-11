@@ -1,6 +1,6 @@
 function login() {
 	$.ajax({
-		url : appUrl + "login",
+		url : App.URL + "login",
 		method : "POST",
 		async : true,
 		data : {
@@ -10,7 +10,7 @@ function login() {
 		success : function(response, status, jqXHR) {
 
 			if (response == "true") {
-				window.location.replace(appUrl);
+				window.location.replace(App.URL);
 			} else {
 				$("#msg").show();
 			}
