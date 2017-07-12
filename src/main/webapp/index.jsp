@@ -48,9 +48,9 @@
 	rel="stylesheet">
 <sec:authorize access="hasRole('ROLE_ADMIN')">
 	<script>
-		window.onload = function() {
-			adminTask();
-		}
+		// 		window.onload = function() {
+		// 			adminTask();
+		// 		}
 	</script>
 </sec:authorize>
 </head>
@@ -61,9 +61,9 @@
 		</sec:authorize>
 	<a href="logout">logout.</a>
 
-	<form action="logout" method="POST">
-		<button type="submit">aa</button>
-	</form>
+<!-- 	<form action="logout" method="POST"> -->
+		<button onclick="Auth.logout();">logout</button>
+<!-- 	</form> -->
 
 
 	<div id="main" class="container-fluid">
@@ -277,13 +277,14 @@
 	<script
 		src="<c:url value="/plugin/bootstrap-toggle/js/bootstrap-toggle.min.js" />"></script>
 
+	<script src="<c:url value="/plugin/alertify/js/alertify.min.js" />"></script>
+
 	<!-- socket -->
 	<script src="<c:url value="/plugin/socket/sockjs-1.1.1.js" />"></script>
 	<script src="<c:url value="/plugin/socket/stomp.min.js" />"></script>
-	<script src="<c:url value="/plugin/alertify/js/alertify.min.js" />"></script>
 
 	<!-- index -->
-	<script src="<c:url value="/js/core.js" />"></script>
+	<script src="<c:url value="/js/core/core.js" />"></script>
 	<script src="<c:url value="/js/index.js" />"></script>
 </body>
 </html>

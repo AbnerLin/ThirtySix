@@ -39,5 +39,5 @@
 	<!-- spring security ajax handler -->
 	<beans:bean id="ajaxAuthenticationFailureHandler" class="com.thirtySix.auth.AuthFailureHandler" />
 	<beans:bean id="ajaxAuthenticationSuccessHandler" class="com.thirtySix.auth.AuthSuccessHandler" />
-
+	
 </beans:beans>

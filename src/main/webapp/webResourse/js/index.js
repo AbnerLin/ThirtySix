@@ -967,18 +967,28 @@ function getFurnishOption() {
  * if admin role, execute this method.
  */
 function adminTask() {
-	/** load furnish option */
-	getFurnishOption();
+	alert("admin Task");
+	// getFurnishOption();
+}
+
+function generalTask() {
+	/** 啟動監聽WebSocket */
+	subscribeWebSocket();
+	/** 載入菜單列表 */
+	getMenu();
+	/** get dining customer */
+	getDiningCustomer();
 }
 
 $(document).ready(function() {
-	/** 啟動監聽WebSocket */
-	subscribeWebSocket();
-
-	/** 載入菜單列表 */
-	getMenu();
-
-	/** get dining customer */
-	getDiningCustomer();
+	// TODO
+	/**
+	 * 1. FurnishClass
+	 * 
+	 * 
+	 */
+	$.when(FurnishClass.init()).done(function() {
+		console.log(JSON.stringify(FurnishClass.getAll()));
+	});
 
 });

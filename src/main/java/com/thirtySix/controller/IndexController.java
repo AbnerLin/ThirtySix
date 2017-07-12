@@ -93,15 +93,16 @@ public class IndexController {
 	@ResponseBody
 	@RequestMapping(value = { "/getFurnishClass" })
 	@Secured("ROLE_ADMIN")
-	public AjaxDTO getFurnishClass(HttpServletRequest request,
-			HttpServletResponse response) {
-		AjaxDTO result = new AjaxDTO();
+	public AjaxDTO getFurnishClass(final HttpServletRequest request,
+			final HttpServletResponse response) {
+		final AjaxDTO result = new AjaxDTO();
 
-		List<FurnishClass> furnishClass = mapService.findAllFurnishClass();
+		final List<FurnishClass> furnishClass = this.mapService
+				.findAllFurnishClass();
 
-		Map<String, FurnishClassDTO> map = new HashMap<String, FurnishClassDTO>();
+		final Map<String, FurnishClassDTO> map = new HashMap<String, FurnishClassDTO>();
 		furnishClass.forEach(_class -> {
-			FurnishClassDTO dto = new FurnishClassDTO();
+			final FurnishClassDTO dto = new FurnishClassDTO();
 			dto.setClassID(_class.getClassID());
 			if (_class.getName().equals(FurnishClass.CLASS.TABLE.name()))
 				dto.setEnable(true);
@@ -128,19 +129,20 @@ public class IndexController {
 	@SuppressWarnings("rawtypes")
 	@ResponseBody
 	@RequestMapping(value = { "/getDiningCustomer" })
-	public AjaxDTO getDiningCustomer(HttpServletRequest request,
-			HttpServletResponse response) {
-		AjaxDTO result = new AjaxDTO();
-		Map<String, Customer> diningCustomer = buffer.getDiningCustomer();
+	public AjaxDTO getDiningCustomer(final HttpServletRequest request,
+			final HttpServletResponse response) {
+		final AjaxDTO result = new AjaxDTO();
+		final Map<String, Customer> diningCustomer = this.buffer
+				.getDiningCustomer();
 
-		Map<String, CustomerDTO> diningCustomerDTO = new HashMap<String, CustomerDTO>();
-		Iterator iter = diningCustomer.entrySet().iterator();
+		final Map<String, CustomerDTO> diningCustomerDTO = new HashMap<String, CustomerDTO>();
+		final Iterator iter = diningCustomer.entrySet().iterator();
 		while (iter.hasNext()) {
-			Map.Entry pair = (Entry) iter.next();
-			String customerId = (String) pair.getKey();
-			Customer customerPO = (Customer) pair.getValue();
+			final Map.Entry pair = (Entry) iter.next();
+			final String customerId = (String) pair.getKey();
+			final Customer customerPO = (Customer) pair.getValue();
 			diningCustomerDTO.put(customerId,
-					objConverter.customerPOtoDTO(customerPO));
+					this.objConverter.customerPOtoDTO(customerPO));
 		}
 
 		result.setStatusOK();
@@ -159,16 +161,16 @@ public class IndexController {
 	 */
 	@ResponseBody
 	@RequestMapping(value = { "/customerCheckOut" })
-	public AjaxDTO customerCheckOut(HttpServletRequest request,
-			HttpServletResponse response,
-			@ModelAttribute CheckOutDTO checkOutDto) {
-		AjaxDTO result = new AjaxDTO();
+	public AjaxDTO customerCheckOut(final HttpServletRequest request,
+			final HttpServletResponse response,
+			@ModelAttribute final CheckOutDTO checkOutDto) {
+		final AjaxDTO result = new AjaxDTO();
 
-		Customer customer = this.buffer.getDiningCustomer()
+		final Customer customer = this.buffer.getDiningCustomer()
 				.get(checkOutDto.getCustomerID());
 
-		Calendar nowCalendar = Calendar.getInstance();
-		Timestamp now = new Timestamp(nowCalendar.getTimeInMillis());
+		final Calendar nowCalendar = Calendar.getInstance();
+		final Timestamp now = new Timestamp(nowCalendar.getTimeInMillis());
 		customer.setCheckOutTime(now);
 
 		/** update db */
@@ -195,22 +197,22 @@ public class IndexController {
 	 */
 	@ResponseBody
 	@RequestMapping(value = { "/customerCheckIn" })
-	public AjaxDTO customerCheckIn(HttpServletRequest request,
-			HttpServletResponse response,
-			@ModelAttribute CustomerDTO customerDTO) {
-		AjaxDTO result = new AjaxDTO();
+	public AjaxDTO customerCheckIn(final HttpServletRequest request,
+			final HttpServletResponse response,
+			@ModelAttribute final CustomerDTO customerDTO) {
+		final AjaxDTO result = new AjaxDTO();
 
 		/** 設定進場時間 */
-		Date now = new Date();
-		Timestamp time = new Timestamp(now.getTime());
+		final Date now = new Date();
+		final Timestamp time = new Timestamp(now.getTime());
 		customerDTO.setCheckInTime(time);
 
 		/** 新增資料庫 */
-		Customer po = objConverter.customerDTOtoPO(customerDTO);
-		customerService.saveCustomer(po);
+		final Customer po = this.objConverter.customerDTOtoPO(customerDTO);
+		this.customerService.saveCustomer(po);
 
 		/** 更新buffer */
-		Map<String, Customer> bufferMap = buffer.getDiningCustomer();
+		final Map<String, Customer> bufferMap = this.buffer.getDiningCustomer();
 		bufferMap.put(po.getCustomerID(), po);
 
 		/** push socket to every client */
@@ -232,19 +234,20 @@ public class IndexController {
 	@ResponseBody
 	@RequestMapping(value = {
 			"/saveSeatMap" }, consumes = "application/json", produces = "application/json")
-	public AjaxDTO saveSeatMap(HttpServletRequest request,
-			HttpServletResponse response, @RequestBody SeatMapDTO seatMapDTO) {
-		AjaxDTO result = new AjaxDTO();
+	public AjaxDTO saveSeatMap(final HttpServletRequest request,
+			final HttpServletResponse response,
+			@RequestBody final SeatMapDTO seatMapDTO) {
+		final AjaxDTO result = new AjaxDTO();
 
 		/** map save */
-		SeatMap mapPO = objConverter.seatMapDTOtoPO(seatMapDTO);
-		mapService.saveSeatMap(mapPO);
+		final SeatMap mapPO = this.objConverter.seatMapDTOtoPO(seatMapDTO);
+		this.mapService.saveSeatMap(mapPO);
 
 		/** furnish save */
-		List<Furnish> furnishList = objConverter.furnishDTOtoPO(mapPO,
-				seatMapDTO.getSeatPositionList());
+		final List<Furnish> furnishList = this.objConverter
+				.furnishDTOtoPO(mapPO, seatMapDTO.getSeatPositionList());
 
-		mapService.saveFurnish(mapPO, furnishList);
+		this.mapService.saveFurnish(mapPO, furnishList);
 
 		return result;
 	}
@@ -259,11 +262,11 @@ public class IndexController {
 	 */
 	@ResponseBody
 	@RequestMapping(value = { "/getSeatMap" })
-	public AjaxDTO getSeatMap(HttpServletRequest request,
-			HttpServletResponse response) {
-		AjaxDTO result = new AjaxDTO();
+	public AjaxDTO getSeatMap(final HttpServletRequest request,
+			final HttpServletResponse response) {
+		final AjaxDTO result = new AjaxDTO();
 
-		List<SeatMap> mapList = mapService.getSeatMap();
+		final List<SeatMap> mapList = this.mapService.getSeatMap();
 
 		result.setStatusOK();
 		result.setData(mapList);
@@ -281,11 +284,11 @@ public class IndexController {
 	@ResponseBody
 	@RequestMapping(value = { "/getMenu" })
 	@Secured("ROLE_STAFF")
-	public AjaxDTO getMenu(HttpServletRequest request,
-			HttpServletResponse response) {
-		AjaxDTO result = new AjaxDTO();
+	public AjaxDTO getMenu(final HttpServletRequest request,
+			final HttpServletResponse response) {
+		final AjaxDTO result = new AjaxDTO();
 
-		Map<String, ItemClass> menu = buffer.getMenu();
+		final Map<String, ItemClass> menu = this.buffer.getMenu();
 
 		result.setStatusOK();
 		result.setData(menu);
@@ -303,16 +306,18 @@ public class IndexController {
 	@ResponseBody
 	@RequestMapping(value = {
 			"/sendOrder" }, consumes = "application/json", produces = "application/json")
-	public AjaxDTO sendOrder(HttpServletRequest request,
-			HttpServletResponse response, @RequestBody OrderDTO orderDTO) {
-		AjaxDTO result = new AjaxDTO();
+	public AjaxDTO sendOrder(final HttpServletRequest request,
+			final HttpServletResponse response,
+			@RequestBody final OrderDTO orderDTO) {
+		final AjaxDTO result = new AjaxDTO();
 
 		/** save to db */
-		List<Booking> bookingList = objConverter.bookingDTOtoPO(orderDTO);
-		bookingService.saveBooking(bookingList);
+		final List<Booking> bookingList = this.objConverter
+				.bookingDTOtoPO(orderDTO);
+		this.bookingService.saveBooking(bookingList);
 
 		/** update buffer */
-		Customer customer = this.buffer.getDiningCustomer()
+		final Customer customer = this.buffer.getDiningCustomer()
 				.get(orderDTO.getCustomerId());
 		customer.getBookingList().addAll(bookingList);
 
@@ -331,30 +336,31 @@ public class IndexController {
 	@SuppressWarnings("rawtypes")
 	@ResponseBody
 	@RequestMapping(value = { "/sendDishes" })
-	public AjaxDTO sendDishes(HttpServletRequest request,
-			HttpServletResponse response) {
-		AjaxDTO result = new AjaxDTO();
+	public AjaxDTO sendDishes(final HttpServletRequest request,
+			final HttpServletResponse response) {
+		final AjaxDTO result = new AjaxDTO();
 
-		String bookingID = request.getParameter("bookingID").trim();
+		final String bookingID = request.getParameter("bookingID").trim();
 
-		Map<String, Customer> diningCustomer = buffer.getDiningCustomer();
+		final Map<String, Customer> diningCustomer = this.buffer
+				.getDiningCustomer();
 		Customer customerData = null;
-		Iterator iter = diningCustomer.entrySet().iterator();
+		final Iterator iter = diningCustomer.entrySet().iterator();
 		while (iter.hasNext()) {
-			Map.Entry pair = (Entry) iter.next();
-			Customer customer = (Customer) pair.getValue();
-			List<Booking> bookingList = customer.getBookingList();
-			for (Booking booking : bookingList) {
+			final Map.Entry pair = (Entry) iter.next();
+			final Customer customer = (Customer) pair.getValue();
+			final List<Booking> bookingList = customer.getBookingList();
+			for (final Booking booking : bookingList) {
 				if (booking.getBookingID().equals(bookingID)) {
-					Calendar now = Calendar.getInstance();
-					Timestamp time = new Timestamp(now.getTimeInMillis());
+					final Calendar now = Calendar.getInstance();
+					final Timestamp time = new Timestamp(now.getTimeInMillis());
 
 					/** update buffer */
 					booking.setDeliveryTime(time);
 					booking.setIsSend(1);
 
 					/** update db */
-					bookingService.saveBooking(booking);
+					this.bookingService.saveBooking(booking);
 
 					customerData = customer;
 					break;
@@ -376,18 +382,19 @@ public class IndexController {
 	 */
 	@SuppressWarnings("rawtypes")
 	public void diningCustomerUpdate() {
-		logger.info("用餐中顧客更新，發佈WebSocket");
+		this.logger.info("用餐中顧客更新，發佈WebSocket");
 
-		Map<String, Customer> diningCustomer = buffer.getDiningCustomer();
+		final Map<String, Customer> diningCustomer = this.buffer
+				.getDiningCustomer();
 
-		Map<String, CustomerDTO> diningCustomerDTO = new HashMap<String, CustomerDTO>();
-		Iterator iter = diningCustomer.entrySet().iterator();
+		final Map<String, CustomerDTO> diningCustomerDTO = new HashMap<String, CustomerDTO>();
+		final Iterator iter = diningCustomer.entrySet().iterator();
 		while (iter.hasNext()) {
-			Map.Entry pair = (Entry) iter.next();
-			String customerId = (String) pair.getKey();
-			Customer customerPO = (Customer) pair.getValue();
+			final Map.Entry pair = (Entry) iter.next();
+			final String customerId = (String) pair.getKey();
+			final Customer customerPO = (Customer) pair.getValue();
 			diningCustomerDTO.put(customerId,
-					objConverter.customerPOtoDTO(customerPO));
+					this.objConverter.customerPOtoDTO(customerPO));
 		}
 
 		this.messageTemplate.convertAndSend("/topic/customerUpdate",
@@ -399,9 +406,9 @@ public class IndexController {
 	 * 
 	 * @param customerId
 	 */
-	public void customerInfoUpdateNotification(Customer customer) {
+	public void customerInfoUpdateNotification(final Customer customer) {
 		this.messageTemplate.convertAndSend("/topic/specifyCustomerUpdate",
-				objConverter.customerPOtoDTO(customer));
+				this.objConverter.customerPOtoDTO(customer));
 	}
 
 	/**
@@ -409,7 +416,7 @@ public class IndexController {
 	 * 
 	 * @param tableNumber
 	 */
-	public void customerCheckInNotification(String tableNumber) {
+	public void customerCheckInNotification(final String tableNumber) {
 		this.messageTemplate.convertAndSend("/topic/customerCheckIn",
 				tableNumber);
 	}
@@ -419,8 +426,9 @@ public class IndexController {
 	 * 
 	 * @param tableNumber
 	 */
-	public void customerCheckOutNotification(CheckOutDTO checkOutDto) {
+	public void customerCheckOutNotification(final CheckOutDTO checkOutDto) {
 		this.messageTemplate.convertAndSend("/topic/customerCheckOut",
 				checkOutDto);
 	}
+
 }

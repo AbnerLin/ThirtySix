@@ -14,6 +14,14 @@
 	integrity="sha384-rwoIResjU2yc3z8GV/NPeZWAv56rSmLldC3R/AZzGRnGxQQKnKkoFVhFQhNUwEyJ"
 	crossorigin="anonymous">
 
+<!-- alertify -->
+<link type="text/css"
+	href="<c:url value="/plugin/alertify/css/alertify.core.css" />"
+	rel="stylesheet">
+<link type="text/css"
+	href="<c:url value="/plugin/alertify/css/alertify.bootstrap.css" />"
+	rel="stylesheet">
+
 <!-- index -->
 <link type="text/css" href="<c:url value="/css/index.css" />"
 	rel="stylesheet">
@@ -59,7 +67,7 @@
 			</div>
 		</div>
 	</div>
-	
+
 	<script src="https://code.jquery.com/jquery-3.2.1.min.js"
 		integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
 		crossorigin="anonymous"></script>
@@ -72,8 +80,15 @@
 		integrity="sha384-vBWWzlZJ8ea9aCX4pEW3rVHjgjt7zpkNpZk+02D9phzyeVkE+jo0ieGizqPLForn"
 		crossorigin="anonymous"></script>
 
+	<script src="<c:url value="/plugin/alertify/js/alertify.min.js" />"></script>
+
 	<!-- index -->
-	<script src="<c:url value="/js/core.js" />"></script>
-	<script src="<c:url value="/js/login.js" />"></script>
+	<script src="<c:url value="/js/core/core.js" />"></script>
+
+	<script>
+		function login() {
+			Auth.login($("#username").val(), $("#password").val());
+		}
+	</script>
 </body>
 </html>
