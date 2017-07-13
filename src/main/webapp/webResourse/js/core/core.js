@@ -9,9 +9,7 @@ var App = (function() {
 
 	var rootURL = "/thirtySix/";
 
-	self.URL = (function() {
-		return rootURL;
-	})();
+	self.URL = rootURL;
 
 	self.LoadScript = function(script) {
 		$.ajax({

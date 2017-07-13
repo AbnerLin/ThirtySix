@@ -964,19 +964,37 @@ function getFurnishOption() {
 }
 
 /**
+ * Set Furnish Option.
+ * 
+ * @returns
+ */
+function setFurnishOption() {
+	FurnishClass.init().done(function() {
+		var dataArray = [];
+		$.each(FurnishClass.getAll(), function(key, value) {
+			if(value.isVisible == true)
+				dataArray.push(value);
+		});
+		$("#mapOptionTemplate").tmpl(dataArray).appendTo("#imageSelection");
+	});
+}
+
+/**
  * if admin role, execute this method.
  */
 function adminTask() {
 	alert("admin Task");
-	// getFurnishOption();
 }
 
 function generalTask() {
-	/** 啟動監聽WebSocket */
-	subscribeWebSocket();
-	/** 載入菜單列表 */
-	getMenu();
-	/** get dining customer */
+	/** set furnish option */
+	setFurnishOption();
+
+	// /** 啟動監聽WebSocket */
+	// subscribeWebSocket();
+	// /** 載入菜單列表 */
+	// getMenu();
+	// /** get dining customer */
 	getDiningCustomer();
 }
 
@@ -987,8 +1005,13 @@ $(document).ready(function() {
 	 * 
 	 * 
 	 */
-	$.when(FurnishClass.init()).done(function() {
-		console.log(JSON.stringify(FurnishClass.getAll()));
-	});
+	// $.when(FurnishClass.init()).done(function() {
+	// console.log(JSON.stringify(FurnishClass.getAll()));
+	// console.log(JSON.stringify(FurnishClass.getAll()));
+	// console.log(JSON.stringify(FurnishClass.getAll()));
+	// console.log(JSON.stringify(FurnishClass.getAll()));
+	// });
+	/** Execute general task */
+	generalTask();
 
 });

@@ -7,7 +7,11 @@ String.prototype.format = function() {
 	return str;
 }
 
-var Images = {};
-Images.URL = (function() {
-	return App.URL + "images/";
+var Images = (function() {
+	var self = {};
+	var imagesUrl = App.URL + "images/";
+
+	self.URL = imagesUrl;
+
+	return self;
 })();

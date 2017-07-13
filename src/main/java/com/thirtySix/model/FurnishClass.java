@@ -4,6 +4,8 @@ import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
@@ -11,6 +13,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.Type;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
@@ -19,9 +22,9 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 public class FurnishClass {
 
 	public static enum CLASS {
-		TABLE, TREE, RESTROOM, BAR, DRINK_BLOCK, SAUSE_BLOCK;
+		TABLE, TREE, RESTROOM, DOOR, BAR, EMPTY_TABLE;
 	}
-	
+
 	/**
 	 * 類別編號
 	 */
@@ -35,13 +38,28 @@ public class FurnishClass {
 	 * 名稱
 	 */
 	@Column(name = "NAME", unique = true)
-	private String name;
+	@Enumerated(EnumType.STRING)
+	private CLASS name;
 
 	/**
 	 * 圖檔路徑
 	 */
 	@Column(name = "IMAGEPATH")
 	private String imagePath;
+
+	/**
+	 * Whether show on setting option.
+	 */
+	@Type(type = "true_false")
+	@Column(name = "VISIBLE")
+	private Boolean isVisible;
+
+	/**
+	 * This furnish capable of being named ?
+	 */
+	@Type(type = "true_false")
+	@Column(name = "NAMEABLE")
+	private Boolean isNameable;
 
 	/**
 	 * 座位清單
@@ -56,7 +74,7 @@ public class FurnishClass {
 	 * @return
 	 */
 	public String getClassID() {
-		return classID;
+		return this.classID;
 	}
 
 	/**
@@ -64,7 +82,7 @@ public class FurnishClass {
 	 * 
 	 * @param classID
 	 */
-	public void setClassID(String classID) {
+	public void setClassID(final String classID) {
 		this.classID = classID;
 	}
 
@@ -74,7 +92,7 @@ public class FurnishClass {
 	 * @return
 	 */
 	public String getImagePath() {
-		return imagePath;
+		return this.imagePath;
 	}
 
 	/**
@@ -82,25 +100,25 @@ public class FurnishClass {
 	 * 
 	 * @param imagePath
 	 */
-	public void setImagePath(String imagePath) {
+	public void setImagePath(final String imagePath) {
 		this.imagePath = imagePath;
 	}
 
 	/**
 	 * 取得名稱
-	 * 
+	 *
 	 * @return
 	 */
-	public String getName() {
-		return name;
+	public CLASS getName() {
+		return this.name;
 	}
 
 	/**
 	 * 設定名稱
-	 * 
+	 *
 	 * @param text
 	 */
-	public void setName(String name) {
+	public void setName(final CLASS name) {
 		this.name = name;
 	}
 
@@ -110,7 +128,7 @@ public class FurnishClass {
 	 * @return
 	 */
 	public List<Furnish> getSeatList() {
-		return seatList;
+		return this.seatList;
 	}
 
 	/**
@@ -118,8 +136,44 @@ public class FurnishClass {
 	 * 
 	 * @param seatList
 	 */
-	public void setSeatList(List<Furnish> seatList) {
+	public void setSeatList(final List<Furnish> seatList) {
 		this.seatList = seatList;
+	}
+
+	/**
+	 * Get visible
+	 * 
+	 * @return
+	 */
+	public Boolean getIsVisible() {
+		return this.isVisible;
+	}
+
+	/**
+	 * Set visible.
+	 * 
+	 * @param isVisible
+	 */
+	public void setIsVisible(final Boolean isVisible) {
+		this.isVisible = isVisible;
+	}
+
+	/**
+	 * Get nameable.
+	 * 
+	 * @return
+	 */
+	public Boolean getIsNameable() {
+		return this.isNameable;
+	}
+
+	/**
+	 * Set this furnish class is nameable.
+	 * 
+	 * @param nameable
+	 */
+	public void setIsNameable(final Boolean nameable) {
+		this.isNameable = nameable;
 	}
 
 }

@@ -1,11 +1,26 @@
 /**
- * FurnishClass.
+ * FurnishClass class.
+ * 
+ * @param imagePath
+ * @param classID
+ * @param isEnable
+ * @returns
+ */
+function _FurnishClass(imagePath, classID, isVisible, isNameable) {
+	this.imagePath = imagePath;
+	this.classID = classID;
+	this.isVisible = isVisible;
+	this.isNameable = isNameable;
+}
+
+/**
+ * FurnishClass module.
  */
 var FurnishClass = (function() {
 	var self = {};
 
 	var data = undefined;
-	var dataUrl = "getFurnishClass";
+	var dataUrl = "map/getFurnishClass";
 
 	self.init = function() {
 		return $.ajax({
@@ -15,12 +30,14 @@ var FurnishClass = (function() {
 				data = {};
 
 				$.each(response.data, function(key, value) {
-					var _data = {
-						imagePath : Images.URL + value.detail.imagePath,
-						classID : value.detail.classID,
-						enable : value.enable
-					}
-					self.addFurnishClass(key, _data);
+					var _data = new _FurnishClass( //
+					Images.URL + value.detail.imagePath, //
+					value.detail.classID, //
+					value.detail.isVisible, //
+					value.detail.isNameable //
+					);
+
+					self.addFurnishClass(value.detail.name, _data);
 				});
 			}
 		});
