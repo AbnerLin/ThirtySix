@@ -762,34 +762,34 @@ function initSeatMap(customerData) {
 		}
 	});
 
-	/** compoment add */
-	$(".mapOption").click(function() {
-
-		/** get table number */
-		alertify.prompt("請輸入桌號", function(e, str) {
-			if (e) {
-				tableNumber = str.trim();
-
-				if (tableNumber == "") {
-					alertify.alert("桌號不可空白！");
-					return;
-				}
-
-				/** check tableNumber duplicate */
-				var isDuplicate = false;
-				$(".tableSeat").each(function() {
-					var _id = $(this).attr("id").trim();
-					if (_id == tableNumber) {
-						alertify.alert("桌號重複！");
-						isDuplicate = true;
-					}
-				});
-
-				if (!isDuplicate)
-					addTableToMap(tableNumber, 0, 0, classStr);
-			}
-		}, "");
-	});
+	// /** compoment add */
+	// $(".mapOption").click(function() {
+	//
+	// /** get table number */
+	// alertify.prompt("請輸入桌號", function(e, str) {
+	// if (e) {
+	// tableNumber = str.trim();
+	//
+	// if (tableNumber == "") {
+	// alertify.alert("桌號不可空白！");
+	// return;
+	// }
+	//
+	// /** check tableNumber duplicate */
+	// var isDuplicate = false;
+	// $(".tableSeat").each(function() {
+	// var _id = $(this).attr("id").trim();
+	// if (_id == tableNumber) {
+	// alertify.alert("桌號重複！");
+	// isDuplicate = true;
+	// }
+	// });
+	//
+	// if (!isDuplicate)
+	// addTableToMap(tableNumber, 0, 0, classStr);
+	// }
+	// }, "");
+	// });
 
 	/** disable draggable */
 	lockMap();
@@ -936,47 +936,57 @@ function sendItem(bookingID, customerID) {
 }
 
 /**
- * Load furnish option.
- */
-function getFurnishOption() {
-	var action = "getFurnishClass";
-	$.ajax({
-		url : App.URL + action,
-		async : true,
-		success : function(response, status, jqXHR) {
-			var dataArray = [];
-			$.each(response.data, function(key, value) {
-				var _data = {
-					imagePath : Images.URL + value.detail.imagePath,
-					classID : value.detail.classID,
-					enable : value.enable
-				}
-				dataArray.push(_data);
-
-				/** Save to buffer. */
-				Images.getInstance().addImage(key, _data);
-			});
-			$("#mapOptionTemplate").tmpl(dataArray).appendTo( //
-			"#imageSelection");
-		}
-	});
-
-}
-
-/**
  * Set Furnish Option.
  * 
  * @returns
  */
 function setFurnishOption() {
+
 	FurnishClass.init().done(function() {
 		var dataArray = [];
 		$.each(FurnishClass.getAll(), function(key, value) {
-			if(value.isVisible == true)
+			if (value.isVisible == true)
 				dataArray.push(value);
 		});
 		$("#mapOptionTemplate").tmpl(dataArray).appendTo("#imageSelection");
 	});
+}
+
+/**
+ * Map option click trigger.
+ * 
+ * @param self
+ * @returns
+ */
+function mapOptionListener(self) {
+	var nameable = $(self).attr("nameable");
+
+	if (nameable) {
+		//TODO
+		alertify.prompt("請輸入桌號", function(e, str) {
+			if (e) {
+				tableNumber = str.trim();
+
+				if (tableNumber == "") {
+					alertify.alert("桌號不可空白！");
+					return;
+				}
+
+				/** check tableNumber duplicate */
+				var isDuplicate = false;
+				$(".tableSeat").each(function() {
+					var _id = $(this).attr("id").trim();
+					if (_id == tableNumber) {
+						alertify.alert("桌號重複！");
+						isDuplicate = true;
+					}
+				});
+
+				if (!isDuplicate)
+					addTableToMap(tableNumber, 0, 0, classStr);
+			}
+		}, "");
+	}
 }
 
 /**

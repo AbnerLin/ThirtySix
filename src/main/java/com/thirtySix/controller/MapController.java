@@ -1,29 +1,28 @@
 package com.thirtySix.controller;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.access.annotation.Secured;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.thirtySix.core.Buffer;
 import com.thirtySix.dto.AjaxDTO;
 import com.thirtySix.dto.FurnishClassDTO;
 import com.thirtySix.model.FurnishClass;
-import com.thirtySix.service.MapService;
 
 @Controller
 @RequestMapping(value = { "/map" })
 public class MapController {
 
 	@Autowired
-	private MapService mapService = null;
+	private Buffer buffer = null;
 
 	/**
 	 * Get Furnish class for design map.
@@ -34,16 +33,16 @@ public class MapController {
 	 */
 	@ResponseBody
 	@RequestMapping(value = { "/getFurnishClass" })
-	@Secured("ROLE_ADMIN")
+	@PreAuthorize("isAuthenticated()")
 	public AjaxDTO getFurnishClass(final HttpServletRequest request,
 			final HttpServletResponse response) {
 		final AjaxDTO result = new AjaxDTO();
 
-		final List<FurnishClass> furnishClass = this.mapService
-				.findAllFurnishClass();
+		final Map<String, FurnishClass> furnishClass = this.buffer
+				.getFurnishClass();
 
 		final Map<String, FurnishClassDTO> map = new HashMap<String, FurnishClassDTO>();
-		furnishClass.forEach(_class -> {
+		furnishClass.forEach((final String key, final FurnishClass _class) -> {
 			final FurnishClassDTO dto = new FurnishClassDTO();
 			dto.setClassID(_class.getClassID());
 

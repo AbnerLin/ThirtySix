@@ -65,8 +65,8 @@ public class FurnishClass {
 	 * 座位清單
 	 */
 	@JsonIgnore
-	@OneToMany(fetch = FetchType.LAZY, mappedBy = "furnishClass")
-	private List<Furnish> seatList;
+	@OneToMany(fetch = FetchType.EAGER, mappedBy = "furnishClass")
+	private List<Furnish> furnishList;
 
 	/**
 	 * 取得類別編號
@@ -124,20 +124,20 @@ public class FurnishClass {
 
 	/**
 	 * 取得屬於該類別的項目
-	 * 
+	 *
 	 * @return
 	 */
-	public List<Furnish> getSeatList() {
-		return this.seatList;
+	public List<Furnish> getFurnishList() {
+		return this.furnishList;
 	}
 
 	/**
 	 * 設定該類別的所屬項目
-	 * 
+	 *
 	 * @param seatList
 	 */
-	public void setSeatList(final List<Furnish> seatList) {
-		this.seatList = seatList;
+	public void setFurnishList(final List<Furnish> furnishList) {
+		this.furnishList = furnishList;
 	}
 
 	/**

@@ -28,38 +28,39 @@ public class MapServiceImpl implements MapService {
 
 	@Override
 	@Transactional
-	public void saveSeatMap(SeatMap po) {
-		seatMapRepo.save(po);
+	public void saveSeatMap(final SeatMap po) {
+		this.seatMapRepo.save(po);
 	}
 
 	@Override
 	@Transactional
-	public void saveFurnish(SeatMap map, List<Furnish> furnishList) {
+	public void saveFurnish(final SeatMap map,
+			final List<Furnish> furnishList) {
 		/** delete first */
-		furnishRepo.deleteBySeatMap(map.getMapID());
+		this.furnishRepo.deleteBySeatMap(map.getMapID());
 
 		/** save */
-		furnishRepo.save(furnishList);
+		this.furnishRepo.save(furnishList);
 	}
 
 	@Override
 	public List<SeatMap> getSeatMap() {
-		return (List<SeatMap>) seatMapRepo.findAll();
+		return (List<SeatMap>) this.seatMapRepo.findAll();
 	}
 
 	@Override
-	public FurnishClass findFurnishClass(String classID) {
-		return furnishClassRepo.findOne(classID);
+	public FurnishClass findFurnishClass(final String classID) {
+		return this.furnishClassRepo.findOne(classID);
 	}
 
 	@Override
 	public List<Furnish> findAllFurnish() {
-		return (List<Furnish>) furnishRepo.findAll();
+		return (List<Furnish>) this.furnishRepo.findAll();
 	}
 
 	@Override
 	public List<FurnishClass> findAllFurnishClass() {
-		return (List<FurnishClass>) furnishClassRepo.findAll();
+		return (List<FurnishClass>) this.furnishClassRepo.findAll();
 	}
 
 }

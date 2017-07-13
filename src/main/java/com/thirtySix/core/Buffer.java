@@ -9,11 +9,13 @@ import java.util.concurrent.ConcurrentHashMap;
 import javax.annotation.PostConstruct;
 
 import org.apache.log4j.Logger;
+import org.hibernate.Hibernate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.thirtySix.model.Customer;
 import com.thirtySix.model.Furnish;
+import com.thirtySix.model.FurnishClass;
 import com.thirtySix.model.Item;
 import com.thirtySix.model.ItemClass;
 import com.thirtySix.service.CustomerService;
@@ -31,7 +33,7 @@ public class Buffer {
 
 	@Autowired
 	private CustomerService customerService = null;
-	
+
 	@Autowired
 	private MapService mapService = null;
 
@@ -43,7 +45,10 @@ public class Buffer {
 
 	/** 菜單 <String, Item> */
 	private Map<String, Item> itemBuffer = new HashMap<String, Item>();
-	
+
+	/** furnish class buffer <classID, furnishClass> */
+	private Map<String, FurnishClass> furnishClass = new HashMap<String, FurnishClass>();
+
 	/** Furnish Buffer */
 	private Map<String, Furnish> furnishBuffer = new HashMap<String, Furnish>();
 
@@ -55,59 +60,80 @@ public class Buffer {
 
 		/** 載入菜單 */
 		this.loadItemMenu();
-		
+
 		/** load furnish */
 		this.loadFurnish();
 	}
-	
+
 	/**
 	 * load furnish to buffer.
 	 */
 	private void loadFurnish() {
-		List<Furnish> furnishList = mapService.findAllFurnish();
-		
-		for(Furnish furnish : furnishList) {
-			this.furnishBuffer.put(furnish.getFurnishID(), furnish);
-		}
+		final List<FurnishClass> furnishClassList = this.mapService
+				.findAllFurnishClass();
+
+		furnishClassList.forEach(furnishClass -> {
+			/** Set class buffer */
+			this.furnishClass.put(furnishClass.getClassID(), furnishClass);
+
+			/** Set furnish buffer */
+			Hibernate.initialize(furnishClass.getFurnishList());
+
+			furnishClass.getFurnishList().forEach(furnish -> {
+				this.furnishBuffer.put(furnish.getFurnishID(), furnish);
+			});
+		});
+
+		// final List<Furnish> furnishList = this.mapService.findAllFurnish();
+		//
+		// for (final Furnish furnish : furnishList) {
+		// this.furnishBuffer.put(furnish.getFurnishID(), furnish);
+		// }
 	}
 
 	/**
 	 * 載入菜單
 	 */
 	private void loadItemMenu() {
-		List<ItemClass> itemClassList = itemService.findAllItemClass();
+		final List<ItemClass> itemClassList = this.itemService
+				.findAllItemClass();
 
-		logger.info("載入菜單...");
-		
+		this.logger.info("載入菜單...");
+
 		itemClassList.forEach(itemClass -> {
 			this.itemMenuBuffer.put(itemClass.getClassID(), itemClass);
-			logger.info("菜單種類編號：" + itemClass.getClassID() + " 種類：" + itemClass.getClassName());
-			
+			this.logger.info("菜單種類編號：" + itemClass.getClassID() + " 種類："
+					+ itemClass.getClassName());
+
 			itemClass.getItemList().forEach(item -> {
 				this.itemBuffer.put(item.getItemID(), item);
-				logger.info("菜色編號：" + item.getItemID() + " 名稱：" + item.getName());
+				this.logger.info(
+						"菜色編號：" + item.getItemID() + " 名稱：" + item.getName());
 			});
 		});
-		
-		logger.info("菜單載入完畢。");
+
+		this.logger.info("菜單載入完畢。");
 	}
 
 	/**
 	 * 載入用餐中顧客
 	 */
 	private void loadDiningCustomer() {
-		List<Customer> diningCustomerList = customerService.findDiningCustomer();
+		final List<Customer> diningCustomerList = this.customerService
+				.findDiningCustomer();
 
-		logger.info("載入用餐中顧客...");
+		this.logger.info("載入用餐中顧客...");
 		diningCustomerList.forEach(customer -> {
-			Date date = new Date(customer.getCheckInTime().getTime());
-			customer.setCheckInTimeStringFormat(TimeFormatter.getInstance().getTime(date));
-			
+			final Date date = new Date(customer.getCheckInTime().getTime());
+			customer.setCheckInTimeStringFormat(
+					TimeFormatter.getInstance().getTime(date));
+
 			this.diningCustomerBuffer.put(customer.getCustomerID(), customer);
-			logger.info("顧客編號" + customer.getCustomerID() + " 進場時間" + customer.getCheckInTime());
+			this.logger.info("顧客編號" + customer.getCustomerID() + " 進場時間"
+					+ customer.getCheckInTime());
 		});
 
-		logger.info("用餐中顧客共" + this.diningCustomerBuffer.size() + "組。");
+		this.logger.info("用餐中顧客共" + this.diningCustomerBuffer.size() + "組。");
 	}
 
 	/**
@@ -136,7 +162,7 @@ public class Buffer {
 	public Map<String, Item> getItems() {
 		return this.itemBuffer;
 	}
-	
+
 	/**
 	 * Get furnish from buffer.
 	 * 
@@ -144,6 +170,15 @@ public class Buffer {
 	 */
 	public Map<String, Furnish> getFurnish() {
 		return this.furnishBuffer;
+	}
+
+	/**
+	 * Get furnish class from buffer.
+	 * 
+	 * @return
+	 */
+	public Map<String, FurnishClass> getFurnishClass() {
+		return this.furnishClass;
 	}
 
 }
