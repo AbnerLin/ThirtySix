@@ -2,11 +2,13 @@
  * User Auth
  */
 var Auth = (function() {
+	var self = {}
+
 	var loginUrl = "login";
 	var logoutUrl = "logout";
 	var privilegeUrl = "auth/getUserPrivilege";
 
-	function getPrivilege() {
+	self.getPrivilege = function() {
 		$.ajax({
 			url : App.URL + privilegeUrl,
 			async : false,
@@ -16,7 +18,7 @@ var Auth = (function() {
 		});
 	}
 
-	function login(username, password) {
+	self.login = function(username, password) {
 		$.ajax({
 			url : App.URL + loginUrl,
 			method : "POST",
@@ -39,7 +41,7 @@ var Auth = (function() {
 		});
 	}
 
-	function logout() {
+	self.logout = function() {
 		$.ajax({
 			url : App.URL + logoutUrl,
 			method : "POST",
@@ -53,9 +55,5 @@ var Auth = (function() {
 		});
 	}
 
-	return {
-		login : login,
-		logout : logout,
-		getPrivilege : getPrivilege
-	}
+	return self;
 })();

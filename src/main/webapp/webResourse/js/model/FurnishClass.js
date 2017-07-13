@@ -2,10 +2,12 @@
  * FurnishClass.
  */
 var FurnishClass = (function() {
+	var self = {};
+
 	var data = undefined;
 	var dataUrl = "getFurnishClass";
 
-	function init() {
+	self.init = function() {
 		return $.ajax({
 			url : App.URL + dataUrl,
 			async : true,
@@ -18,28 +20,23 @@ var FurnishClass = (function() {
 						classID : value.detail.classID,
 						enable : value.enable
 					}
-					addFurnishClass(key, _data);
+					self.addFurnishClass(key, _data);
 				});
 			}
 		});
 	}
 
-	function addFurnishClass(key, obj) {
+	self.addFurnishClass = function(key, obj) {
 		data[key] = obj;
 	}
 
-	function getFurnishClass(key) {
+	self.getFurnishClass = function(key) {
 		return data[key];
 	}
 
-	function getAll() {
+	self.getAll = function() {
 		return data;
 	}
 
-	return {
-		init : init,
-		addFurnishClass : addFurnishClass,
-		getFurnishClass : getFurnishClass,
-		getAll : getAll
-	}
+	return self;
 })();
