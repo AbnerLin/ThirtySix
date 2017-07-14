@@ -149,6 +149,7 @@ function getCustomerIdByTableNumber(tableNumber) {
  */
 function updateDiningCustomerList(data) {
 	// TODO ui must update..
+
 	$('#diningCustomerList').html("");
 
 	for ( var key in data) {
@@ -959,10 +960,9 @@ function setFurnishOption() {
  * @returns
  */
 function mapOptionListener(self) {
-	var nameable = $(self).attr("nameable");
+	var nameable = $(self).attr("nameable") === "true";
 
 	if (nameable) {
-		//TODO
 		alertify.prompt("請輸入桌號", function(e, str) {
 			if (e) {
 				tableNumber = str.trim();

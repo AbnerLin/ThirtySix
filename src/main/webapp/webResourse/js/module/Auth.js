@@ -29,13 +29,12 @@ var Auth = (function() {
 			},
 			success : function(response, status, jqXHR) {
 				if (response == "true") {
-					App.alertSuccess("Login Successed!!! Welcome^^~");
+					App.alertSuccess("登入成功，載入中..");
 					setTimeout(function() {
 						window.location.replace(App.URL);
 					}, 1000);
 				} else {
-					App.alertError("<strong>Oops!!!</strong>"
-							+ "Username and Password not accepted.");
+					App.alertError("帳密錯誤！");
 				}
 			}
 		});
@@ -47,7 +46,7 @@ var Auth = (function() {
 			method : "POST",
 			async : true,
 			success : function(response, status, jqXHR) {
-				App.alertSuccess("Logout Successed!!! ByeBye^^~");
+				App.alertSuccess("登出中。");
 				setTimeout(function() {
 					window.location.replace(App.URL);
 				}, 1000);

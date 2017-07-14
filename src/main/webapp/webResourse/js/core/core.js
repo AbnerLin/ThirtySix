@@ -1,7 +1,7 @@
 $(document).ready(function() {
 	App.LoadScript("js/core/common.js");
-	App.LoadScript("js/model/Auth.js");
-	App.LoadScript("js/model/FurnishClass.js");
+	App.LoadScript("js/module/Auth.js");
+	App.LoadScript("js/module/Furnish.js");
 });
 
 var App = (function() {

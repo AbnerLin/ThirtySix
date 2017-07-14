@@ -280,7 +280,7 @@
 	<script src="<c:url value="/plugin/alertify/js/alertify.min.js" />"></script>
 
 	<!-- socket -->
-	<script src="<c:url value="/plugin/socket/sockjs-1.1.1.js" />"></script>
+	<script src="<c:url value="/plugin/socket/sockjs-1.1.4.js" />"></script>
 	<script src="<c:url value="/plugin/socket/stomp.min.js" />"></script>
 
 	<!-- index -->

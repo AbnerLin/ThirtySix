@@ -84,11 +84,6 @@ public class Buffer {
 			});
 		});
 
-		// final List<Furnish> furnishList = this.mapService.findAllFurnish();
-		//
-		// for (final Furnish furnish : furnishList) {
-		// this.furnishBuffer.put(furnish.getFurnishID(), furnish);
-		// }
 	}
 
 	/**

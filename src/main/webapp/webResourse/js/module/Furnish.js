@@ -19,7 +19,7 @@ function _FurnishClass(imagePath, classID, isVisible, isNameable) {
 var FurnishClass = (function() {
 	var self = {};
 
-	var data = undefined;
+	var data = {};
 	var dataUrl = "map/getFurnishClass";
 
 	self.init = function() {
@@ -27,8 +27,6 @@ var FurnishClass = (function() {
 			url : App.URL + dataUrl,
 			async : true,
 			success : function(response, status, jqXHR) {
-				data = {};
-
 				$.each(response.data, function(key, value) {
 					var _data = new _FurnishClass( //
 					Images.URL + value.detail.imagePath, //
@@ -48,6 +46,47 @@ var FurnishClass = (function() {
 	}
 
 	self.getFurnishClass = function(key) {
+		return data[key];
+	}
+
+	self.getAll = function() {
+		return data;
+	}
+
+	return self;
+})();
+
+/**
+ * Furnish class.
+ * 
+ * @returns
+ */
+function _Furnish(id, alias, x, y) {
+	this.id = id;
+	this.alias = alias;
+	this.x = x;
+	this.y = y;
+}
+
+/**
+ * Furnish module.
+ */
+var Funish = (function() {
+	var self = {};
+	var data = {};
+	var dataUrl = "";
+
+	self.init = function() {
+		return $.ajax({
+		// TODO
+		});
+	}
+
+	self.addFurnish = function(key, obj) {
+		data[key] = obj;
+	}
+
+	self.getFurnish = function(key) {
 		return data[key];
 	}
 
