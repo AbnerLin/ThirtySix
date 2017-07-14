@@ -18,3 +18,7 @@ DataKeeper.prototype.get = function(key) {
 DataKeeper.prototype.getAll = function() {
 	return this.data;
 }
+
+DataKeeper.prototype.reset = function() {
+	this.data = {};
+}

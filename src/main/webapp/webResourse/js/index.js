@@ -935,6 +935,8 @@ function sendItem(bookingID, customerID) {
 	});
 
 }
+///////////////////////////////////////////////////////////////////////////////
+
 
 /**
  * Set Furnish Option.
@@ -950,6 +952,17 @@ function setFurnishOption() {
 		});
 		$("#mapOptionTemplate").tmpl(dataArray).appendTo("#imageSelection");
 	});
+	
+	/** Init setting switch */
+	$("#seatMap-toggle").bootstrapToggle();
+	$('#seatMap-toggle').change(function() {
+		var checked = $(this).prop("checked");
+		if (checked == true) {
+			unlockMap();
+		} else if (checked == false) {
+			lockMap();
+		}
+	});
 }
 
 /**
@@ -959,40 +972,49 @@ function setFurnishOption() {
  * @returns
  */
 function mapOptionListener(self) {
+	var _class = $(self).attr("enum");
 	var nameable = $(self).attr("nameable") === "true";
-
+	
+	/** create obj */
+	var furnish = new _Furnish($.uuid(), furnishAlias, 0, 0, _class);
+	
+	var furnishAlias = "";
 	if (nameable) {
 		alertify.prompt("請輸入桌號", function(e, str) {
 			if (e) {
-				tableNumber = str.trim();
+				furnishAlias = str.trim();
 
-				if (tableNumber == "") {
-					alertify.alert("桌號不可空白！");
+				if (furnishAlias == "") {
+					App.alertError("桌號不可空白！");
 					return;
 				}
-
-				/** check tableNumber duplicate */
+				
 				var isDuplicate = false;
-				$(".tableSeat").each(function() {
-					var _id = $(this).attr("id").trim();
-					if (_id == tableNumber) {
-						alertify.alert("桌號重複！");
+				$.each(Furnish.data.getAll(), function(key, value) {
+					if(furnishAlias == key) {
 						isDuplicate = true;
+						return;
 					}
 				});
-
-				if (!isDuplicate)
-					addTableToMap(tableNumber, 0, 0, classStr);
+				
+				if(isDuplicate) {
+					App.alertError("桌號重複！");
+				} else {
+					furnish.alias = furnishAlias;
+					Furnish.data.add(furnish.id, furnish);
+				}
 			}
 		}, "");
 	} else {
-		
+		Furnish.data.add(furnish.id, furnish);
 	}
+	
+	//TODO add to map.
+	
+	console.log(JSON.stringify(Furnish.data.getAll()));
 }
 
 function init() {
 	/** set furnish option */
 	setFurnishOption();
-
-	getDiningCustomer();
 }

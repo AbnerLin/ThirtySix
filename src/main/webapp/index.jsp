@@ -22,8 +22,6 @@
 		});
 	});
 </script>
-
-
 </head>
 <body style="display: none;">
 	<sec:authorize access="hasRole('ROLE_ADMIN')">
@@ -221,7 +219,5 @@
 			</div>
 		</div>
 	</div>
-
-
 </body>
 </html>

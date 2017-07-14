@@ -6,7 +6,8 @@
  * @param isEnable
  * @returns
  */
-function _FurnishClass(imagePath, classID, isVisible, isNameable) {
+function _FurnishClass(enumName, imagePath, classID, isVisible, isNameable) {
+	this.enumName = enumName;
 	this.imagePath = imagePath;
 	this.classID = classID;
 	this.isVisible = isVisible;
@@ -19,6 +20,7 @@ function _FurnishClass(imagePath, classID, isVisible, isNameable) {
 var FurnishClass = (function() {
 	var self = {};
 
+	/** <className(ENUM), obj> */
 	var data = new DataKeeper();
 	var dataUrl = "map/getFurnishClass";
 
@@ -29,6 +31,7 @@ var FurnishClass = (function() {
 			success : function(response, status, jqXHR) {
 				$.each(response.data, function(key, value) {
 					var _data = new _FurnishClass( //
+					value.detail.name, //
 					Images.URL + value.detail.imagePath, //
 					value.detail.classID, //
 					value.detail.isVisible, //
@@ -51,19 +54,25 @@ var FurnishClass = (function() {
  * 
  * @returns
  */
-function _Furnish(id, alias, x, y) {
+function _Furnish(id, alias, x, y, _class) {
 	this.id = id;
 	this.alias = alias;
 	this.x = x;
 	this.y = y;
+	this._class = _class;
 }
+
+//_Furnish.prototype.setAlias = function(alias) {
+//	this.alias = alias;
+//}
 
 /**
  * Furnish module.
  */
-var Funish = (function() {
+var Furnish = (function() {
 	var self = {};
 
+	/** <uuid, obj> */
 	var data = new DataKeeper();
 	var dataUrl = "";
 
