@@ -944,7 +944,7 @@ function sendItem(bookingID, customerID) {
 function setFurnishOption() {
 	FurnishClass.init().done(function() {
 		var dataArray = [];
-		$.each(FurnishClass.getAll(), function(key, value) {
+		$.each(FurnishClass.data.getAll(), function(key, value) {
 			if (value.isVisible == true)
 				dataArray.push(value);
 		});
@@ -985,51 +985,14 @@ function mapOptionListener(self) {
 					addTableToMap(tableNumber, 0, 0, classStr);
 			}
 		}, "");
+	} else {
+		
 	}
-}
-
-/**
- * if admin role, execute this method.
- */
-function adminTask() {
-	alert("admin Task");
-}
-
-function generalTask() {
-	/** set furnish option */
-	setFurnishOption();
-
-	// /** 啟動監聽WebSocket */
-	// subscribeWebSocket();
-	// /** 載入菜單列表 */
-	// getMenu();
-	// /** get dining customer */
-	getDiningCustomer();
 }
 
 function init() {
 	/** set furnish option */
 	setFurnishOption();
 
-	
-	
 	getDiningCustomer();
 }
-
-// $(document).ready(function() {
-// TODO
-/**
- * 1. FurnishClass
- * 
- * 
- */
-// $.when(FurnishClass.init()).done(function() {
-// console.log(JSON.stringify(FurnishClass.getAll()));
-// console.log(JSON.stringify(FurnishClass.getAll()));
-// console.log(JSON.stringify(FurnishClass.getAll()));
-// console.log(JSON.stringify(FurnishClass.getAll()));
-// });
-/** Execute general task */
-// generalTask();
-//
-// });

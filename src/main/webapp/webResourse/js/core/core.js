@@ -8,8 +8,8 @@ var App = (function() {
 	self.loadBaseJS = function(callback) {
 		$LAB.script("js/core/common.js").wait() //
 		.script("js/module/Auth.js") //
-		.script("js/module/Furnish.js") //
 		.script("js/module/DataKeeper.js") //
+		.script("js/module/Furnish.js") //
 		.script("https://code.jquery.com/jquery-3.2.1.min.js") //
 		.script("https://cdnjs.cloudflare.com/ajax/libs/tether/1.4.0/js/tether.min.js") //
 		.script("https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/js/bootstrap.min.js")

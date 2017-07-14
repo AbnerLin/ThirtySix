@@ -7,14 +7,14 @@ function DataKeeper() {
 	this.data = {};
 }
 
-DataKeeper.add = function(key, obj) {
+DataKeeper.prototype.add = function(key, obj) {
 	this.data[key] = obj;
 }
 
-DataKeeper.get = function(key) {
+DataKeeper.prototype.get = function(key) {
 	return this.data[key];
 }
 
-DataKeeper.getAll = function() {
+DataKeeper.prototype.getAll = function() {
 	return this.data;
 }

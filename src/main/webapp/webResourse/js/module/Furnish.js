@@ -19,7 +19,7 @@ function _FurnishClass(imagePath, classID, isVisible, isNameable) {
 var FurnishClass = (function() {
 	var self = {};
 
-	var data = {};
+	var data = new DataKeeper();
 	var dataUrl = "map/getFurnishClass";
 
 	self.init = function() {
@@ -35,23 +35,13 @@ var FurnishClass = (function() {
 					value.detail.isNameable //
 					);
 
-					self.addFurnishClass(value.detail.name, _data);
+					self.data.add(value.detail.name, _data);
 				});
 			}
 		});
 	}
 
-	self.addFurnishClass = function(key, obj) {
-		data[key] = obj;
-	}
-
-	self.getFurnishClass = function(key) {
-		return data[key];
-	}
-
-	self.getAll = function() {
-		return data;
-	}
+	self.data = data;
 
 	return self;
 })();
@@ -73,7 +63,8 @@ function _Furnish(id, alias, x, y) {
  */
 var Funish = (function() {
 	var self = {};
-	var data = {};
+
+	var data = new DataKeeper();
 	var dataUrl = "";
 
 	self.init = function() {
@@ -82,17 +73,7 @@ var Funish = (function() {
 		});
 	}
 
-	self.addFurnish = function(key, obj) {
-		data[key] = obj;
-	}
-
-	self.getFurnish = function(key) {
-		return data[key];
-	}
-
-	self.getAll = function() {
-		return data;
-	}
+	self.data = data;
 
 	return self;
 })();
