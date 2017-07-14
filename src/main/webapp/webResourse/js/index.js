@@ -942,7 +942,6 @@ function sendItem(bookingID, customerID) {
  * @returns
  */
 function setFurnishOption() {
-
 	FurnishClass.init().done(function() {
 		var dataArray = [];
 		$.each(FurnishClass.getAll(), function(key, value) {
@@ -1008,20 +1007,29 @@ function generalTask() {
 	getDiningCustomer();
 }
 
-$(document).ready(function() {
-	// TODO
-	/**
-	 * 1. FurnishClass
-	 * 
-	 * 
-	 */
-	// $.when(FurnishClass.init()).done(function() {
-	// console.log(JSON.stringify(FurnishClass.getAll()));
-	// console.log(JSON.stringify(FurnishClass.getAll()));
-	// console.log(JSON.stringify(FurnishClass.getAll()));
-	// console.log(JSON.stringify(FurnishClass.getAll()));
-	// });
-	/** Execute general task */
-	generalTask();
+function init() {
+	/** set furnish option */
+	setFurnishOption();
 
-});
+	
+	
+	getDiningCustomer();
+}
+
+// $(document).ready(function() {
+// TODO
+/**
+ * 1. FurnishClass
+ * 
+ * 
+ */
+// $.when(FurnishClass.init()).done(function() {
+// console.log(JSON.stringify(FurnishClass.getAll()));
+// console.log(JSON.stringify(FurnishClass.getAll()));
+// console.log(JSON.stringify(FurnishClass.getAll()));
+// console.log(JSON.stringify(FurnishClass.getAll()));
+// });
+/** Execute general task */
+// generalTask();
+//
+// });

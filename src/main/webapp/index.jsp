@@ -9,61 +9,32 @@
 <meta name="viewport"
 	content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
 
-<link rel="stylesheet"
-	href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css"
-	integrity="sha384-rwoIResjU2yc3z8GV/NPeZWAv56rSmLldC3R/AZzGRnGxQQKnKkoFVhFQhNUwEyJ"
-	crossorigin="anonymous">
+<script src="plugin/LAB/LAB.min.js"></script>
+<script>
+	$LAB.script("js/core/core.js").wait(function() {
+		App.loadBaseCSS();
+		App.loadCSS("css/index.css");
+		App.loadBaseJS(function() {
+			$("body").fadeIn();
+		});
+		App.loadJS("js/index.js", function() {
+			init();
+		});
+	});
+</script>
 
-<link rel="stylesheet"
-	href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 
-<link href="https://fonts.googleapis.com/icon?family=Material+Icons"
-	rel="stylesheet">
-
-<link type="text/css"
-	href="<c:url value="/plugin/bootstrap-toggle/css/bootstrap-toggle.min.css" />"
-	rel="stylesheet">
-
-<!-- alertify -->
-<link type="text/css"
-	href="<c:url value="/plugin/alertify/css/alertify.core.css" />"
-	rel="stylesheet">
-<link type="text/css"
-	href="<c:url value="/plugin/alertify/css/alertify.bootstrap.css" />"
-	rel="stylesheet">
-
-<!-- jquery ui -->
-<link type="text/css"
-	href="<c:url value="/plugin/jquery-ui-1.12.1.custom/jquery-ui.min.css" />"
-	rel="stylesheet">
-<link type="text/css"
-	href="<c:url value="/plugin/jquery-ui-1.12.1.custom/jquery-ui.structure.min.css" />"
-	rel="stylesheet">
-<link type="text/css"
-	href="<c:url value="/plugin/jquery-ui-1.12.1.custom/jquery-ui.theme.min.css" />"
-	rel="stylesheet">
-
-<!-- index -->
-<link type="text/css" href="<c:url value="/css/index.css" />"
-	rel="stylesheet">
-<sec:authorize access="hasRole('ROLE_ADMIN')">
-	<script>
-		// 		window.onload = function() {
-		// 			adminTask();
-		// 		}
-	</script>
-</sec:authorize>
 </head>
-<body>
+<body style="display: none;">
 	<sec:authorize access="hasRole('ROLE_ADMIN')">
 			This content will only be visible to users who have
 			the "supervisor" authority in their list of <tt>GrantedAuthority</tt>s.
 		</sec:authorize>
 	<a href="logout">logout.</a>
 
-<!-- 	<form action="logout" method="POST"> -->
-		<button onclick="Auth.logout();">logout</button>
-<!-- 	</form> -->
+	<!-- 	<form action="logout" method="POST"> -->
+	<button onclick="Auth.logout();">logout</button>
+	<!-- 	</form> -->
 
 
 	<div id="main" class="container-fluid">
@@ -251,40 +222,6 @@
 		</div>
 	</div>
 
-	<script src="https://code.jquery.com/jquery-3.2.1.min.js"
-		integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
-		crossorigin="anonymous"></script>
-	<script
-		src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.4.0/js/tether.min.js"
-		integrity="sha384-DztdAPBWPRXSA/3eYEEUWrWCy7G5KFbe8fFjk5JAIxUYHKkDx6Qin1DkWx51bBrb"
-		crossorigin="anonymous"></script>
-	<script
-		src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/js/bootstrap.min.js"
-		integrity="sha384-vBWWzlZJ8ea9aCX4pEW3rVHjgjt7zpkNpZk+02D9phzyeVkE+jo0ieGizqPLForn"
-		crossorigin="anonymous"></script>
 
-
-	<!-- jquery ui -->
-	<script
-		src="<c:url value="/plugin/jquery-ui-1.12.1.custom/jquery-ui.min.js" />"></script>
-	<script
-		src="<c:url value="/plugin/jquery-ui-1.12.1.custom/jquery-ui.touch-punch.min.js" />"></script>
-
-	<!-- jquery-template -->
-	<script src="<c:url value="/plugin/jquery/js/jquery-tmpl.js" />"></script>
-
-	<!-- bootstrap-toggle -->
-	<script
-		src="<c:url value="/plugin/bootstrap-toggle/js/bootstrap-toggle.min.js" />"></script>
-
-	<script src="<c:url value="/plugin/alertify/js/alertify.min.js" />"></script>
-
-	<!-- socket -->
-	<script src="<c:url value="/plugin/socket/sockjs-1.1.4.js" />"></script>
-	<script src="<c:url value="/plugin/socket/stomp.min.js" />"></script>
-
-	<!-- index -->
-	<script src="<c:url value="/js/core/core.js" />"></script>
-	<script src="<c:url value="/js/index.js" />"></script>
 </body>
 </html>
