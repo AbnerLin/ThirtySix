@@ -936,85 +936,198 @@ function sendItem(bookingID, customerID) {
 
 }
 ///////////////////////////////////////////////////////////////////////////////
-
-
-/**
- * Set Furnish Option.
- * 
- * @returns
- */
-function setFurnishOption() {
-	FurnishClass.init().done(function() {
-		var dataArray = [];
-		$.each(FurnishClass.data.getAll(), function(key, value) {
-			if (value.isVisible == true)
-				dataArray.push(value);
+/** 
+ * Map module. 
+ * */
+var Map = (function() {
+	var self = {};
+	
+	self.init = function() {
+		setFurnishOption();
+		mapSettingToggleTrigger();
+		garbageBlockTrigger();
+		mapSizeInputTrigger();
+		
+		/** trigger furnish add */
+		App.subscribe("/furnish/add", function(event, obj){
+			addFurnishToMap(obj);
 		});
-		$("#mapOptionTemplate").tmpl(dataArray).appendTo("#imageSelection");
-	});
+	};
 	
-	/** Init setting switch */
-	$("#seatMap-toggle").bootstrapToggle();
-	$('#seatMap-toggle').change(function() {
-		var checked = $(this).prop("checked");
-		if (checked == true) {
-			unlockMap();
-		} else if (checked == false) {
-			lockMap();
-		}
-	});
-}
+	/**
+	 * Lock map setting.
+	 *  */
+	self.lock = function() {
+		$(".mapSettingTool").fadeOut();
+		$("#mapSetting").slideUp();
+		
+		/** disable draggable */
+		$(".furnish").draggable("disable");
 
-/**
- * Map option click trigger.
- * 
- * @param self
- * @returns
- */
-function mapOptionListener(self) {
-	var _class = $(self).attr("enum");
-	var nameable = $(self).attr("nameable") === "true";
+		// TODO
+//		/** click event */
+//		$(".tableSeat").click(tableClickHandler);
+	};
 	
-	/** create obj */
-	var furnish = new _Furnish($.uuid(), furnishAlias, 0, 0, _class);
+	/** 
+	 * Unlock map that can setting.
+	 * */
+	self.unlock = function() {
+		$(".mapSettingTool").fadeIn();
+		$("#mapSetting").slideDown();
+		
+		/** enable draggable */
+		$(".furnish").draggable("enable");
+	};
 	
-	var furnishAlias = "";
-	if (nameable) {
-		alertify.prompt("請輸入桌號", function(e, str) {
-			if (e) {
-				furnishAlias = str.trim();
+	/**
+	 * Map option click trigger.
+	 * 
+	 * @param self
+	 * @returns
+	 */
+	self.mapOptionListener = function mapOptionListener(self) {
+		var _class = $(self).attr("enum");
+		var nameable = $(self).attr("nameable") === "true";
+		
+		/** create obj */
+		var furnish = new _Furnish(App.uuid(), furnishAlias, 0, 0, _class);
+		
+		var furnishAlias = "";
+		if (nameable) {
+			alertify.prompt("請輸入桌號", function(e, str) {
+				if (e) {
+					furnishAlias = str.trim();
 
-				if (furnishAlias == "") {
-					App.alertError("桌號不可空白！");
-					return;
-				}
-				
-				var isDuplicate = false;
-				$.each(Furnish.data.getAll(), function(key, value) {
-					if(furnishAlias == key) {
-						isDuplicate = true;
+					if (furnishAlias == "") {
+						App.alertError("桌號不可空白！");
 						return;
 					}
-				});
-				
-				if(isDuplicate) {
-					App.alertError("桌號重複！");
-				} else {
-					furnish.alias = furnishAlias;
-					Furnish.data.add(furnish.id, furnish);
+					
+					var isDuplicate = false;
+					$.each(Furnish.getAll(), function(key, value) {
+						if(furnishAlias == key) {
+							isDuplicate = true;
+							return;
+						}
+					});
+					
+					if(isDuplicate) {
+						App.alertError("桌號重複！");
+					} else {
+						furnish.alias = furnishAlias;
+						Furnish.add(furnish.id, furnish);
+					}
 				}
-			}
-		}, "");
-	} else {
-		Furnish.data.add(furnish.id, furnish);
+			}, "");
+		} else {
+			Furnish.add(furnish.id, furnish);
+		}
 	}
 	
-	//TODO add to map.
+	self.resize = function(width, height) {
+		$("#seatMap").css({
+			"width" : width,
+			"height" : height
+		});
+	};
 	
-	console.log(JSON.stringify(Furnish.data.getAll()));
-}
+	/**
+	 * Trigger size input tage.
+	 * 
+	 * @returns
+	 */
+	function mapSizeInputTrigger() {
+		$("#mapWidth, #mapHeight").on("keypress keydown keyup", function() {
+			var mapWidth = $("#mapWidth").val();
+			var mapHeight = $("mapHeight").val();
+			
+			self.resize(mapWidth, mapHeight);
+		});
+	}
+	
+	/**
+	 * Set Furnish Option.
+	 * 
+	 * @returns
+	 */
+	function setFurnishOption() {
+		FurnishClass.init().done(function() {
+			var dataArray = [];
+			$.each(FurnishClass.data.getAll(), function(key, value) {
+				if (value.isVisible == true)
+					dataArray.push(value);
+			});
+			$("#mapOptionTemplate").tmpl(dataArray).appendTo("#imageSelection");
+		});
+	}
+	
+	function mapSettingToggleTrigger() {
+		$("#seatMap-toggle").bootstrapToggle();
+		$('#seatMap-toggle').change(function() {
+			var checked = $(this).prop("checked");
+			if (checked == true) {
+				self.unlock();
+			} else if (checked == false) {
+				self.lock();
+			}
+		});
+	}
+	
+	/**
+	 * Add furnish to map.
+	 * 
+	 * @param obj
+	 * @returns
+	 */
+	function addFurnishToMap(obj) {
+		var container = document.createElement("div");
+		$(container).attr({
+			"class" : obj._class + " furnish",
+			"id" : obj.id,
+			"html" : obj.alias
+		}).css({
+			"top" : obj.y,
+			"left" : obj.x,
+			"position" : "absolute",
+			"background-image" : "url(" + FurnishClass.data.get(obj._class).imagePath + ")"
+		}).draggable({
+			containment : "#seatMap",
+			zIndex : 1
+		});
+		$("#seatMap").append(container);
+	}
+	
+	function garbageBlockTrigger() {
+		$("#garbageBlock").droppable({
+			drop : function(event, ui) {
+				var id = ui.draggable.attr("id");
+				$("#" + id).remove();
+
+				$("#garbageBlock").css({
+					"background-color" : "#F0F0F0"
+				});
+
+				alertify.success("刪除桌號：" + id);
+			},
+			over : function(event, ui) {
+				$("#garbageBlock").css({
+					"background-color" : "#FF5733"
+				});
+			},
+			out : function(event, ui) {
+				$("#garbageBlock").css({
+					"background-color" : "#F0F0F0"
+				});
+			}
+		});
+	}
+	
+	return self;
+})();
+
 
 function init() {
-	/** set furnish option */
-	setFurnishOption();
+	/** Map init. */
+	Map.init();
 }

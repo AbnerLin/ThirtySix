@@ -45,8 +45,8 @@
 					調整座位表
 				</div>
 				<div class="col-6 text-right">
-					<button id="saveSeatMap" onclick="saveSeatMap();" type="button"
-						class="default-none btn btn-success">存檔</button>
+					<button onclick="saveSeatMap();" type="button"
+						class="default-none btn btn-success mapSettingTool">存檔</button>
 				</div>
 			</div>
 		</sec:authorize>
@@ -64,14 +64,14 @@
 						<div class="input-group">
 							<span class="input-group-addon" id="basic-addon1">寬</span> <input
 								type="text" class="form-control" id="mapWidth"
-								placeholder="witdh" aria-describedby="basic-addon1" value="100">
+								placeholder="witdh" aria-describedby="basic-addon1" value="600">
 						</div>
 					</div>
 					<div class="col-6">
 						<div class="input-group">
 							<span class="input-group-addon" id="basic-addon1">高</span> <input
 								type="text" class="form-control" id="mapHeight"
-								placeholder="height" aria-describedby="basic-addon1" value="100">
+								placeholder="height" aria-describedby="basic-addon1" value="400">
 						</div>
 					</div>
 				</div>
@@ -93,7 +93,7 @@
 				<div id="seatMap">
 					<input id="mapLocation" type="hidden" value=""> <input
 						id="mapID" type="hidden" value="">
-					<div id="garbageBlock">
+					<div id="garbageBlock" class="mapSettingTool">
 						<i class="material-icons">&#xe872;</i>
 					</div>
 				</div>

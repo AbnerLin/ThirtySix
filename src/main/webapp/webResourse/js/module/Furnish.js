@@ -62,10 +62,6 @@ function _Furnish(id, alias, x, y, _class) {
 	this._class = _class;
 }
 
-//_Furnish.prototype.setAlias = function(alias) {
-//	this.alias = alias;
-//}
-
 /**
  * Furnish module.
  */
@@ -75,6 +71,7 @@ var Furnish = (function() {
 	/** <uuid, obj> */
 	var data = new DataKeeper();
 	var dataUrl = "";
+	var saveBuffer = [];
 
 	self.init = function() {
 		return $.ajax({
@@ -82,7 +79,29 @@ var Furnish = (function() {
 		});
 	}
 
-	self.data = data;
+	self.save = function() {
+		return $.ajax({
+		// TODO
+			url : "???",
+			success: function() {
+				saveBuffer = {};
+			}
+		});
+	}
+
+	self.add = function(key, value) {
+		data.add(key, value);
+		saveBuffer.push(value);
+		App.publish("/furnish/add", value);
+	};
+
+	self.getAll = function() {
+		return data.getAll();
+	}
+
+	self.get = function(key) {
+		return data.get(key);
+	}
 
 	return self;
 })();

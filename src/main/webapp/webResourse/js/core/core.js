@@ -2,12 +2,17 @@ var App = (function() {
 	self = {};
 
 	var rootURL = "/thirtySix/";
-
 	self.URL = rootURL;
+	
+	/** pub/sub */
+	var topic = undefined;
 
 	self.loadBaseJS = function(callback) {
 		$LAB //
-		.script("https://code.jquery.com/jquery-3.2.1.min.js").wait() //
+		.script("https://code.jquery.com/jquery-3.2.1.min.js").wait(
+				function() {
+					topic = $({});
+				}) 
 		.script("js/core/common.js").wait()
 		.script("js/module/Auth.js") //
 		.script("js/module/DataKeeper.js") //
@@ -62,5 +67,27 @@ var App = (function() {
 		alertify.error(msg);
 	};
 	
+	self.uuid = function() {
+		return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g,
+				function(c) {
+					var r = Math.random() * 16 | 0, v = c == 'x' ? r
+							: (r & 0x3 | 0x8);
+					return v.toString(16);
+				});
+	};
+	
+	self.subscribe = function() {
+		topic.on.apply(topic, arguments);
+	};
+	
+	self.unsubscribe = function() {
+		topic.off.apply(topic, arguments);
+	};
+	
+	self.publish = function() {
+		topic.trigger.apply(topic, arguments);
+	};
+		
+		
 	return self;
 })();
