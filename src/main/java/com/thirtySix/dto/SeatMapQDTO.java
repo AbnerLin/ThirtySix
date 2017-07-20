@@ -2,7 +2,7 @@ package com.thirtySix.dto;
 
 import java.util.List;
 
-public class SeatMapDTO {
+public class SeatMapQDTO {
 
 	/**
 	 * 地圖編號
@@ -25,9 +25,14 @@ public class SeatMapDTO {
 	private int height;
 
 	/**
-	 * 擺設座標位置
+	 * New add furnish list.
 	 */
-	private List<FurnishDTO> seatPositionList;
+	private List<FurnishDTO> newFurnishList;
+
+	/**
+	 * Furnishs which have to remove.
+	 */
+	private List<String> removeFurnishList;
 
 	/**
 	 * 取得地圖編號
@@ -102,20 +107,39 @@ public class SeatMapDTO {
 	}
 
 	/**
-	 * 取得擺設座標清單
+	 * Get new add furnishs.
 	 * 
 	 * @return
 	 */
-	public List<FurnishDTO> getSeatPositionList() {
-		return this.seatPositionList;
+	public List<FurnishDTO> getNewFurnishList() {
+		return this.newFurnishList;
 	}
 
 	/**
-	 * 設定擺設座標清單
+	 * Set new add furnishs.
 	 * 
-	 * @param seatPositionList
+	 * @param newFurnishList
 	 */
-	public void setSeatPositionList(final List<FurnishDTO> seatPositionList) {
-		this.seatPositionList = seatPositionList;
+	public void setNewFurnishList(final List<FurnishDTO> newFurnishList) {
+		this.newFurnishList = newFurnishList;
 	}
+
+	/**
+	 * Get furnishs which have to remove.
+	 * 
+	 * @return
+	 */
+	public List<String> getRemoveFurnishList() {
+		return this.removeFurnishList;
+	}
+
+	/**
+	 * Set furnishs which have to remove.
+	 * 
+	 * @param removeFurnishList
+	 */
+	public void setRemoveFurnishList(final List<String> removeFurnishList) {
+		this.removeFurnishList = removeFurnishList;
+	}
+
 }

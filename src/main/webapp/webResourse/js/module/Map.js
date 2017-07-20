@@ -82,7 +82,7 @@ function _Map(id, name, width, height) {
 	this.width = width;
 	this.height = height;
 	/** <furnish.id, _Furnish> */
-	this.furnishList = new DataKeeper(); 
+	this.furnishList = new DataKeeper();
 }
 
 /**
@@ -93,8 +93,9 @@ var Map = (function() {
 
 	/** <map.uuid, _Map> */
 	var mapData = new DataKeeper();
-	var dataUrl = "";
-	
+	var dataUrl = "map/getSeatMap";
+	var dataSaveUrl = "map/saveSeatMap";
+
 	var saveBuffer = {};
 	var removeBuffer = {};
 
@@ -105,35 +106,72 @@ var Map = (function() {
 	}
 
 	self.save = function() {
+		var dataList = [];
+		$.each(mapData.getAll(), function(key, value) {
+			if(value) {
+				/** new furnish */
+				var furnishList = [];
+				$.each(saveBuffer[key], function(key, value){
+					furnishList.push({
+						furnishID : value.id,
+						x : value.x,
+						y : value.y,
+						name : value.alias,
+						furnishClassID : FurnishClass.data
+								.get(value._class).classID
+					});
+				});
+				
+				/** remove furnish */
+				var rmFurnishList = [];
+				$.each(removeBuffer[key], function(key, value) {
+					rmFurnishList.push(value);
+				});
+				
+				dataList.push({
+					mapID : key,
+					name : value.name,
+					width : value.width,
+					height : value.height,
+					newFurnishList : furnishList,
+					removeFurnishList : rmFurnishList
+				});
+			}
+		});
+
 		return $.ajax({
-		// TODO
-			url : "???",
-			success: function() {
+			url : App.URL + dataSaveUrl,
+			async : true,
+			method : "POST",
+			dataType : "json",
+			contentType : 'application/json',
+			data : JSON.stringify(dataList),
+			success : function() {
 				saveBuffer = [];
 				removeBuffer = [];
 			}
 		});
 	}
-	
+
 	self.addFurnish = function(map, furnish) {
 		var furnishData = mapData.get(map.id) || (function() {
 			mapData.add(map.id, map);
 			return mapData.get(map.id);
 		})();
 		furnishData.furnishList.add(furnish.id, furnish);
-		
-		App.publish("/furnish/add", [map.id, furnish]);
-		
+
+		App.publish("/furnish/add", [ map.id, furnish ]);
+
 		/** buffer. */
 		var _saveBuffer = saveBuffer[map.id] || (function() {
 			return saveBuffer[map.id] = [];
 		})();
 		_saveBuffer.push(furnish);
 	};
-	
+
 	self.removeFurnish = function(mapId, furnishId) {
 		mapData.get(mapId).furnishList.remove(furnishId);
-		
+
 		/** buffer. */
 		var _removeBuffer = removeBuffer[mapId] || (function() {
 			return removeBuffer[mapId] = [];
@@ -146,8 +184,8 @@ var Map = (function() {
 	}
 
 	self.getFurnish = function(mapId, funirshId) {
-		return self.getAllFurnish(mapId).furnishList.get(funirshId);
+		return self.getAllFurnish(mapId).get(funirshId);
 	}
-	
+
 	return self;
 })();

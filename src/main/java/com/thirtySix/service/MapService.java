@@ -28,7 +28,7 @@ public interface MapService {
 	 * 
 	 * @return
 	 */
-	public List<SeatMap> getSeatMap();
+	public List<SeatMap> findAllSeatMap();
 
 	/**
 	 * Find furnish class by id.

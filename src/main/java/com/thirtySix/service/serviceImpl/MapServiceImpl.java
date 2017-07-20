@@ -44,7 +44,7 @@ public class MapServiceImpl implements MapService {
 	}
 
 	@Override
-	public List<SeatMap> getSeatMap() {
+	public List<SeatMap> findAllSeatMap() {
 		return (List<SeatMap>) this.seatMapRepo.findAll();
 	}
 

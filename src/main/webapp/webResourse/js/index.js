@@ -1014,7 +1014,7 @@ var Map = (function(self) {
 					}
 					
 					var isDuplicate = false;
-					$.each(Furnish.getAll(), function(key, value) {
+					$.each(Map.getAllFurnish(mapId), function(key, value) {
 						if(furnishAlias == key) {
 							isDuplicate = true;
 							return;
@@ -1117,7 +1117,13 @@ var Map = (function(self) {
 			"background-image" : "url(" + FurnishClass.data.get(obj._class).imagePath + ")"
 		}).draggable({
 			containment : "#seatMap",
-			zIndex : 1
+			zIndex : 1,
+			stop : function(event, ui) {
+				if(Map.getFurnish(mapId, obj.is)) {
+					Map.getFurnish(mapId, obj.id).x = ui.position.left;
+					Map.getFurnish(mapId, obj.id).y = ui.position.top;
+				}
+			}
 		});
 		$("#seatMap").append(container);
 	}

@@ -12,7 +12,7 @@ import com.thirtySix.dto.CustomerDTO;
 import com.thirtySix.dto.FurnishDTO;
 import com.thirtySix.dto.ItemDTO;
 import com.thirtySix.dto.OrderDTO;
-import com.thirtySix.dto.SeatMapDTO;
+import com.thirtySix.dto.SeatMapQDTO;
 import com.thirtySix.model.Booking;
 import com.thirtySix.model.Customer;
 import com.thirtySix.model.Furnish;
@@ -32,18 +32,18 @@ public class ObjectConverter {
 
 	public Customer customerDTOtoPO(final CustomerDTO dto) {
 		final Customer po = new Customer();
-
-		po.setCustomerID(dto.getCustomerID());
-		po.setCheckInTime(dto.getCheckInTime());
-		po.setCheckOutTime(dto.getCheckOutTime());
-		po.setCustomerName(dto.getCustomerName());
-		po.setPhoneNumber(dto.getPhoneNumber());
-
-		final Furnish furnish = this.buffer.getFurnish()
-				.get(dto.getFurnishID());
-		po.setFurnish(furnish);
-		po.setPeopleCount(dto.getPeopleCount());
-		po.setRemark(dto.getRemark());
+		// TODO
+		// po.setCustomerID(dto.getCustomerID());
+		// po.setCheckInTime(dto.getCheckInTime());
+		// po.setCheckOutTime(dto.getCheckOutTime());
+		// po.setCustomerName(dto.getCustomerName());
+		// po.setPhoneNumber(dto.getPhoneNumber());
+		//
+		// final Furnish furnish = this.buffer.getFurnish()
+		// .get(dto.getFurnishID());
+		// po.setFurnish(furnish);
+		// po.setPeopleCount(dto.getPeopleCount());
+		// po.setRemark(dto.getRemark());
 
 		return po;
 	}
@@ -80,7 +80,7 @@ public class ObjectConverter {
 	// return po;
 	// }
 
-	public SeatMap seatMapDTOtoPO(final SeatMapDTO dto) {
+	public SeatMap seatMapDTOtoPO(final SeatMapQDTO dto) {
 		final SeatMap po = new SeatMap();
 
 		if (!dto.getMapID().trim().equals(""))

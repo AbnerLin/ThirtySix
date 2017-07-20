@@ -45,7 +45,7 @@
 					調整座位表
 				</div>
 				<div class="col-6 text-right">
-					<button onclick="saveSeatMap();" type="button"
+					<button onclick="Map.save();" type="button"
 						class="default-none btn btn-success mapSettingTool">存檔</button>
 				</div>
 			</div>

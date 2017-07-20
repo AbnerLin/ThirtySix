@@ -9,15 +9,14 @@ import java.util.concurrent.ConcurrentHashMap;
 import javax.annotation.PostConstruct;
 
 import org.apache.log4j.Logger;
-import org.hibernate.Hibernate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.thirtySix.model.Customer;
-import com.thirtySix.model.Furnish;
 import com.thirtySix.model.FurnishClass;
 import com.thirtySix.model.Item;
 import com.thirtySix.model.ItemClass;
+import com.thirtySix.model.SeatMap;
 import com.thirtySix.service.CustomerService;
 import com.thirtySix.service.ItemService;
 import com.thirtySix.service.MapService;
@@ -49,8 +48,12 @@ public class Buffer {
 	/** furnish class buffer <classID, furnishClass> */
 	private Map<String, FurnishClass> furnishClass = new HashMap<String, FurnishClass>();
 
-	/** Furnish Buffer */
-	private Map<String, Furnish> furnishBuffer = new HashMap<String, Furnish>();
+	/** map buffer <mapId, SeatMap> */
+	private Map<String, SeatMap> mapBuffer = new HashMap<String, SeatMap>();
+
+	// /** Furnish Buffer */
+	// private Map<String, Furnish> furnishBuffer = new HashMap<String,
+	// Furnish>();
 
 	@PostConstruct
 	public void init() {
@@ -61,29 +64,33 @@ public class Buffer {
 		/** 載入菜單 */
 		this.loadItemMenu();
 
+		/** load map */
+		this.loadMap();
+
 		/** load furnish */
-		this.loadFurnish();
+		this.loadFurnishClass();
 	}
 
 	/**
-	 * load furnish to buffer.
+	 * Load map info.
 	 */
-	private void loadFurnish() {
+	private void loadMap() {
+		final List<SeatMap> mapList = this.mapService.findAllSeatMap();
+		mapList.forEach(map -> {
+			this.mapBuffer.put(map.getMapID(), map);
+		});
+	}
+
+	/**
+	 * load furnishClass to buffer.
+	 */
+	private void loadFurnishClass() {
 		final List<FurnishClass> furnishClassList = this.mapService
 				.findAllFurnishClass();
 
 		furnishClassList.forEach(furnishClass -> {
-			/** Set class buffer */
 			this.furnishClass.put(furnishClass.getClassID(), furnishClass);
-
-			/** Set furnish buffer */
-			Hibernate.initialize(furnishClass.getFurnishList());
-
-			furnishClass.getFurnishList().forEach(furnish -> {
-				this.furnishBuffer.put(furnish.getFurnishID(), furnish);
-			});
 		});
-
 	}
 
 	/**
@@ -163,9 +170,9 @@ public class Buffer {
 	 * 
 	 * @return
 	 */
-	public Map<String, Furnish> getFurnish() {
-		return this.furnishBuffer;
-	}
+	// public Map<String, Furnish> getFurnish() {
+	// return this.furnishBuffer;
+	// }
 
 	/**
 	 * Get furnish class from buffer.

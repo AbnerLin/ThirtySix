@@ -27,15 +27,11 @@ import com.thirtySix.dto.AjaxDTO;
 import com.thirtySix.dto.CheckOutDTO;
 import com.thirtySix.dto.CustomerDTO;
 import com.thirtySix.dto.OrderDTO;
-import com.thirtySix.dto.SeatMapDTO;
 import com.thirtySix.model.Booking;
 import com.thirtySix.model.Customer;
-import com.thirtySix.model.Furnish;
 import com.thirtySix.model.ItemClass;
-import com.thirtySix.model.SeatMap;
 import com.thirtySix.service.BookingService;
 import com.thirtySix.service.CustomerService;
-import com.thirtySix.service.MapService;
 import com.thirtySix.util.ObjectConverter;
 
 @Controller
@@ -46,9 +42,6 @@ public class IndexController {
 
 	@Autowired
 	private CustomerService customerService = null;
-
-	@Autowired
-	private MapService mapService = null;
 
 	@Autowired
 	private BookingService bookingService = null;
@@ -182,57 +175,6 @@ public class IndexController {
 		this.customerInfoUpdateNotification(po);
 
 		result.setStatusOK();
-		return result;
-	}
-
-	/**
-	 * 儲存座位表
-	 * 
-	 * @param request
-	 * @param response
-	 * @param seatMapDTO
-	 * @return
-	 */
-	@ResponseBody
-	@RequestMapping(value = {
-			"/saveSeatMap" }, consumes = "application/json", produces = "application/json")
-	public AjaxDTO saveSeatMap(final HttpServletRequest request,
-			final HttpServletResponse response,
-			@RequestBody final SeatMapDTO seatMapDTO) {
-		final AjaxDTO result = new AjaxDTO();
-
-		/** map save */
-		final SeatMap mapPO = this.objConverter.seatMapDTOtoPO(seatMapDTO);
-		this.mapService.saveSeatMap(mapPO);
-
-		/** furnish save */
-		final List<Furnish> furnishList = this.objConverter
-				.furnishDTOtoPO(mapPO, seatMapDTO.getSeatPositionList());
-
-		this.mapService.saveFurnish(mapPO, furnishList);
-
-		return result;
-	}
-
-	/**
-	 * 取得座位表
-	 * 
-	 * @param request
-	 * @param response
-	 * @param seatMapDTO
-	 * @return
-	 */
-	@ResponseBody
-	@RequestMapping(value = { "/getSeatMap" })
-	public AjaxDTO getSeatMap(final HttpServletRequest request,
-			final HttpServletResponse response) {
-		final AjaxDTO result = new AjaxDTO();
-
-		final List<SeatMap> mapList = this.mapService.getSeatMap();
-
-		result.setStatusOK();
-		result.setData(mapList);
-
 		return result;
 	}
 
