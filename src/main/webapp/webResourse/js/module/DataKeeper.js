@@ -15,6 +15,10 @@ DataKeeper.prototype.get = function(key) {
 	return this.data[key];
 }
 
+DataKeeper.prototype.remove = function(key) {
+	delete this.data[key];
+}
+
 DataKeeper.prototype.getAll = function() {
 	return this.data;
 }

@@ -92,7 +92,7 @@
 			<div class="col-12">
 				<div id="seatMap">
 					<input id="mapLocation" type="hidden" value=""> <input
-						id="mapID" type="hidden" value="">
+						id="mapId" type="hidden" value="">
 					<div id="garbageBlock" class="mapSettingTool">
 						<i class="material-icons">&#xe872;</i>
 					</div>

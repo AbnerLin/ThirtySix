@@ -3,7 +3,7 @@ package com.thirtySix.dto;
 import java.util.List;
 
 public class SeatMapDTO {
-	
+
 	/**
 	 * 地圖編號
 	 */
@@ -12,7 +12,7 @@ public class SeatMapDTO {
 	/**
 	 * 位置
 	 */
-	private String location;
+	private String name;
 
 	/**
 	 * 地圖寬度 px
@@ -35,7 +35,7 @@ public class SeatMapDTO {
 	 * @return
 	 */
 	public String getMapID() {
-		return mapID;
+		return this.mapID;
 	}
 
 	/**
@@ -43,26 +43,26 @@ public class SeatMapDTO {
 	 * 
 	 * @param mapID
 	 */
-	public void setMapID(String mapID) {
+	public void setMapID(final String mapID) {
 		this.mapID = mapID;
 	}
 
 	/**
-	 * 取得位置
+	 * Get name of map.
 	 * 
 	 * @return
 	 */
-	public String getLocation() {
-		return location;
+	public String getName() {
+		return this.name;
 	}
 
 	/**
-	 * 設定位置
+	 * Set name of map.
 	 * 
 	 * @param location
 	 */
-	public void setLocation(String location) {
-		this.location = location;
+	public void setName(final String name) {
+		this.name = name;
 	}
 
 	/**
@@ -71,7 +71,7 @@ public class SeatMapDTO {
 	 * @return
 	 */
 	public int getWidth() {
-		return width;
+		return this.width;
 	}
 
 	/**
@@ -79,7 +79,7 @@ public class SeatMapDTO {
 	 * 
 	 * @param width
 	 */
-	public void setWidth(int width) {
+	public void setWidth(final int width) {
 		this.width = width;
 	}
 
@@ -89,7 +89,7 @@ public class SeatMapDTO {
 	 * @return
 	 */
 	public int getHeight() {
-		return height;
+		return this.height;
 	}
 
 	/**
@@ -97,7 +97,7 @@ public class SeatMapDTO {
 	 * 
 	 * @param height
 	 */
-	public void setHeight(int height) {
+	public void setHeight(final int height) {
 		this.height = height;
 	}
 
@@ -107,7 +107,7 @@ public class SeatMapDTO {
 	 * @return
 	 */
 	public List<FurnishDTO> getSeatPositionList() {
-		return seatPositionList;
+		return this.seatPositionList;
 	}
 
 	/**
@@ -115,7 +115,7 @@ public class SeatMapDTO {
 	 * 
 	 * @param seatPositionList
 	 */
-	public void setSeatPositionList(List<FurnishDTO> seatPositionList) {
+	public void setSeatPositionList(final List<FurnishDTO> seatPositionList) {
 		this.seatPositionList = seatPositionList;
 	}
 }

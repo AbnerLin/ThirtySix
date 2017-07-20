@@ -28,8 +28,8 @@ public class SeatMap {
 	/**
 	 * 位置
 	 */
-	@Column(name = "LOCATION")
-	private String location;
+	@Column(name = "NAME")
+	private String name;
 
 	/**
 	 * 地圖寬度 px
@@ -55,7 +55,7 @@ public class SeatMap {
 	 * @return
 	 */
 	public String getMapID() {
-		return mapID;
+		return this.mapID;
 	}
 
 	/**
@@ -63,26 +63,26 @@ public class SeatMap {
 	 * 
 	 * @param mapID
 	 */
-	public void setMapID(String mapID) {
+	public void setMapID(final String mapID) {
 		this.mapID = mapID;
 	}
 
 	/**
-	 * 取得位置
+	 * Get name of map.
 	 * 
 	 * @return
 	 */
-	public String getLocation() {
-		return location;
+	public String getName() {
+		return this.name;
 	}
 
 	/**
-	 * 設定位置
+	 * Set name of map.
 	 * 
 	 * @param location
 	 */
-	public void setLocation(String location) {
-		this.location = location;
+	public void setName(final String name) {
+		this.name = name;
 	}
 
 	/**
@@ -91,7 +91,7 @@ public class SeatMap {
 	 * @return
 	 */
 	public int getWidth() {
-		return width;
+		return this.width;
 	}
 
 	/**
@@ -99,7 +99,7 @@ public class SeatMap {
 	 * 
 	 * @param width
 	 */
-	public void setWidth(int width) {
+	public void setWidth(final int width) {
 		this.width = width;
 	}
 
@@ -109,7 +109,7 @@ public class SeatMap {
 	 * @return
 	 */
 	public int getHeight() {
-		return height;
+		return this.height;
 	}
 
 	/**
@@ -117,7 +117,7 @@ public class SeatMap {
 	 * 
 	 * @param height
 	 */
-	public void setHeight(int height) {
+	public void setHeight(final int height) {
 		this.height = height;
 	}
 
@@ -127,7 +127,7 @@ public class SeatMap {
 	 * @return
 	 */
 	public List<Furnish> getSeatPositionList() {
-		return seatPositionList;
+		return this.seatPositionList;
 	}
 
 	/**
@@ -135,7 +135,7 @@ public class SeatMap {
 	 * 
 	 * @param seatPositionList
 	 */
-	public void setSeatPositionList(List<Furnish> seatPositionList) {
+	public void setSeatPositionList(final List<Furnish> seatPositionList) {
 		this.seatPositionList = seatPositionList;
 	}
 

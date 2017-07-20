@@ -937,10 +937,9 @@ function sendItem(bookingID, customerID) {
 }
 ///////////////////////////////////////////////////////////////////////////////
 /** 
- * Map module. 
+ * Extends Map module. 
  * */
-var Map = (function() {
-	var self = {};
+var Map = (function(self) {
 	
 	self.init = function() {
 		setFurnishOption();
@@ -949,8 +948,8 @@ var Map = (function() {
 		mapSizeInputTrigger();
 		
 		/** trigger furnish add */
-		App.subscribe("/furnish/add", function(event, obj){
-			addFurnishToMap(obj);
+		App.subscribe("/furnish/add", function(event, mapId, obj){
+			addFurnishToMap(mapId, obj);
 		});
 	};
 	
@@ -978,6 +977,8 @@ var Map = (function() {
 		
 		/** enable draggable */
 		$(".furnish").draggable("enable");
+		
+		//TODO disable click event.
 	};
 	
 	/**
@@ -986,9 +987,17 @@ var Map = (function() {
 	 * @param self
 	 * @returns
 	 */
-	self.mapOptionListener = function mapOptionListener(self) {
+	self.mapOptionClick = function mapOptionClick(self) {
 		var _class = $(self).attr("enum");
 		var nameable = $(self).attr("nameable") === "true";
+		
+		/** compose map obj. */
+		var mapId = $("#mapId").val() || (function() {
+			var id = App.uuid();
+			$("#mapId").val(id);
+			return id;
+		})(); 
+		var map = new _Map(mapId, "", $("#mapWidth").val(), $("#mapHeight").val());
 		
 		/** create obj */
 		var furnish = new _Furnish(App.uuid(), furnishAlias, 0, 0, _class);
@@ -1016,12 +1025,12 @@ var Map = (function() {
 						App.alertError("桌號重複！");
 					} else {
 						furnish.alias = furnishAlias;
-						Furnish.add(furnish.id, furnish);
+						Map.addFurnish(map, furnish);
 					}
 				}
 			}, "");
 		} else {
-			Furnish.add(furnish.id, furnish);
+			Map.addFurnish(map, furnish);
 		}
 	}
 	
@@ -1032,8 +1041,23 @@ var Map = (function() {
 		});
 	};
 	
+	function save() {
+		var mapID = $("#mapID").val();
+		var mapLocation = $("#mapLocation").val();
+		var mapWidth = $("#mapWidth").val();
+		var mapHeight = $("#mapHeight").val();
+		
+//		var newFurnish = Furnish.
+	}
+	
+	function loadMap() {
+		$("#mapID").val(App.uuid());
+		
+		//TODO overwrite the Map module. 
+	}
+	
 	/**
-	 * Trigger size input tage.
+	 * Trigger size input tag.
 	 * 
 	 * @returns
 	 */
@@ -1080,7 +1104,7 @@ var Map = (function() {
 	 * @param obj
 	 * @returns
 	 */
-	function addFurnishToMap(obj) {
+	function addFurnishToMap(mapId, obj) {
 		var container = document.createElement("div");
 		$(container).attr({
 			"class" : obj._class + " furnish",
@@ -1103,12 +1127,11 @@ var Map = (function() {
 			drop : function(event, ui) {
 				var id = ui.draggable.attr("id");
 				$("#" + id).remove();
-
+				var mapId = $("#mapId").val();
+				Map.removeFurnish(mapId, id);
 				$("#garbageBlock").css({
 					"background-color" : "#F0F0F0"
 				});
-
-				alertify.success("刪除桌號：" + id);
 			},
 			over : function(event, ui) {
 				$("#garbageBlock").css({
@@ -1124,10 +1147,14 @@ var Map = (function() {
 	}
 	
 	return self;
-})();
+})(Map);
 
 
 function init() {
 	/** Map init. */
 	Map.init();
+	
+//	setInterval(function() {
+//		console.log(JSON.stringify(Furnish.getAll()));
+//	}, 1500);
 }

@@ -30,8 +30,8 @@ public class ObjectConverter {
 	@Autowired
 	private MapService mapService = null;
 
-	public Customer customerDTOtoPO(CustomerDTO dto) {
-		Customer po = new Customer();
+	public Customer customerDTOtoPO(final CustomerDTO dto) {
+		final Customer po = new Customer();
 
 		po.setCustomerID(dto.getCustomerID());
 		po.setCheckInTime(dto.getCheckInTime());
@@ -39,7 +39,8 @@ public class ObjectConverter {
 		po.setCustomerName(dto.getCustomerName());
 		po.setPhoneNumber(dto.getPhoneNumber());
 
-		Furnish furnish = buffer.getFurnish().get(dto.getFurnishID());
+		final Furnish furnish = this.buffer.getFurnish()
+				.get(dto.getFurnishID());
 		po.setFurnish(furnish);
 		po.setPeopleCount(dto.getPeopleCount());
 		po.setRemark(dto.getRemark());
@@ -47,16 +48,17 @@ public class ObjectConverter {
 		return po;
 	}
 
-	public List<Booking> bookingDTOtoPO(OrderDTO order) {
-		List<Booking> bookingList = new ArrayList<Booking>();
-		Customer customer = buffer.getDiningCustomer().get(order.getCustomerId());
+	public List<Booking> bookingDTOtoPO(final OrderDTO order) {
+		final List<Booking> bookingList = new ArrayList<Booking>();
+		final Customer customer = this.buffer.getDiningCustomer()
+				.get(order.getCustomerId());
 
-		for (ItemDTO item : order.getItemList()) {
-			Booking booking = new Booking();
+		for (final ItemDTO item : order.getItemList()) {
+			final Booking booking = new Booking();
 			booking.setCustomer(customer);
 			booking.setOrderTime(order.getTime());
-			
-			Item _item = this.buffer.getItems().get(item.getItemId());
+
+			final Item _item = this.buffer.getItems().get(item.getItemId());
 			booking.setItem(_item);
 			booking.setVolume(item.getVolume());
 
@@ -78,24 +80,25 @@ public class ObjectConverter {
 	// return po;
 	// }
 
-	public SeatMap seatMapDTOtoPO(SeatMapDTO dto) {
-		SeatMap po = new SeatMap();
+	public SeatMap seatMapDTOtoPO(final SeatMapDTO dto) {
+		final SeatMap po = new SeatMap();
 
 		if (!dto.getMapID().trim().equals(""))
 			po.setMapID(dto.getMapID().trim());
 
-		po.setLocation(dto.getLocation());
+		po.setName(dto.getName());
 		po.setWidth(dto.getWidth());
 		po.setHeight(dto.getHeight());
 
 		return po;
 	}
 
-	public List<Furnish> furnishDTOtoPO(SeatMap mapPO, List<FurnishDTO> dtos) {
-		List<Furnish> poList = new ArrayList<Furnish>();
+	public List<Furnish> furnishDTOtoPO(final SeatMap mapPO,
+			final List<FurnishDTO> dtos) {
+		final List<Furnish> poList = new ArrayList<Furnish>();
 
-		for (FurnishDTO dto : dtos) {
-			Furnish po = new Furnish();
+		for (final FurnishDTO dto : dtos) {
+			final Furnish po = new Furnish();
 
 			po.setSeatMap(mapPO);
 			po.setX(dto.getX());
@@ -103,8 +106,9 @@ public class ObjectConverter {
 			po.setName(dto.getName());
 
 			/** get furnish class */
-			String furnishClassID = dto.getFurnishClassID();
-			FurnishClass furnishClass = mapService.findFurnishClass(furnishClassID);
+			final String furnishClassID = dto.getFurnishClassID();
+			final FurnishClass furnishClass = this.mapService
+					.findFurnishClass(furnishClassID);
 
 			po.setFurnishClass(furnishClass);
 
@@ -114,8 +118,8 @@ public class ObjectConverter {
 		return poList;
 	}
 
-	public CustomerDTO customerPOtoDTO(Customer po) {
-		CustomerDTO dto = new CustomerDTO();
+	public CustomerDTO customerPOtoDTO(final Customer po) {
+		final CustomerDTO dto = new CustomerDTO();
 
 		dto.setCustomerID(po.getCustomerID());
 		dto.setCustomerName(po.getCustomerName());
@@ -126,8 +130,8 @@ public class ObjectConverter {
 		dto.setCheckInTime(po.getCheckInTime());
 		dto.setCheckOutTime(po.getCheckOutTime());
 
-		List<BookingDTO> dtoList = new ArrayList<BookingDTO>();
-		for (Booking bookingPO : po.getBookingList()) {
+		final List<BookingDTO> dtoList = new ArrayList<BookingDTO>();
+		for (final Booking bookingPO : po.getBookingList()) {
 			dtoList.add(bookingPOtoDTO(bookingPO));
 		}
 		dto.setBookingList(dtoList);
@@ -135,8 +139,8 @@ public class ObjectConverter {
 		return dto;
 	}
 
-	public BookingDTO bookingPOtoDTO(Booking po) {
-		BookingDTO dto = new BookingDTO();
+	public BookingDTO bookingPOtoDTO(final Booking po) {
+		final BookingDTO dto = new BookingDTO();
 
 		dto.setBookingID(po.getBookingID());
 		dto.setOrderTime(po.getOrderTime());

@@ -52,6 +52,11 @@ var FurnishClass = (function() {
 /**
  * Furnish class.
  * 
+ * @param id
+ * @param alias
+ * @param x
+ * @param y
+ * @param _class
  * @returns
  */
 function _Furnish(id, alias, x, y, _class) {
@@ -63,15 +68,35 @@ function _Furnish(id, alias, x, y, _class) {
 }
 
 /**
+ * Map class.
+ * 
+ * @param id
+ * @param name
+ * @param width
+ * @param height
+ * @returns
+ */
+function _Map(id, name, width, height) {
+	this.id = id;
+	this.name = name;
+	this.width = width;
+	this.height = height;
+	/** <furnish.id, _Furnish> */
+	this.furnishList = new DataKeeper(); 
+}
+
+/**
  * Furnish module.
  */
-var Furnish = (function() {
+var Map = (function() {
 	var self = {};
 
-	/** <uuid, obj> */
-	var data = new DataKeeper();
+	/** <map.uuid, _Map> */
+	var mapData = new DataKeeper();
 	var dataUrl = "";
-	var saveBuffer = [];
+	
+	var saveBuffer = {};
+	var removeBuffer = {};
 
 	self.init = function() {
 		return $.ajax({
@@ -84,24 +109,45 @@ var Furnish = (function() {
 		// TODO
 			url : "???",
 			success: function() {
-				saveBuffer = {};
+				saveBuffer = [];
+				removeBuffer = [];
 			}
 		});
 	}
-
-	self.add = function(key, value) {
-		data.add(key, value);
-		saveBuffer.push(value);
-		App.publish("/furnish/add", value);
+	
+	self.addFurnish = function(map, furnish) {
+		var furnishData = mapData.get(map.id) || (function() {
+			mapData.add(map.id, map);
+			return mapData.get(map.id);
+		})();
+		furnishData.furnishList.add(furnish.id, furnish);
+		
+		App.publish("/furnish/add", [map.id, furnish]);
+		
+		/** buffer. */
+		var _saveBuffer = saveBuffer[map.id] || (function() {
+			return saveBuffer[map.id] = [];
+		})();
+		_saveBuffer.push(furnish);
 	};
-
-	self.getAll = function() {
-		return data.getAll();
+	
+	self.removeFurnish = function(mapId, furnishId) {
+		mapData.get(mapId).furnishList.remove(furnishId);
+		
+		/** buffer. */
+		var _removeBuffer = removeBuffer[mapId] || (function() {
+			return removeBuffer[mapId] = [];
+		})();
+		_removeBuffer.push(furnishId);
 	}
 
-	self.get = function(key) {
-		return data.get(key);
+	self.getAllFurnish = function(mapId) {
+		return mapData.get(mapId).furnishList;
 	}
 
+	self.getFurnish = function(mapId, funirshId) {
+		return self.getAllFurnish(mapId).furnishList.get(funirshId);
+	}
+	
 	return self;
 })();
