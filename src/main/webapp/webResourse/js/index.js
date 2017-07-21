@@ -942,14 +942,21 @@ function sendItem(bookingID, customerID) {
 var Map = (function(self) {
 	
 	self.init = function() {
+		mapSocketTrigger();
 		setFurnishOption();
 		mapSettingToggleTrigger();
 		garbageBlockTrigger();
 		mapSizeInputTrigger();
+		loadMap();
 		
 		/** trigger furnish add */
 		App.subscribe("/furnish/add", function(event, mapId, obj){
 			addFurnishToMap(mapId, obj);
+		});
+		
+		/** trigger furnish remove */
+		App.subscribe("/furnish/remove", function(event, mapId, obj){
+			
 		});
 	};
 	
@@ -1041,19 +1048,21 @@ var Map = (function(self) {
 		});
 	};
 	
-	function save() {
-		var mapID = $("#mapID").val();
-		var mapLocation = $("#mapLocation").val();
-		var mapWidth = $("#mapWidth").val();
-		var mapHeight = $("#mapHeight").val();
-		
-//		var newFurnish = Furnish.
-	}
-	
 	function loadMap() {
 		$("#mapID").val(App.uuid());
 		
 		//TODO overwrite the Map module. 
+		var url = "getSeatMap?????";
+	}
+	
+	/**
+	 * Update seat map.
+	 * 
+	 * @param obj
+	 * @returns
+	 */
+	function updateSeatMap(obj) {
+		console.log(obj);
 	}
 	
 	/**
@@ -1067,6 +1076,18 @@ var Map = (function(self) {
 			var mapHeight = $("mapHeight").val();
 			
 			self.resize(mapWidth, mapHeight);
+		});
+	}
+	
+	/**
+	 * Socket trigger for seat map.
+	 * 
+	 * @returns
+	 */
+	function mapSocketTrigger() {
+		/** trigger webSocket (update seat map) */
+		WebSocket.subscribe("/topic/updateSeatMap", function(data){
+			console.log(data);
 		});
 	}
 	

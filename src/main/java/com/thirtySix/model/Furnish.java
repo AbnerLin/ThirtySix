@@ -25,10 +25,13 @@ public class Furnish {
 	 */
 	@Id
 	@GeneratedValue(generator = "UUID")
-	@GenericGenerator(name = "UUID", strategy = "org.hibernate.id.UUIDGenerator")
+	@GenericGenerator(name = "UUID", strategy = "com.thirtySix.model.id.generator.UuidGenerator")
 	@Column(name = "FURNISHID")
 	private String furnishID;
 
+	/**
+	 * furnish name.
+	 */
 	@Column(name = "NAME", unique = true, nullable = true)
 	private String name;
 
@@ -71,7 +74,7 @@ public class Furnish {
 	 * @return
 	 */
 	public String getFurnishID() {
-		return furnishID;
+		return this.furnishID;
 	}
 
 	/**
@@ -79,7 +82,7 @@ public class Furnish {
 	 * 
 	 * @param furnishID
 	 */
-	public void setFurnishID(String furnishID) {
+	public void setFurnishID(final String furnishID) {
 		this.furnishID = furnishID;
 	}
 
@@ -89,7 +92,7 @@ public class Furnish {
 	 * @return
 	 */
 	public int getX() {
-		return x;
+		return this.x;
 	}
 
 	/**
@@ -97,7 +100,7 @@ public class Furnish {
 	 * 
 	 * @param x
 	 */
-	public void setX(int x) {
+	public void setX(final int x) {
 		this.x = x;
 	}
 
@@ -107,7 +110,7 @@ public class Furnish {
 	 * @return
 	 */
 	public int getY() {
-		return y;
+		return this.y;
 	}
 
 	/**
@@ -115,7 +118,7 @@ public class Furnish {
 	 * 
 	 * @param y
 	 */
-	public void setY(int y) {
+	public void setY(final int y) {
 		this.y = y;
 	}
 
@@ -125,7 +128,7 @@ public class Furnish {
 	 * @return
 	 */
 	public SeatMap getSeatMap() {
-		return seatMap;
+		return this.seatMap;
 	}
 
 	/**
@@ -133,7 +136,7 @@ public class Furnish {
 	 * 
 	 * @param seatMap
 	 */
-	public void setSeatMap(SeatMap seatMap) {
+	public void setSeatMap(final SeatMap seatMap) {
 		this.seatMap = seatMap;
 	}
 
@@ -143,7 +146,7 @@ public class Furnish {
 	 * @return
 	 */
 	public FurnishClass getFurnishClass() {
-		return furnishClass;
+		return this.furnishClass;
 	}
 
 	/**
@@ -151,7 +154,7 @@ public class Furnish {
 	 * 
 	 * @param furnishClass
 	 */
-	public void setFurnishClass(FurnishClass furnishClass) {
+	public void setFurnishClass(final FurnishClass furnishClass) {
 		this.furnishClass = furnishClass;
 	}
 
@@ -161,7 +164,7 @@ public class Furnish {
 	 * @return
 	 */
 	public String getName() {
-		return name;
+		return this.name;
 	}
 
 	/**
@@ -169,7 +172,7 @@ public class Furnish {
 	 * 
 	 * @param text
 	 */
-	public void setName(String name) {
+	public void setName(final String name) {
 		this.name = name;
 	}
 
@@ -179,7 +182,7 @@ public class Furnish {
 	 * @return
 	 */
 	public List<Customer> getCustomerList() {
-		return customerList;
+		return this.customerList;
 	}
 
 }

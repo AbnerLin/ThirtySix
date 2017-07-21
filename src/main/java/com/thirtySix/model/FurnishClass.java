@@ -65,7 +65,7 @@ public class FurnishClass {
 	 * 座位清單
 	 */
 	@JsonIgnore
-	@OneToMany(fetch = FetchType.EAGER, mappedBy = "furnishClass")
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "furnishClass")
 	private List<Furnish> furnishList;
 
 	/**

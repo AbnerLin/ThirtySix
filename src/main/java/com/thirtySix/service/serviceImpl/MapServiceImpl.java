@@ -37,7 +37,7 @@ public class MapServiceImpl implements MapService {
 	public void saveFurnish(final SeatMap map,
 			final List<Furnish> furnishList) {
 		/** delete first */
-		this.furnishRepo.deleteBySeatMap(map.getMapID());
+		this.furnishRepo.deleteBySeatMap(map);
 
 		/** save */
 		this.furnishRepo.save(furnishList);

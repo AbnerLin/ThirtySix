@@ -2,7 +2,7 @@ package com.thirtySix.dto;
 
 import com.thirtySix.model.SeatMap;
 
-public class FurnishDTO {
+public class FurnishQDTO {
 
 	/**
 	 * 擺設編號

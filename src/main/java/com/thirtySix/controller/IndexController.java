@@ -49,9 +49,6 @@ public class IndexController {
 	@Autowired
 	private ObjectConverter objConverter = null;
 
-	@Autowired
-	private SimpMessagingTemplate messageTemplate = null;
-
 	private Logger logger = Logger.getLogger(this.getClass());
 
 	@ResponseBody
@@ -137,7 +134,7 @@ public class IndexController {
 		result.setStatusOK();
 
 		/** push socket to every client */
-		customerCheckOutNotification(checkOutDto);
+		// customerCheckOutNotification(checkOutDto);
 
 		return result;
 	}
@@ -171,8 +168,8 @@ public class IndexController {
 		bufferMap.put(po.getCustomerID(), po);
 
 		/** push socket to every client */
-		this.customerCheckInNotification(customerDTO.getFurnishID());
-		this.customerInfoUpdateNotification(po);
+		// this.customerCheckInNotification(customerDTO.getFurnishID());
+		// this.customerInfoUpdateNotification(po);
 
 		result.setStatusOK();
 		return result;
@@ -226,7 +223,7 @@ public class IndexController {
 		customer.getBookingList().addAll(bookingList);
 
 		/** send to client */
-		this.customerInfoUpdateNotification(customer);
+		// this.customerInfoUpdateNotification(customer);
 
 		result.setStatusOK();
 		return result;
@@ -273,7 +270,7 @@ public class IndexController {
 		}
 		/** update dining customer */
 		// this.diningCustomerUpdate();
-		this.customerInfoUpdateNotification(customerData);
+		// this.customerInfoUpdateNotification(customerData);
 
 		result.setStatusOK();
 		return result;
@@ -301,38 +298,38 @@ public class IndexController {
 					this.objConverter.customerPOtoDTO(customerPO));
 		}
 
-		this.messageTemplate.convertAndSend("/topic/customerUpdate",
-				diningCustomerDTO);
+		// this.messageTemplate.convertAndSend("/topic/customerUpdate",
+		// diningCustomerDTO);
 	}
 
-	/**
-	 * specify customer update.
-	 * 
-	 * @param customerId
-	 */
-	public void customerInfoUpdateNotification(final Customer customer) {
-		this.messageTemplate.convertAndSend("/topic/specifyCustomerUpdate",
-				this.objConverter.customerPOtoDTO(customer));
-	}
+	// /**
+	// * specify customer update.
+	// *
+	// * @param customerId
+	// */
+	// public void customerInfoUpdateNotification(final Customer customer) {
+	// this.messageTemplate.convertAndSend("/topic/specifyCustomerUpdate",
+	// this.objConverter.customerPOtoDTO(customer));
+	// }
 
-	/**
-	 * 進場
-	 * 
-	 * @param tableNumber
-	 */
-	public void customerCheckInNotification(final String tableNumber) {
-		this.messageTemplate.convertAndSend("/topic/customerCheckIn",
-				tableNumber);
-	}
-
-	/**
-	 * 出場
-	 * 
-	 * @param tableNumber
-	 */
-	public void customerCheckOutNotification(final CheckOutDTO checkOutDto) {
-		this.messageTemplate.convertAndSend("/topic/customerCheckOut",
-				checkOutDto);
-	}
+	// /**
+	// * 進場
+	// *
+	// * @param tableNumber
+	// */
+	// public void customerCheckInNotification(final String tableNumber) {
+	// this.messageTemplate.convertAndSend("/topic/customerCheckIn",
+	// tableNumber);
+	// }
+	//
+	// /**
+	// * 出場
+	// *
+	// * @param tableNumber
+	// */
+	// public void customerCheckOutNotification(final CheckOutDTO checkOutDto) {
+	// this.messageTemplate.convertAndSend("/topic/customerCheckOut",
+	// checkOutDto);
+	// }
 
 }

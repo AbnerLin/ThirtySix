@@ -27,7 +27,7 @@ public class SeatMapQDTO {
 	/**
 	 * New add furnish list.
 	 */
-	private List<FurnishDTO> newFurnishList;
+	private List<FurnishQDTO> newFurnishList;
 
 	/**
 	 * Furnishs which have to remove.
@@ -111,7 +111,7 @@ public class SeatMapQDTO {
 	 * 
 	 * @return
 	 */
-	public List<FurnishDTO> getNewFurnishList() {
+	public List<FurnishQDTO> getNewFurnishList() {
 		return this.newFurnishList;
 	}
 
@@ -120,7 +120,7 @@ public class SeatMapQDTO {
 	 * 
 	 * @param newFurnishList
 	 */
-	public void setNewFurnishList(final List<FurnishDTO> newFurnishList) {
+	public void setNewFurnishList(final List<FurnishQDTO> newFurnishList) {
 		this.newFurnishList = newFurnishList;
 	}
 

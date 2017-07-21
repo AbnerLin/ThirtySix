@@ -1,16 +1,18 @@
 var App = (function() {
 	self = {};
-
-	var rootURL = "/thirtySix/";
-	self.URL = rootURL;
-	
+	var project = "/thirtySix/";
 	/** pub/sub */
 	var topic = undefined;
 
+	self.URL = (function() {
+		return "http://" + window.location.host + project;
+	})();
+	
 	self.loadBaseJS = function(callback) {
 		$LAB //
 		.script("https://code.jquery.com/jquery-3.2.1.min.js").wait(
 				function() {
+					/** pub/sub */
 					topic = $({});
 				}) 
 		.script("js/core/common.js").wait()
@@ -20,8 +22,6 @@ var App = (function() {
 		.script("https://cdnjs.cloudflare.com/ajax/libs/tether/1.4.0/js/tether.min.js") //
 		.script("https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/js/bootstrap.min.js")
 		.script("plugin/alertify/js/alertify.min.js") //
-		.script("plugin/socket/sockjs-1.1.4.js")
-		.script("plugin/socket/stomp.min.js")
 		.script("plugin/bootstrap-toggle/js/bootstrap-toggle.min.js")
 		.script("plugin/jquery/js/jquery-tmpl.js")
 		.script("plugin/jquery-ui-1.12.1.custom/jquery-ui.min.js")
@@ -35,7 +35,8 @@ var App = (function() {
 		$LAB.script(href).wait(function() {
 			callback();
 		});
-	}
+		return self;
+	};
 	
 	self.loadBaseCSS = function() {
 		self.loadCSS("https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css") //
@@ -58,7 +59,7 @@ var App = (function() {
 		
 		return self;
 	}
-
+	
 	self.alertSuccess = function(msg) {
 		alertify.success(msg);
 	};
@@ -87,7 +88,6 @@ var App = (function() {
 	self.publish = function() {
 		topic.trigger.apply(topic, arguments);
 	};
-		
 		
 	return self;
 })();

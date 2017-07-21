@@ -183,4 +183,13 @@ public class Buffer {
 		return this.furnishClass;
 	}
 
+	/**
+	 * Get seat map fuffer.
+	 * 
+	 * @return
+	 */
+	public Map<String, SeatMap> getSeatMap() {
+		return this.mapBuffer;
+	}
+
 }

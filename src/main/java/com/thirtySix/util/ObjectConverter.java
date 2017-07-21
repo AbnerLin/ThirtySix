@@ -9,7 +9,7 @@ import org.springframework.stereotype.Component;
 import com.thirtySix.core.Buffer;
 import com.thirtySix.dto.BookingDTO;
 import com.thirtySix.dto.CustomerDTO;
-import com.thirtySix.dto.FurnishDTO;
+import com.thirtySix.dto.FurnishQDTO;
 import com.thirtySix.dto.ItemDTO;
 import com.thirtySix.dto.OrderDTO;
 import com.thirtySix.dto.SeatMapQDTO;
@@ -19,16 +19,12 @@ import com.thirtySix.model.Furnish;
 import com.thirtySix.model.FurnishClass;
 import com.thirtySix.model.Item;
 import com.thirtySix.model.SeatMap;
-import com.thirtySix.service.MapService;
 
 @Component
 public class ObjectConverter {
 
 	@Autowired
 	private Buffer buffer = null;
-
-	@Autowired
-	private MapService mapService = null;
 
 	public Customer customerDTOtoPO(final CustomerDTO dto) {
 		final Customer po = new Customer();
@@ -94,21 +90,21 @@ public class ObjectConverter {
 	}
 
 	public List<Furnish> furnishDTOtoPO(final SeatMap mapPO,
-			final List<FurnishDTO> dtos) {
+			final List<FurnishQDTO> dtos) {
 		final List<Furnish> poList = new ArrayList<Furnish>();
 
-		for (final FurnishDTO dto : dtos) {
+		for (final FurnishQDTO dto : dtos) {
 			final Furnish po = new Furnish();
 
 			po.setSeatMap(mapPO);
+			po.setFurnishID(dto.getFurnishID());
 			po.setX(dto.getX());
 			po.setY(dto.getY());
 			po.setName(dto.getName());
 
 			/** get furnish class */
-			final String furnishClassID = dto.getFurnishClassID();
-			final FurnishClass furnishClass = this.mapService
-					.findFurnishClass(furnishClassID);
+			final FurnishClass furnishClass = this.buffer.getFurnishClass()
+					.get(dto.getFurnishClassID());
 
 			po.setFurnishClass(furnishClass);
 

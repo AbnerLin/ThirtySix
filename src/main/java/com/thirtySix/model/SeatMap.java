@@ -1,5 +1,6 @@
 package com.thirtySix.model;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.Column;
@@ -11,6 +12,8 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.NotFound;
+import org.hibernate.annotations.NotFoundAction;
 
 @Entity
 @Table(name = "SEATMAP")
@@ -21,7 +24,7 @@ public class SeatMap {
 	 */
 	@Id
 	@GeneratedValue(generator = "UUID")
-	@GenericGenerator(name = "UUID", strategy = "org.hibernate.id.UUIDGenerator")
+	@GenericGenerator(name = "UUID", strategy = "com.thirtySix.model.id.generator.UuidGenerator")
 	@Column(name = "MAPID")
 	private String mapID;
 
@@ -46,8 +49,9 @@ public class SeatMap {
 	/**
 	 * 擺設座標位置
 	 */
+	@NotFound(action = NotFoundAction.IGNORE)
 	@OneToMany(fetch = FetchType.EAGER, mappedBy = "seatMap")
-	private List<Furnish> seatPositionList;
+	private List<Furnish> furnishList = new ArrayList<Furnish>();
 
 	/**
 	 * 取得地圖編號
@@ -126,8 +130,8 @@ public class SeatMap {
 	 * 
 	 * @return
 	 */
-	public List<Furnish> getSeatPositionList() {
-		return this.seatPositionList;
+	public List<Furnish> getFurnishList() {
+		return this.furnishList;
 	}
 
 	/**
@@ -135,8 +139,8 @@ public class SeatMap {
 	 * 
 	 * @param seatPositionList
 	 */
-	public void setSeatPositionList(final List<Furnish> seatPositionList) {
-		this.seatPositionList = seatPositionList;
+	public void setFurnishList(final List<Furnish> setFurnishList) {
+		this.furnishList = setFurnishList;
 	}
 
 }

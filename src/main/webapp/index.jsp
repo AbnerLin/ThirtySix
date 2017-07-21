@@ -9,15 +9,21 @@
 <meta name="viewport"
 	content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
 
+<!-- <script src="plugin/socket/sockjs-1.1.4.js"></script> -->
+<!-- <script src="plugin/socket/stomp.min.js"></script> -->
 <script src="plugin/LAB/LAB.min.js"></script>
 <script>
-	$LAB.script("js/core/core.js").wait(function() {
+	$LAB //
+	.script("plugin/socket/sockjs.min.js") //
+	.script("plugin/socket/stomp.min.js") //
+	.script("js/core/core.js").wait(function() {
 		App.loadBaseCSS();
 		App.loadCSS("css/index.css");
 		App.loadBaseJS(function() {
 			$("body").fadeIn();
 		});
-		App.loadJS("js/index.js", function() {
+		App.loadJS("js/module/WebSocket.js") //
+		   .loadJS("js/index.js", function() {
 			init();
 		});
 	});

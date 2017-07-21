@@ -3,6 +3,7 @@ package com.thirtySix.repository;
 import org.springframework.data.repository.PagingAndSortingRepository;
 
 import com.thirtySix.model.Furnish;
+import com.thirtySix.model.SeatMap;
 
 public interface FurnishRepository
 		extends PagingAndSortingRepository<Furnish, String> {
@@ -12,6 +13,6 @@ public interface FurnishRepository
 	 * 
 	 * @param furnishClass
 	 */
-	public void deleteBySeatMap(String mapID);
+	public void deleteBySeatMap(SeatMap map);
 
 }
