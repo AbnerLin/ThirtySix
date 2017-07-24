@@ -949,14 +949,19 @@ var Map = (function(self) {
 		mapSizeInputTrigger();
 		loadMap();
 		
+		/** trigger map info update. */
+		App.subscribe("/map/update", function(event, map) {
+			mapUpdate(map);
+		});
+		
 		/** trigger furnish add */
 		App.subscribe("/furnish/add", function(event, mapId, obj){
 			addFurnishToMap(mapId, obj);
 		});
 		
 		/** trigger furnish remove */
-		App.subscribe("/furnish/remove", function(event, mapId, obj){
-			
+		App.subscribe("/furnish/remove", function(event, mapId, objId){
+			removeFurnishFromMap(mapId, objId)
 		});
 	};
 	
@@ -1021,48 +1026,34 @@ var Map = (function(self) {
 					}
 					
 					var isDuplicate = false;
-					$.each(Map.getAllFurnish(mapId), function(key, value) {
-						if(furnishAlias == key) {
-							isDuplicate = true;
-							return;
-						}
-					});
-					
+					if(Map.getAllFurnish(mapId)) {
+						$.each(Map.getAllFurnish(mapId), function(key, value) {
+							if(furnishAlias == key) {
+								isDuplicate = true;
+								return;
+							}
+						});
+					}
+						
 					if(isDuplicate) {
 						App.alertError("桌號重複！");
 					} else {
 						furnish.alias = furnishAlias;
-						Map.addFurnish(map, furnish);
+						Map.addFurnish(map, furnish, true);
 					}
 				}
 			}, "");
 		} else {
-			Map.addFurnish(map, furnish);
+			Map.addFurnish(map, furnish, true);
 		}
 	}
-	
-	self.resize = function(width, height) {
-		$("#seatMap").css({
-			"width" : width,
-			"height" : height
-		});
-	};
 	
 	function loadMap() {
 		$("#mapID").val(App.uuid());
 		
 		//TODO overwrite the Map module. 
+		//TODO load map from server, and test add, remove, resize, and other client will update by socket.
 		var url = "getSeatMap?????";
-	}
-	
-	/**
-	 * Update seat map.
-	 * 
-	 * @param obj
-	 * @returns
-	 */
-	function updateSeatMap(obj) {
-		console.log(obj);
 	}
 	
 	/**
@@ -1072,11 +1063,35 @@ var Map = (function(self) {
 	 */
 	function mapSizeInputTrigger() {
 		$("#mapWidth, #mapHeight").on("keypress keydown keyup", function() {
-			var mapWidth = $("#mapWidth").val();
-			var mapHeight = $("mapHeight").val();
-			
-			self.resize(mapWidth, mapHeight);
+			mapResize($("#mapWidth").val(), $("#mapHeight").val());
 		});
+		
+		$("#mapWidth, #mapHeight").on("focusout", function() {
+			var mapId = $("#mapId").val() || (function() {
+				var id = App.uuid();
+				$("#mapId").val(id);
+				return id;
+			})(); 
+			var map = new _Map(mapId, $("#mapLocation").val(), $("#mapWidth").val(), $("#mapHeight").val());
+			Map.saveOrUpdateMap(map);
+		});
+	}
+
+	function mapResize(width, height) {
+		$("#seatMap").css({
+			"width" : width,
+			"height" : height
+		});
+	}
+	
+	/**
+	 * Update map info(Name, Width, Height).
+	 */
+	function mapUpdate(map) {
+		if ($("#mapId").val() == map.id) {
+			$("#mapLocation").val(map.name);
+			mapResize(map.width, map.height);
+		}
 	}
 	
 	/**
@@ -1087,7 +1102,35 @@ var Map = (function(self) {
 	function mapSocketTrigger() {
 		/** trigger webSocket (update seat map) */
 		WebSocket.subscribe("/topic/updateSeatMap", function(data){
-			console.log(data);
+			var obj = JSON.parse(data.body);
+			
+			$.each(obj, function(key, value) {
+				var map = new _Map(obj.mapID, "", obj.width, obj.height);
+				if($("#mapId").val() != map.id) {
+					return true;
+				}
+				
+				/** redraw map and update map info */
+				Map.saveOrUpdateMap(map);
+				
+				/** draw furnish. */
+				$.each(obj.newFurnishList, function(key, value) {
+					var newFurnish = _Furnish( //
+							value.furnishID, //
+							value.alias, //
+							value.x, //
+							value.y, //
+							FurnishClass.getEnumNameById(value.furnishClassID) //
+						);
+					
+					Map.addFurnish(map, newFurnish, false);
+				});
+				
+				/** remove furnish */
+				$.each(obj.removeFurnishList, function(key, value) {
+					Map.removeFurnish(map.id, value, false);
+				});
+			});
 		});
 	}
 	
@@ -1119,18 +1162,34 @@ var Map = (function(self) {
 		});
 	}
 	
+	/** 
+	 * Remove furnish from map.
+	 * 
+	 * @param mapId
+	 * @param obj
+	 * @returns
+	 * */
+	function removeFurnishFromMap(mapId, objId) {
+		if($("#mapId").val() == mapId)
+			$("#" + objId).remove();
+	}
+	
 	/**
 	 * Add furnish to map.
 	 * 
+	 * @param mapId
 	 * @param obj
 	 * @returns
 	 */
 	function addFurnishToMap(mapId, obj) {
+		if($("#mapId").val() != mapId)
+			return;
+		
 		var container = document.createElement("div");
+		$(container).html(obj.alias);
 		$(container).attr({
 			"class" : obj._class + " furnish",
 			"id" : obj.id,
-			"html" : obj.alias
 		}).css({
 			"top" : obj.y,
 			"left" : obj.x,
@@ -1140,7 +1199,7 @@ var Map = (function(self) {
 			containment : "#seatMap",
 			zIndex : 1,
 			stop : function(event, ui) {
-				if(Map.getFurnish(mapId, obj.is)) {
+				if(Map.getFurnish(mapId, obj.id)) {
 					Map.getFurnish(mapId, obj.id).x = ui.position.left;
 					Map.getFurnish(mapId, obj.id).y = ui.position.top;
 				}
@@ -1153,9 +1212,7 @@ var Map = (function(self) {
 		$("#garbageBlock").droppable({
 			drop : function(event, ui) {
 				var id = ui.draggable.attr("id");
-				$("#" + id).remove();
-				var mapId = $("#mapId").val();
-				Map.removeFurnish(mapId, id);
+				Map.removeFurnish($("#mapId").val(), id, true);
 				$("#garbageBlock").css({
 					"background-color" : "#F0F0F0"
 				});

@@ -9,8 +9,6 @@
 <meta name="viewport"
 	content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
 
-<!-- <script src="plugin/socket/sockjs-1.1.4.js"></script> -->
-<!-- <script src="plugin/socket/stomp.min.js"></script> -->
 <script src="plugin/LAB/LAB.min.js"></script>
 <script>
 	$LAB //

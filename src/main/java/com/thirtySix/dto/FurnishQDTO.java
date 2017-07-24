@@ -1,7 +1,5 @@
 package com.thirtySix.dto;
 
-import com.thirtySix.model.SeatMap;
-
 public class FurnishQDTO {
 
 	/**
@@ -29,10 +27,10 @@ public class FurnishQDTO {
 	 */
 	private String furnishClassID;
 
-	/**
-	 * 地圖資訊
-	 */
-	private SeatMap seatMap;
+	// /**
+	// * 地圖資訊
+	// */
+	// private SeatMap seatMap;
 
 	/**
 	 * 取得擺設編號
@@ -40,7 +38,7 @@ public class FurnishQDTO {
 	 * @return
 	 */
 	public String getFurnishID() {
-		return furnishID;
+		return this.furnishID;
 	}
 
 	/**
@@ -48,7 +46,7 @@ public class FurnishQDTO {
 	 * 
 	 * @param furnishID
 	 */
-	public void setFurnishID(String furnishID) {
+	public void setFurnishID(final String furnishID) {
 		this.furnishID = furnishID;
 	}
 
@@ -58,7 +56,7 @@ public class FurnishQDTO {
 	 * @return
 	 */
 	public int getX() {
-		return x;
+		return this.x;
 	}
 
 	/**
@@ -66,7 +64,7 @@ public class FurnishQDTO {
 	 * 
 	 * @param x
 	 */
-	public void setX(int x) {
+	public void setX(final int x) {
 		this.x = x;
 	}
 
@@ -76,7 +74,7 @@ public class FurnishQDTO {
 	 * @return
 	 */
 	public int getY() {
-		return y;
+		return this.y;
 	}
 
 	/**
@@ -84,7 +82,7 @@ public class FurnishQDTO {
 	 * 
 	 * @param y
 	 */
-	public void setY(int y) {
+	public void setY(final int y) {
 		this.y = y;
 	}
 
@@ -102,27 +100,27 @@ public class FurnishQDTO {
 	 * 
 	 * @param text
 	 */
-	public void setName(String name) {
+	public void setName(final String name) {
 		this.name = name;
 	}
 
-	/**
-	 * 取得地圖資訊
-	 * 
-	 * @return
-	 */
-	public SeatMap getSeatMap() {
-		return seatMap;
-	}
-
-	/**
-	 * 設定地圖資訊
-	 * 
-	 * @param seatMap
-	 */
-	public void setSeatMap(SeatMap seatMap) {
-		this.seatMap = seatMap;
-	}
+	// /**
+	// * 取得地圖資訊
+	// *
+	// * @return
+	// */
+	// public SeatMap getSeatMap() {
+	// return seatMap;
+	// }
+	//
+	// /**
+	// * 設定地圖資訊
+	// *
+	// * @param seatMap
+	// */
+	// public void setSeatMap(final SeatMap seatMap) {
+	// this.seatMap = seatMap;
+	// }
 
 	/**
 	 * 取得裝飾類別
@@ -130,7 +128,7 @@ public class FurnishQDTO {
 	 * @return
 	 */
 	public String getFurnishClassID() {
-		return furnishClassID;
+		return this.furnishClassID;
 	}
 
 	/**
@@ -138,7 +136,7 @@ public class FurnishQDTO {
 	 * 
 	 * @param furnishClass
 	 */
-	public void setFurnishClassID(String furnishClassID) {
+	public void setFurnishClassID(final String furnishClassID) {
 		this.furnishClassID = furnishClassID;
 	}
 

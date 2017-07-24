@@ -43,8 +43,19 @@ var FurnishClass = (function() {
 			}
 		});
 	}
-
+	
 	self.data = data;
+	
+	self.getEnumNameById = function(classId) {
+		var enumName = null;
+		$.each(data.getAll(), function(key, value) {
+			if(value.classID == classId) {
+				enumName = key;
+				return;
+			}
+		});
+		return enumName;
+	};
 
 	return self;
 })();
@@ -153,7 +164,20 @@ var Map = (function() {
 		});
 	}
 
-	self.addFurnish = function(map, furnish) {
+	self.saveOrUpdateMap = function(_map) {
+		var map = mapData.get(_map.id) || (function() {
+			mapData.add(_map.id, _map);
+			return mapData.get(_map.id);
+		})();
+		
+		map.name = _map.name;
+		map.width = _map.width;
+		map.height = _map.height;
+		
+		App.publish("/map/update", [ map ]);
+	};
+	
+	self.addFurnish = function(map, furnish, isLocal) {
 		var furnishData = mapData.get(map.id) || (function() {
 			mapData.add(map.id, map);
 			return mapData.get(map.id);
@@ -162,25 +186,33 @@ var Map = (function() {
 
 		App.publish("/furnish/add", [ map.id, furnish ]);
 
-		/** buffer. */
-		var _saveBuffer = saveBuffer[map.id] || (function() {
-			return saveBuffer[map.id] = [];
-		})();
-		_saveBuffer.push(furnish);
+		if(isLocal) {
+			/** buffer. */
+			var _saveBuffer = saveBuffer[map.id] || (function() {
+				return saveBuffer[map.id] = [];
+			})();
+			_saveBuffer.push(furnish);
+		}
 	};
 
-	self.removeFurnish = function(mapId, furnishId) {
+	self.removeFurnish = function(mapId, furnishId, isLocal) {
 		mapData.get(mapId).furnishList.remove(furnishId);
 
-		/** buffer. */
-		var _removeBuffer = removeBuffer[mapId] || (function() {
-			return removeBuffer[mapId] = [];
-		})();
-		_removeBuffer.push(furnishId);
+		App.publish("/furnish/remove", [ map.id, furnishId ]);
+		
+		if(isLocal) {
+			/** buffer. */
+			var _removeBuffer = removeBuffer[mapId] || (function() {
+				return removeBuffer[mapId] = [];
+			})();
+			_removeBuffer.push(furnishId);
+		}
 	}
 
 	self.getAllFurnish = function(mapId) {
-		return mapData.get(mapId).furnishList;
+		if(mapData.get(mapId))
+			return mapData.get(mapId).furnishList;
+		return null;
 	}
 
 	self.getFurnish = function(mapId, funirshId) {

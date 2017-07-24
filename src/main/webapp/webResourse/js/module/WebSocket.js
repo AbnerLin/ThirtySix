@@ -24,7 +24,6 @@ var WebSocket = (function() {
 		}
 
 	}
-	connect();
 
 	self.subscribe = function(dest, callback) {
 		try {
@@ -33,8 +32,11 @@ var WebSocket = (function() {
 				"callback" : callback
 			});
 
-			if(stompClient.connected)
+			if(stompClient && stompClient.connected) {
 				stompClient.subscribe(dest, callback);
+			} else {
+				connect();
+			}
 		} catch (err) {
 			console.log(err);
 			return false;

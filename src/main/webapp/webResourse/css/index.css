@@ -23,7 +23,8 @@ input[type=number]::-webkit-inner-spin-button, input[type=number]::-webkit-outer
 	-webkit-border-radius: 10px 10px 10px 10px;
 	border: 1px solid #000000;
 	position: relative;
-	background-color: #F8E0E6;
+	/** background-color: #F8E0E6; */
+	background-color: #F2F4F4;
 	margin: auto;
 	width: 600px;
 	height: 400px;
@@ -52,6 +53,7 @@ input[type=number]::-webkit-inner-spin-button, input[type=number]::-webkit-outer
 	border-radius: 10px 10px 10px 10px;
 	-moz-border-radius: 10px 10px 10px 10px;
 	-webkit-border-radius: 10px 10px 10px 10px;
+	display: none;
 }
 
 ///////////
