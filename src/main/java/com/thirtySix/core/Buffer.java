@@ -39,21 +39,14 @@ public class Buffer {
 	/** 用餐中顧客Buffer <customerId, po> */
 	private Map<String, Customer> diningCustomerBuffer = new ConcurrentHashMap<String, Customer>();
 
-	/** 菜單(分類)<String, ItemClass> */
+	/** 菜單<String, ItemClass> */
 	private Map<String, ItemClass> itemMenuBuffer = new HashMap<String, ItemClass>();
-
-	/** 菜單 <String, Item> */
-	private Map<String, Item> itemBuffer = new HashMap<String, Item>();
 
 	/** furnish class buffer <classID, furnishClass> */
 	private Map<String, FurnishClass> furnishClass = new HashMap<String, FurnishClass>();
 
 	/** map buffer <mapId, SeatMap> */
 	private Map<String, SeatMap> mapBuffer = new HashMap<String, SeatMap>();
-
-	// /** Furnish Buffer */
-	// private Map<String, Furnish> furnishBuffer = new HashMap<String,
-	// Furnish>();
 
 	@PostConstruct
 	public void init() {
@@ -108,7 +101,7 @@ public class Buffer {
 					+ itemClass.getClassName());
 
 			itemClass.getItemList().forEach(item -> {
-				this.itemBuffer.put(item.getItemID(), item);
+				// this.itemBuffer.put(item.getItemID(), item);
 				this.logger.info(
 						"菜色編號：" + item.getItemID() + " 名稱：" + item.getName());
 			});
@@ -157,21 +150,27 @@ public class Buffer {
 	}
 
 	/**
-	 * 取得項目列表
+	 * Get item by id from buffer.
 	 * 
+	 * @param itemId
 	 * @return
 	 */
-	public Map<String, Item> getItems() {
-		return this.itemBuffer;
+	public Item getItemById(final String itemId) {
+		return this.itemMenuBuffer.entrySet().stream() //
+				.map(map -> map.getValue()) //
+				.flatMap(value -> value.getItemList().stream()) //
+				.filter(item -> item.getItemID().equalsIgnoreCase(itemId)) //
+				.findFirst() //
+				.orElse(null);
 	}
 
-	/**
-	 * Get furnish from buffer.
-	 * 
-	 * @return
-	 */
-	// public Map<String, Furnish> getFurnish() {
-	// return this.furnishBuffer;
+	// /**
+	// * 取得項目列表
+	// *
+	// * @return
+	// */
+	// public Map<String, Item> getItems() {
+	// return this.itemBuffer;
 	// }
 
 	/**

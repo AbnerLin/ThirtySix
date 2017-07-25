@@ -30,48 +30,51 @@ public class ItemServiceTest {
 	@Test
 	@SuppressWarnings("rawtypes")
 	public void testBufferLoad() {
-		Map<String, ItemClass> itemClass = buffer.getMenu();
+		final Map<String, ItemClass> itemClass = this.buffer.getMenu();
 		Assert.assertEquals(5, itemClass.size());
 
-		Map<String, Item> item = buffer.getItems();
-		Assert.assertEquals(11, item.size());
+		final long itemSize = itemClass.entrySet().stream()
+				.map(map -> map.getValue())
+				.flatMap(value -> value.getItemList().stream()).count();
+		Assert.assertEquals(11, itemSize);
 
-		Iterator iter = itemClass.entrySet().iterator();
+		final Iterator iter = itemClass.entrySet().iterator();
 		int itemSizeFromItemClass = 0;
 		while (iter.hasNext()) {
-			Map.Entry pair = (Map.Entry) iter.next();
-			ItemClass _itemClass = (ItemClass) pair.getValue();
+			final Map.Entry pair = (Map.Entry) iter.next();
+			final ItemClass _itemClass = (ItemClass) pair.getValue();
 			itemSizeFromItemClass += _itemClass.getItemList().size();
 		}
-		Assert.assertEquals(item.size(), itemSizeFromItemClass);
+		Assert.assertEquals(itemSize, itemSizeFromItemClass);
 	}
 
 	@Test
 	@Rollback
 	@Transactional
 	public void testSave() {
-		Map<String, ItemClass> itemClass = buffer.getMenu();
-		ItemClass _itemClass = itemClass.get("9ed2071e-93b1-42bb-8687-3ccdc87decb8");
+		final Map<String, ItemClass> itemClass = this.buffer.getMenu();
+		final ItemClass _itemClass = itemClass
+				.get("9ed2071e-93b1-42bb-8687-3ccdc87decb8");
 
 		/** item */
-		Item item = new Item();
+		final Item item = new Item();
 		item.setName("測試");
 		item.setImagePath("./image.jpg");
 		item.setIsDisplay(1);
 		item.setItemClass(_itemClass);
 		item.setPrice(100);
 
-		itemService.saveItem(item);
+		this.itemService.saveItem(item);
 
-		int itemSize = itemService.findAllItem().size();
+		final int itemSize = this.itemService.findAllItem().size();
 		Assert.assertEquals(12, itemSize);
 
 		/** item class */
-		ItemClass newItemClass = new ItemClass();
+		final ItemClass newItemClass = new ItemClass();
 		newItemClass.setClassName("測試");
-		itemService.saveItemClass(newItemClass);
+		this.itemService.saveItemClass(newItemClass);
 
-		int itemClassSize = itemService.findAllItemClass().size();
+		final int itemClassSize = this.itemService.findAllItemClass().size();
 		Assert.assertEquals(6, itemClassSize);
 	}
 
@@ -80,20 +83,20 @@ public class ItemServiceTest {
 	@Transactional
 	public void testDelete() {
 		/** test item */
-		String itemId1 = "49d643bb-c7d6-4f00-b49f-ceae68971e40";
-		String itemId2 = "d4512dba-4582-4ec2-b4ac-581e3ac1e0a8";
+		final String itemId1 = "49d643bb-c7d6-4f00-b49f-ceae68971e40";
+		final String itemId2 = "d4512dba-4582-4ec2-b4ac-581e3ac1e0a8";
 
-		itemService.deleteItem(itemId1);
-		itemService.deleteItem(itemId2);
+		this.itemService.deleteItem(itemId1);
+		this.itemService.deleteItem(itemId2);
 
-		int itemSize = itemService.findAllItem().size();
+		final int itemSize = this.itemService.findAllItem().size();
 		Assert.assertEquals(9, itemSize);
 
 		/** test itemClass */
-		String itemClassID = "9ed2071e-93b1-42bb-8687-3ccdc87decb8";
-		itemService.deleteItemClass(itemClassID);
+		final String itemClassID = "9ed2071e-93b1-42bb-8687-3ccdc87decb8";
+		this.itemService.deleteItemClass(itemClassID);
 
-		int itemClassSize = itemService.findAllItemClass().size();
+		final int itemClassSize = this.itemService.findAllItemClass().size();
 		Assert.assertEquals(4, itemClassSize);
 	}
 }
