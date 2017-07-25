@@ -941,7 +941,7 @@ function sendItem(bookingID, customerID) {
  * */
 var Map = (function(self) {
 	
-	self.init = function() {
+	self._init = function() {
 		mapSocketTrigger();
 		setFurnishOption();
 		mapSettingToggleTrigger();
@@ -1051,9 +1051,7 @@ var Map = (function(self) {
 	function loadMap() {
 		$("#mapID").val(App.uuid());
 		
-		//TODO overwrite the Map module. 
-		//TODO load map from server, and test add, remove, resize, and other client will update by socket.
-		var url = "getSeatMap?????";
+		self.init();
 	}
 	
 	/**
@@ -1236,7 +1234,7 @@ var Map = (function(self) {
 
 function init() {
 	/** Map init. */
-	Map.init();
+	Map._init();
 	
 //	setInterval(function() {
 //		console.log(JSON.stringify(Furnish.getAll()));

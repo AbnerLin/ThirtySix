@@ -43,13 +43,13 @@ var FurnishClass = (function() {
 			}
 		});
 	}
-	
+
 	self.data = data;
-	
+
 	self.getEnumNameById = function(classId) {
 		var enumName = null;
 		$.each(data.getAll(), function(key, value) {
-			if(value.classID == classId) {
+			if (value.classID == classId) {
 				enumName = key;
 				return;
 			}
@@ -112,33 +112,38 @@ var Map = (function() {
 
 	self.init = function() {
 		return $.ajax({
-		// TODO
+			url : dataUrl,
+			async : true,
+			success : function(data, textStatus, jqXHR) {
+				console.log(JSON.stringify(data));
+			}
 		});
 	}
 
 	self.save = function() {
 		var dataList = [];
 		$.each(mapData.getAll(), function(key, value) {
-			if(value) {
+			if (value) {
 				/** new furnish */
 				var furnishList = [];
-				$.each(saveBuffer[key], function(key, value){
-					furnishList.push({
-						furnishID : value.id,
-						x : value.x,
-						y : value.y,
-						name : value.alias,
-						furnishClassID : FurnishClass.data
-								.get(value._class).classID
-					});
+				$.each(saveBuffer[key], function(key, value) {
+					furnishList
+							.push({
+								furnishID : value.id,
+								x : value.x,
+								y : value.y,
+								name : value.alias,
+								furnishClassID : FurnishClass.data
+										.get(value._class).classID
+							});
 				});
-				
+
 				/** remove furnish */
 				var rmFurnishList = [];
 				$.each(removeBuffer[key], function(key, value) {
 					rmFurnishList.push(value);
 				});
-				
+
 				dataList.push({
 					mapID : key,
 					name : value.name,
@@ -169,15 +174,15 @@ var Map = (function() {
 			mapData.add(_map.id, _map);
 			return mapData.get(_map.id);
 		})();
-		
+
 		map.name = _map.name;
 		map.width = _map.width;
 		map.height = _map.height;
-		
+
 		App.publish("/map/update", [ map ]);
 	};
-	
-	self.addFurnish = function(map, furnish, isLocal) {
+
+	self.addFurnish = function(map, furnish, isLocalOperator) {
 		var furnishData = mapData.get(map.id) || (function() {
 			mapData.add(map.id, map);
 			return mapData.get(map.id);
@@ -186,7 +191,7 @@ var Map = (function() {
 
 		App.publish("/furnish/add", [ map.id, furnish ]);
 
-		if(isLocal) {
+		if (isLocalOperator) {
 			/** buffer. */
 			var _saveBuffer = saveBuffer[map.id] || (function() {
 				return saveBuffer[map.id] = [];
@@ -195,12 +200,12 @@ var Map = (function() {
 		}
 	};
 
-	self.removeFurnish = function(mapId, furnishId, isLocal) {
+	self.removeFurnish = function(mapId, furnishId, isLocalOperator) {
 		mapData.get(mapId).furnishList.remove(furnishId);
 
 		App.publish("/furnish/remove", [ map.id, furnishId ]);
-		
-		if(isLocal) {
+
+		if (isLocalOperator) {
 			/** buffer. */
 			var _removeBuffer = removeBuffer[mapId] || (function() {
 				return removeBuffer[mapId] = [];
@@ -210,7 +215,7 @@ var Map = (function() {
 	}
 
 	self.getAllFurnish = function(mapId) {
-		if(mapData.get(mapId))
+		if (mapData.get(mapId))
 			return mapData.get(mapId).furnishList;
 		return null;
 	}

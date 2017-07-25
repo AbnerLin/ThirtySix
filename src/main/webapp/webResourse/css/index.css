@@ -30,6 +30,68 @@ input[type=number]::-webkit-inner-spin-button, input[type=number]::-webkit-outer
 	height: 400px;
 }
 
+.blur {
+	-webkit-filter: blur(5px);
+	-moz-filter: blur(5px);
+	-o-filter: blur(5px);
+	-ms-filter: blur(5px);
+	filter: blur(5px);
+}
+
+.loader-overlay {
+	opacity: 0.5;
+	background: #000;
+	width: 100%;
+	height: 100%;
+	z-index: 10;
+	top: 0;
+	left: 0;
+	position: absolute;
+	color: white;
+}
+
+.loader {
+	border: 10px solid #f3f3f3;
+	border-top: 10px solid blue;
+	border-bottom: 10px solid blue;
+	width: 50px;
+	height: 50px;
+	-webkit-animation: spin 2s linear infinite;
+	animation: spin 2s linear infinite;
+	margin-right: 25px;
+	opacity: 1;
+}
+
+.loadingWord {
+	font-size: 36px;
+	opacity: 1;
+}
+
+.shiningWord {
+	-webkit-animation: shining 2s infinite;
+	animation: shining 0.4s infinite;
+}
+
+@-webkit-keyframes shining {
+ 	0% { opacity: 0; }
+ 	100% { opacity: 1; }
+}
+
+@keyframes shining {
+ 	0% { opacity: 0; }
+ 	100% { opacity: 1; }
+}
+
+@-webkit-keyframes spin {
+ 	0% { -webkit-transform: rotate(0deg); }
+ 	100% { -webkit-transform: rotate(360deg); }
+}
+
+@keyframes spin {
+ 	0% { transform: rotate(0deg); }
+ 	100% { transform: rotate(360deg); }
+}
+
 .furnish {
 	background-repeat: no-repeat;
 	width: 64px;

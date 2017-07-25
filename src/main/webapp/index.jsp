@@ -38,7 +38,6 @@
 	<button onclick="Auth.logout();">logout</button>
 	<!-- 	</form> -->
 
-
 	<div id="main" class="container-fluid">
 		<sec:authorize access="hasRole('ROLE_ADMIN')">
 			<!-- btn option -->

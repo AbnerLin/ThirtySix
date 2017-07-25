@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -149,11 +150,11 @@ public class MapController {
 	@RequestMapping(value = { "/getSeatMap" })
 	public AjaxDTO getSeatMap(final HttpServletRequest request,
 			final HttpServletResponse response) {
-		// TODO need update ?
 
 		final AjaxDTO result = new AjaxDTO();
 
-		final List<SeatMap> mapList = this.mapService.findAllSeatMap();
+		final List<SeatMap> mapList = this.buffer.getSeatMap().values().stream()
+				.collect(Collectors.toList());
 
 		result.setStatusOK();
 		result.setData(mapList);

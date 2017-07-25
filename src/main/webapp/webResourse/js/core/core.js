@@ -88,6 +88,93 @@ var App = (function() {
 	self.publish = function() {
 		topic.trigger.apply(topic, arguments);
 	};
+	
+	self.showLoading = function(element) {
+		var loadingStr = 
+		'<div class="loader-overlay d-flex align-items-center justify-content-center">' +
+			'<div class="row">' +
+				'<div class="loader"></div>' +
+				'<div class="d-flex align-items-center">' +
+					'<div class="loadingWord">ThirtySix</div>' +
+				'</div>' +
+				'<div class="shiningWord loadingWord">' +
+					'_' +
+				'</div>' +
+			'</div>' +
+		'</div>';
+
+		var div = document.createElement("div");
+		$(div).attr("class", "tmpOverlay");
+		$(element).wrap(div);
+		$(element).addClass("blur");
+		$(loadingStr).appendTo(".tmpOverlay");
+	};
+	
+	self.hideLoading = function(element, delay) {
+		setTimeout(function(){
+			element.parent(".tmpOverlay").find(".loader-overlay").remove();
+			element.removeClass("blur");
+			element.unwrap();
+		}, delay);
+	};
+	
+	self.ajax = function(ajaxOption) {
+		var options = {
+			async : true,
+			url : "",
+			data : {},
+			type : "post",
+			dataType : "json",
+			timeout : 10000,
+			contentType : "application/x-www-form-urlencoded; charset=UTF-8",
+			beforeSend : null,
+			success : null,
+			complete : null,
+			error : null,
+			disableButton : null, // pass btn element.
+			showLoading : null   // pass block to show loading, etc div.
+		};
+		$.extend(true, options, ajaxOption);
+		
+		return $.ajax({
+			async : options.async,
+			url: options.url,
+			data : options.data,
+			type : options.type,
+			dataType : options.dataType,
+			timeout : options.timeout,
+			contentType : options.contentType,
+			beforeSend : function(jqXHR, settings) {
+				if(options.showLoading) {
+					App.showLoading(options.showLoading);
+				}
+				if(options.disableButton) {
+					options.disableButton.prop("disabled", true);
+				}
+				if(options.beforeSend) {
+					options.beforeSend(jqXHR, settings);
+				}
+			},
+			success : options.success,
+			complete : function(jqXHR, textStatus) {
+				if(options.showLoading) {
+					App.hideLoading(options.showLoading);
+				}
+				if(options.disableButton) {
+					options.disableButton.prop("disabled", false);
+				}
+				if (options.complete) {
+	                options.complete(xhr, textStatus);
+	            }
+			},
+			error : function(jqXHR, textStatus, errorThrown) {
+				console.log(errorThrown);
+				if(options.error) {
+					options.error(jqXHR, textStatus, errorThrown);
+				}
+			}
+		});
+	};
 		
 	return self;
 })();

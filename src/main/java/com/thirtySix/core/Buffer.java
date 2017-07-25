@@ -164,15 +164,6 @@ public class Buffer {
 				.orElse(null);
 	}
 
-	// /**
-	// * 取得項目列表
-	// *
-	// * @return
-	// */
-	// public Map<String, Item> getItems() {
-	// return this.itemBuffer;
-	// }
-
 	/**
 	 * Get furnish class from buffer.
 	 * 

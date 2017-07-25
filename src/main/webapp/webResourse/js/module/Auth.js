@@ -9,7 +9,7 @@ var Auth = (function() {
 	var privilegeUrl = "auth/getUserPrivilege";
 
 	self.getPrivilege = function() {
-		$.ajax({
+		App.ajax({
 			url : App.URL + privilegeUrl,
 			async : false,
 			success : function(response, status, jqXHR) {
@@ -19,16 +19,14 @@ var Auth = (function() {
 	}
 
 	self.login = function(username, password) {
-		$.ajax({
+		return App.ajax({
 			url : App.URL + loginUrl,
-			method : "POST",
-			async : true,
 			data : {
 				username : username,
 				password : password
 			},
 			success : function(response, status, jqXHR) {
-				if (response == "true") {
+				if (response == true) {
 					App.alertSuccess("登入成功，載入中..");
 					setTimeout(function() {
 						window.location.replace(App.URL);
@@ -41,10 +39,9 @@ var Auth = (function() {
 	}
 
 	self.logout = function() {
-		$.ajax({
+		App.ajax({
 			url : App.URL + logoutUrl,
-			method : "POST",
-			async : true,
+			dataType : "text",
 			success : function(response, status, jqXHR) {
 				App.alertSuccess("登出中。");
 				setTimeout(function() {

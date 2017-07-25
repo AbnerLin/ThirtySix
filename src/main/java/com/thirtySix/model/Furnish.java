@@ -57,6 +57,7 @@ public class Furnish {
 	/**
 	 * customer whom use this furnish
 	 */
+	@JsonIgnore
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "furnish")
 	private List<Customer> customerList;
 

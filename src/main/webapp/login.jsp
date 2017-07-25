@@ -19,7 +19,10 @@
 	});
 
 	function login() {
-		Auth.login($("#username").val(), $("#password").val());
+		App.showLoading($("#loginPage"));
+		Auth.login($("#username").val(), $("#password").val()).done(function() {
+			App.hideLoading($("#loginPage"), 1000);
+		});
 	}
 </script>
 </head>
@@ -29,6 +32,7 @@
 			response.sendRedirect("index.jsp");
 		%>
 	</sec:authorize>
+
 	<div id="loginPage"
 		class="container-fluid d-flex align-items-center justify-content-center">
 
