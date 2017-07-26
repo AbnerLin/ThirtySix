@@ -104,10 +104,16 @@ var App = (function() {
 		'</div>';
 
 		var div = document.createElement("div");
-		$(div).attr("class", "tmpOverlay");
+		$(div).attr("class", "tmpOverlay row col-12 m-0 p-0");
 		$(element).wrap(div);
 		$(element).addClass("blur");
 		$(loadingStr).appendTo(".tmpOverlay");
+		$(element).parent(".tmpOverlay").css("overflow", "hidden");
+	};
+	
+	self.showLoadingByBtn = function(element, btn) {
+		btn.prop("disabled", true);
+		self.showLoading(element);
 	};
 	
 	self.hideLoading = function(element, delay) {
@@ -116,6 +122,11 @@ var App = (function() {
 			element.removeClass("blur");
 			element.unwrap();
 		}, delay);
+	};
+	
+	self.hideLoadingByBtn = function(element, delay, btn) {
+		btn.prop("disabled", false);
+		self.hideLoading(element, delay);
 	};
 	
 	self.ajax = function(ajaxOption) {

@@ -25,9 +25,8 @@ var FurnishClass = (function() {
 	var dataUrl = "map/getFurnishClass";
 
 	self.init = function() {
-		return $.ajax({
+		return App.ajax({
 			url : App.URL + dataUrl,
-			async : true,
 			success : function(response, status, jqXHR) {
 				$.each(response.data, function(key, value) {
 					var _data = new _FurnishClass( //
@@ -67,7 +66,7 @@ var FurnishClass = (function() {
  * @param alias
  * @param x
  * @param y
- * @param _class
+ * @param _class (_FurnishClass.enumName)
  * @returns
  */
 function _Furnish(id, alias, x, y, _class) {
@@ -111,11 +110,26 @@ var Map = (function() {
 	var removeBuffer = {};
 
 	self.init = function() {
-		return $.ajax({
+		return App.ajax({
 			url : dataUrl,
-			async : true,
 			success : function(data, textStatus, jqXHR) {
-				console.log(JSON.stringify(data));
+				var mapDataArray = data.data;
+				$.each(mapDataArray, function(key, value) {
+					var map = new _Map(value.mapID, value.name, value.width, value.height);
+					/** Compose furnish list */
+					$.each(value.furnishList, function(key, innerValue) {
+						var furnish = new _Furnish( //
+								innerValue.furnishID, //
+								innerValue.name, //
+								innerValue.x, //
+								innerValue.y, // 
+								innerValue.furnishClass.name); //
+						map.furnishList.add(furnish.id, furnish);
+					});
+					
+					/** Save to module. */
+					self.saveOrUpdateMap(map);
+				});
 			}
 		});
 	}
@@ -155,16 +169,14 @@ var Map = (function() {
 			}
 		});
 
-		return $.ajax({
+		return App.ajax({
 			url : App.URL + dataSaveUrl,
-			async : true,
-			method : "POST",
-			dataType : "json",
 			contentType : 'application/json',
 			data : JSON.stringify(dataList),
 			success : function() {
 				saveBuffer = [];
 				removeBuffer = [];
+				App.alertSuccess("儲存成功。");
 			}
 		});
 	}
@@ -203,7 +215,7 @@ var Map = (function() {
 	self.removeFurnish = function(mapId, furnishId, isLocalOperator) {
 		mapData.get(mapId).furnishList.remove(furnishId);
 
-		App.publish("/furnish/remove", [ map.id, furnishId ]);
+		App.publish("/furnish/remove", [ mapId, furnishId ]);
 
 		if (isLocalOperator) {
 			/** buffer. */
@@ -212,17 +224,25 @@ var Map = (function() {
 			})();
 			_removeBuffer.push(furnishId);
 		}
-	}
+	};
 
 	self.getAllFurnish = function(mapId) {
 		if (mapData.get(mapId))
 			return mapData.get(mapId).furnishList;
 		return null;
-	}
+	};
 
 	self.getFurnish = function(mapId, funirshId) {
 		return self.getAllFurnish(mapId).get(funirshId);
-	}
+	};
+	
+	self.getMap = function(mapId) {
+		return mapData.get(mapId);
+	};
+	
+	self.getAll = function() {
+		return mapData.getAll();
+	};
 
 	return self;
 })();

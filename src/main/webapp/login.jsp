@@ -18,10 +18,10 @@
 		});
 	});
 
-	function login() {
-		App.showLoading($("#loginPage"));
+	function login(btn) {
+		App.showLoadingByBtn($("#loginPage"), $(btn));
 		Auth.login($("#username").val(), $("#password").val()).done(function() {
-			App.hideLoading($("#loginPage"), 1000);
+			App.hideLoadingByBtn($("#loginPage"), 1000, $(btn));
 		});
 	}
 </script>
@@ -55,7 +55,7 @@
 						</div>
 						<div class="d-flex justify-content-end">
 							<button type="submit" class="btn btn-sm btn-secondary"
-								onclick="login();">登入</button>
+								onclick="login(this);">登入</button>
 						</div>
 					</div>
 				</div>

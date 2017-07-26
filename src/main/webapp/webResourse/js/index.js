@@ -947,7 +947,13 @@ var Map = (function(self) {
 		mapSettingToggleTrigger();
 		garbageBlockTrigger();
 		mapSizeInputTrigger();
-		loadMap();
+		
+		Map.init().done(function() {
+			var mapData = Map.getAll();
+			if(mapData) {
+				loadMap(Object.keys(mapData)[0]);
+			}
+		});
 		
 		/** trigger map info update. */
 		App.subscribe("/map/update", function(event, map) {
@@ -1048,10 +1054,38 @@ var Map = (function(self) {
 		}
 	}
 	
-	function loadMap() {
-		$("#mapID").val(App.uuid());
+	/**
+	 * Save decorator.
+	 * 
+	 * @returns
+	 */
+	self._save = function(btn) {
+		App.showLoadingByBtn($("#mapBlock"), $(btn));
+		Map.save().done(function() {
+			App.hideLoadingByBtn($("#mapBlock"), 1000, $(btn));
+		});
+	};
+
+	/**
+	 * Load Map by map id.
+	 * 
+	 * @param mapId
+	 * @returns
+	 */
+	function loadMap(mapId) {
+		var map = Map.getMap(mapId);
 		
-		self.init();
+		$("#mapId").val(map.id);
+		$("#mapLocation").val(map.name);
+		$("#mapWidth").val(map.width);
+		$("#mapHeight").val(map.height);
+
+		var delayEffect = 0;
+		$.each(map.furnishList.data, function(key, value) {
+			setTimeout(function() {
+				App.publish("/furnish/add", [ map.id, value ]);
+			}, delayEffect += 60);
+		});
 	}
 	
 	/**
@@ -1203,13 +1237,17 @@ var Map = (function(self) {
 				}
 			}
 		});
-		$("#seatMap").append(container);
+		$("#seatMap").append($(container).hide().fadeIn());
 	}
 	
 	function garbageBlockTrigger() {
 		$("#garbageBlock").droppable({
 			drop : function(event, ui) {
 				var id = ui.draggable.attr("id");
+				
+				// TODO Check if furnish is table and whether using ..
+				
+				
 				Map.removeFurnish($("#mapId").val(), id, true);
 				$("#garbageBlock").css({
 					"background-color" : "#F0F0F0"

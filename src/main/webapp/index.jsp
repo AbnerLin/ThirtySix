@@ -21,7 +21,7 @@
 			$("body").fadeIn();
 		});
 		App.loadJS("js/module/WebSocket.js") //
-		   .loadJS("js/index.js", function() {
+		.loadJS("js/index.js", function() {
 			init();
 		});
 	});
@@ -39,70 +39,72 @@
 	<!-- 	</form> -->
 
 	<div id="main" class="container-fluid">
-		<sec:authorize access="hasRole('ROLE_ADMIN')">
-			<!-- btn option -->
-			<div id="option" class="row w-100">
-				<div class="col-6 text-left">
-					<input type="checkbox" id="seatMap-toggle" data-size="mini"
-						data-toggle="toggle" data-onstyle="success" data-offstyle="danger" />
-					調整座位表
-				</div>
-				<div class="col-6 text-right">
-					<button onclick="Map.save();" type="button"
-						class="default-none btn btn-success mapSettingTool">存檔</button>
-				</div>
-			</div>
-		</sec:authorize>
-
-		<div class="row" id="mapSetting" style="display: none;">
-			<!-- furnish selection. -->
-			<div id="imageSelection" class="col-12">
-				<%@ include file="jsp/template/mapOption.jsp"%>
-			</div>
-
-			<!-- map size info -->
-			<div class="col-12 py-3" id="mapSizeOption">
-				<div class="row">
-					<div class="col-6">
-						<div class="input-group">
-							<span class="input-group-addon" id="basic-addon1">寬</span> <input
-								type="text" class="form-control" id="mapWidth"
-								placeholder="witdh" aria-describedby="basic-addon1" value="600">
-						</div>
+		<div id="mapBlock" class="row w-100 m-0 p-0">
+			<sec:authorize access="hasRole('ROLE_ADMIN')">
+				<!-- btn option -->
+				<div id="option" class="col-12 row">
+					<div class="col-6 text-left">
+						<input type="checkbox" id="seatMap-toggle" data-size="mini"
+							data-toggle="toggle" data-onstyle="success"
+							data-offstyle="danger" /> 調整座位表
 					</div>
-					<div class="col-6">
-						<div class="input-group">
-							<span class="input-group-addon" id="basic-addon1">高</span> <input
-								type="text" class="form-control" id="mapHeight"
-								placeholder="height" aria-describedby="basic-addon1" value="400">
-						</div>
+					<div class="col-6 text-right">
+						<button onclick="Map._save(this);" type="button"
+							class="default-none btn btn-success mapSettingTool">存檔</button>
 					</div>
 				</div>
-			</div>
-		</div>
+			</sec:authorize>
 
-		<div class="row">
-			<div class="col-12 row">
-				<div class="mx-3">
-					<img id="tableIconSM" src="<c:url value="images/table-mini.png" />">
-					使用中
+			<div class="col-12" id="mapSetting" style="display: none;">
+				<!-- furnish selection. -->
+				<div id="imageSelection" class="col-12">
+					<%@ include file="jsp/template/mapOption.jsp"%>
 				</div>
-				<div class="mx-3">
-					<img id="tableIconSM"
-						src="<c:url value="images/empty-table-mini.png" />"> 空桌
+
+				<!-- map size info -->
+				<div class="col-12 py-3" id="mapSizeOption">
+					<div class="row">
+						<div class="col-6">
+							<div class="input-group">
+								<span class="input-group-addon" id="basic-addon1">寬</span> <input
+									type="text" class="form-control" id="mapWidth"
+									placeholder="width" aria-describedby="basic-addon1" value="600">
+							</div>
+						</div>
+						<div class="col-6">
+							<div class="input-group">
+								<span class="input-group-addon" id="basic-addon1">高</span> <input
+									type="text" class="form-control" id="mapHeight"
+									placeholder="height" aria-describedby="basic-addon1"
+									value="400">
+							</div>
+						</div>
+					</div>
 				</div>
 			</div>
+
 			<div class="col-12">
-				<div id="seatMap">
-					<input id="mapLocation" type="hidden" value=""> <input
-						id="mapId" type="hidden" value="">
-					<div id="garbageBlock" class="mapSettingTool">
-						<i class="material-icons">&#xe872;</i>
+				<div class="col-12 row">
+					<div class="mx-3">
+						<img id="tableIconSM"
+							src="<c:url value="images/table-mini.png" />"> 使用中
+					</div>
+					<div class="mx-3">
+						<img id="tableIconSM"
+							src="<c:url value="images/empty-table-mini.png" />"> 空桌
+					</div>
+				</div>
+				<div class="col-12">
+					<div id="seatMap">
+						<input id="mapLocation" type="hidden" value=""> <input
+							id="mapId" type="hidden" value="">
+						<div id="garbageBlock" class="mapSettingTool">
+							<i class="material-icons">&#xe872;</i>
+						</div>
 					</div>
 				</div>
 			</div>
 		</div>
-
 		<!-- -----------------------以下未修改 bootstrap4------------------------- -->
 		<div class="row">
 			<div id="serverTime" class="col-md-12 text-center"></div>
