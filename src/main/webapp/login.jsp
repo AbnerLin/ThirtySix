@@ -38,10 +38,10 @@
 
 		<div class="row d-flex justify-content-center">
 			<div class="row">
-				<div class="col-6 d-flex align-items-center justify-content-center">
+				<div class="col-12 col-md-6 d-flex align-items-center justify-content-center">
 					<h1>ThirtySix</h1>
 				</div>
-				<div class="col-6 d-flex align-items-center justify-content-center">
+				<div class="col-12 col-md-6 d-flex align-items-center justify-content-center">
 					<div>
 						<div class="input-group m-1 px-1">
 							<span class="input-group-addon">帳號</span> <input type="text"

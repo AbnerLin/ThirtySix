@@ -42,9 +42,9 @@ var App = (function() {
 		self.loadCSS("https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css") //
 		.loadCSS("plugin/alertify/css/alertify.core.css") //
 		.loadCSS("plugin/alertify/css/alertify.bootstrap.css") //
+		.loadCSS("css/toggle.css") //
 		.loadCSS("https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css") //
 		.loadCSS("https://fonts.googleapis.com/icon?family=Material+Icons")
-		.loadCSS("plugin/bootstrap-toggle/css/bootstrap-toggle.min.css")
 		.loadCSS("plugin/jquery-ui-1.12.1.custom/jquery-ui.min.css")
 		.loadCSS("plugin/jquery-ui-1.12.1.custom/jquery-ui.structure.min.css")
 		.loadCSS("plugin/jquery-ui-1.12.1.custom/jquery-ui.theme.min.css"); //

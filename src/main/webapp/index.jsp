@@ -29,13 +29,12 @@
 </head>
 <body style="display: none;">
 	<sec:authorize access="hasRole('ROLE_ADMIN')">
-			This content will only be visible to users who have
-			the "supervisor" authority in their list of <tt>GrantedAuthority</tt>s.
-		</sec:authorize>
+			has role admin.
+	</sec:authorize>
 	<a href="logout">logout.</a>
 
 	<!-- 	<form action="logout" method="POST"> -->
-	<button onclick="Auth.logout();">logout</button>
+	<button onclick="Auth.logout();" class="btn btn-sm btn-secondary">logout</button>
 	<!-- 	</form> -->
 
 	<div id="main" class="container-fluid">
@@ -43,24 +42,26 @@
 			<sec:authorize access="hasRole('ROLE_ADMIN')">
 				<!-- btn option -->
 				<div id="option" class="col-12 row">
-					<div class="col-6 text-left">
-						<input type="checkbox" id="seatMap-toggle" data-size="mini"
-							data-toggle="toggle" data-onstyle="success"
-							data-offstyle="danger" /> 調整座位表
+					<div class="col-6 text-left d-flex align-items-center justify-content-start" style="border:1px solid black;">
+						<div class="d-flex align-items-center">
+							<label class="switch"> <input type="checkbox"
+								id="seatMap-toggle"> <span class="slider"></span>
+							</label>
+						</div>
+						<div>調整</div>
 					</div>
-					<div class="col-6 text-right">
+					<div class="col-6 d-flex align-items-center justify-content-end" style="border:1px solid black;">
 						<button onclick="Map._save(this);" type="button"
-							class="default-none btn btn-success mapSettingTool">存檔</button>
+							class="default-none btn btn-secondary mapSettingTool">存檔</button>
 					</div>
 				</div>
 			</sec:authorize>
 
 			<div class="col-12" id="mapSetting" style="display: none;">
 				<!-- furnish selection. -->
-				<div id="imageSelection" class="col-12">
+				<div id="imageSelection" class="col-12 p-3">
 					<%@ include file="jsp/template/mapOption.jsp"%>
 				</div>
-
 				<!-- map size info -->
 				<div class="col-12 py-3" id="mapSizeOption">
 					<div class="row">
@@ -83,7 +84,7 @@
 				</div>
 			</div>
 
-			<div class="col-12">
+			<div class="col-12 m-0 p-0">
 				<div class="col-12 row">
 					<div class="mx-3">
 						<img id="tableIconSM"
@@ -94,7 +95,7 @@
 							src="<c:url value="images/empty-table-mini.png" />"> 空桌
 					</div>
 				</div>
-				<div class="col-12">
+				<div class="col-12 m-0 p-0">
 					<div id="seatMap">
 						<input id="mapLocation" type="hidden" value=""> <input
 							id="mapId" type="hidden" value="">

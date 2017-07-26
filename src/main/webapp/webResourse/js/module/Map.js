@@ -118,12 +118,14 @@ var Map = (function() {
 					var map = new _Map(value.mapID, value.name, value.width, value.height);
 					/** Compose furnish list */
 					$.each(value.furnishList, function(key, innerValue) {
+						
 						var furnish = new _Furnish( //
 								innerValue.furnishID, //
 								innerValue.name, //
 								innerValue.x, //
 								innerValue.y, // 
-								innerValue.furnishClass.name); //
+								innerValue.furnishClass.name //
+							); //
 						map.furnishList.add(furnish.id, furnish);
 					});
 					
@@ -132,7 +134,7 @@ var Map = (function() {
 				});
 			}
 		});
-	}
+	};
 
 	self.save = function() {
 		var dataList = [];
@@ -179,7 +181,7 @@ var Map = (function() {
 				App.alertSuccess("儲存成功。");
 			}
 		});
-	}
+	};
 
 	self.saveOrUpdateMap = function(_map) {
 		var map = mapData.get(_map.id) || (function() {
@@ -194,6 +196,17 @@ var Map = (function() {
 		App.publish("/map/update", [ map ]);
 	};
 
+	self.updateFurnish = function(map, furnish) {
+		var map = mapData.get(map.id) || (function() {
+			mapData.add(map.id, map);
+			return mapData.get(map.id);
+		})();
+		
+		map.furnishList.add(furnish.id, furnish);
+		
+		addToSaveBuffer(map, furnish);
+	};
+	
 	self.addFurnish = function(map, furnish, isLocalOperator) {
 		var furnishData = mapData.get(map.id) || (function() {
 			mapData.add(map.id, map);
@@ -204,11 +217,7 @@ var Map = (function() {
 		App.publish("/furnish/add", [ map.id, furnish ]);
 
 		if (isLocalOperator) {
-			/** buffer. */
-			var _saveBuffer = saveBuffer[map.id] || (function() {
-				return saveBuffer[map.id] = [];
-			})();
-			_saveBuffer.push(furnish);
+			addToSaveBuffer(map, furnish);
 		}
 	};
 
@@ -218,11 +227,7 @@ var Map = (function() {
 		App.publish("/furnish/remove", [ mapId, furnishId ]);
 
 		if (isLocalOperator) {
-			/** buffer. */
-			var _removeBuffer = removeBuffer[mapId] || (function() {
-				return removeBuffer[mapId] = [];
-			})();
-			_removeBuffer.push(furnishId);
+			addToRemoveBuffer(mapId, furnishId);
 		}
 	};
 
@@ -243,6 +248,56 @@ var Map = (function() {
 	self.getAll = function() {
 		return mapData.getAll();
 	};
+	
+	/**
+	 * Save to delivery buffer.
+	 * 
+	 * @param map
+	 * @param furnish
+	 * @returns
+	 */
+	function addToSaveBuffer(map, furnish) {
+		var _saveBuffer = saveBuffer[map.id] || (function() {
+			return saveBuffer[map.id] = [];
+		})();
+		
+		var isExist = false;
+		$.each(_saveBuffer, function(key, value) {
+			if(value.id == furnish.id) {
+				_saveBuffer[key] = furnish;
+				isExist = true;
+				return false;
+			}
+		});
+		
+		if(!isExist)
+			_saveBuffer.push(furnish);
+	} 
+	
+	/**
+	 * Save to delivery Buffer.
+	 * 
+	 * @param mapId
+	 * @param furnishId
+	 * @returns
+	 */
+	function addToRemoveBuffer(mapId, furnishId) {
+		/** clear if saveBuffer exist */
+		var _saveBuffer = saveBuffer[mapId] || (function() {
+			return saveBuffer[mapId] = [];
+		})();
+		$.each(_saveBuffer, function(key, value) {
+			if(furnishId == value.id) {
+				_saveBuffer.splice(key, 1);
+				return false;
+			}
+		});
+		
+		var _removeBuffer = removeBuffer[mapId] || (function() {
+			return removeBuffer[mapId] = [];
+		})();
+		_removeBuffer.push(furnishId);
+	}
 
 	return self;
 })();

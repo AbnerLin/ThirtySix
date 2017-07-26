@@ -936,6 +936,10 @@ function sendItem(bookingID, customerID) {
 
 }
 ///////////////////////////////////////////////////////////////////////////////
+var Customer = (function() {
+	
+})();
+
 /** 
  * Extends Map module. 
  * */
@@ -969,6 +973,10 @@ var Map = (function(self) {
 		App.subscribe("/furnish/remove", function(event, mapId, objId){
 			removeFurnishFromMap(mapId, objId)
 		});
+	};
+	
+	self.refresh = function() {
+		// TODO update map status, like table status,,,
 	};
 	
 	/**
@@ -1079,6 +1087,8 @@ var Map = (function(self) {
 		$("#mapLocation").val(map.name);
 		$("#mapWidth").val(map.width);
 		$("#mapHeight").val(map.height);
+		
+		mapResize(map.width, map.height);
 
 		var delayEffect = 0;
 		$.each(map.furnishList.data, function(key, value) {
@@ -1183,7 +1193,6 @@ var Map = (function(self) {
 	}
 	
 	function mapSettingToggleTrigger() {
-		$("#seatMap-toggle").bootstrapToggle();
 		$('#seatMap-toggle').change(function() {
 			var checked = $(this).prop("checked");
 			if (checked == true) {
@@ -1216,7 +1225,6 @@ var Map = (function(self) {
 	function addFurnishToMap(mapId, obj) {
 		if($("#mapId").val() != mapId)
 			return;
-		
 		var container = document.createElement("div");
 		$(container).html(obj.alias);
 		$(container).attr({
@@ -1232,12 +1240,21 @@ var Map = (function(self) {
 			zIndex : 1,
 			stop : function(event, ui) {
 				if(Map.getFurnish(mapId, obj.id)) {
-					Map.getFurnish(mapId, obj.id).x = ui.position.left;
-					Map.getFurnish(mapId, obj.id).y = ui.position.top;
+					var furnish = Map.getFurnish(mapId, obj.id);
+					furnish.x = ui.position.left;
+					furnish.y = ui.position.top;
+					Map.updateFurnish(Map.getMap(mapId), furnish);
 				}
 			}
 		});
 		$("#seatMap").append($(container).hide().fadeIn());
+
+		/** check if user setting now */
+		var checked = $("#seatMap-toggle").prop("checked");
+		if (checked)
+			self.unlock();
+		else
+			self.lock();
 	}
 	
 	function garbageBlockTrigger() {

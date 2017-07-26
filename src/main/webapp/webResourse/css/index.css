@@ -23,8 +23,8 @@ input[type=number]::-webkit-inner-spin-button, input[type=number]::-webkit-outer
 	-webkit-border-radius: 10px 10px 10px 10px;
 	border: 1px solid #000000;
 	position: relative;
-	/** background-color: #F8E0E6; */
-	background-color: #F2F4F4;
+	/** background-color: #E6F9F9; */
+	background-color: #e8fbfb;
 	margin: auto;
 	width: 600px;
 	height: 400px;
@@ -101,7 +101,7 @@ input[type=number]::-webkit-inner-spin-button, input[type=number]::-webkit-outer
 	color: red;
 	vertical-align: middle;
 	display: table-cell;
-	color: white;
+	color: lime;
 	cursor: pointer;
 }
 
@@ -117,6 +117,15 @@ input[type=number]::-webkit-inner-spin-button, input[type=number]::-webkit-outer
 	-webkit-border-radius: 10px 10px 10px 10px;
 	display: none;
 }
+
+#loginPage {
+	height: 100vh;
+}
+
+.mapOption {
+	cursor: pointer;
+}
+
 
 ///////////
 #orderListInfo {
@@ -173,9 +182,7 @@ input[type=number]::-webkit-inner-spin-button, input[type=number]::-webkit-outer
 	outline: 0;
 }
 
-.mapOption {
-	cursor: pointer;
-}
+
 
 #imageSelection {
 	border-radius: 10px 10px 10px 10px;
@@ -186,8 +193,4 @@ input[type=number]::-webkit-inner-spin-button, input[type=number]::-webkit-outer
 
 #orderPageInner, #checkOutTab, #customerInfoTab {
 	padding: 10px;
-}
-
-#loginPage {
-	height: 100vh;
 }
