@@ -24,6 +24,13 @@ public interface MapService {
 	public void saveFurnish(SeatMap map, List<Furnish> furnish);
 
 	/**
+	 * Save furnish class.
+	 * 
+	 * @param furnishClass
+	 */
+	public void saveFurnishClass(FurnishClass furnishClass);
+
+	/**
 	 * Get seat map list.
 	 * 
 	 * @return

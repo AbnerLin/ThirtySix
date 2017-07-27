@@ -33,30 +33,29 @@
 		%>
 	</sec:authorize>
 
-	<div id="loginPage"
-		class="container-fluid d-flex align-items-center justify-content-center">
+	<div id="loginPage" class="container-fluid">
 
-		<div class="row d-flex justify-content-center">
-			<div class="row">
-				<div class="col-12 col-md-6 d-flex align-items-center justify-content-center">
-					<h1>ThirtySix</h1>
-				</div>
-				<div class="col-12 col-md-6 d-flex align-items-center justify-content-center">
-					<div>
-						<div class="input-group m-1 px-1">
-							<span class="input-group-addon">帳號</span> <input type="text"
-								class="form-control" id="username" name="j_username"
-								aria-describedby="basic-addon1" value="" />
-						</div>
-						<div class="input-group m-1 px-1">
-							<span class="input-group-addon">密碼</span> <input type="password"
-								class="form-control" id="password" name="j_password"
-								aria-describedby="basic-addon1" value="" />
-						</div>
-						<div class="d-flex justify-content-end">
-							<button type="submit" class="btn btn-sm btn-secondary"
-								onclick="login(this);">登入</button>
-						</div>
+		<div class="row d-flex justify-content-center h-100">
+			<div
+				class="col-12 col-sm-6 d-flex align-items-sm-center align-items-end justify-content-center justify-content-sm-end">
+				<h1>ThirtySix</h1>
+			</div>
+			<div
+				class="col-12 col-sm-6 d-flex align-items-sm-center align-items-start justify-content-center justify-content-sm-start">
+				<div>
+					<div class="input-group m-1 px-1">
+						<span class="input-group-addon">帳號</span> <input type="text"
+							class="form-control" id="username" name="j_username"
+							aria-describedby="basic-addon1" value="" />
+					</div>
+					<div class="input-group m-1 px-1">
+						<span class="input-group-addon">密碼</span> <input type="password"
+							class="form-control" id="password" name="j_password"
+							aria-describedby="basic-addon1" value="" />
+					</div>
+					<div class="d-flex justify-content-end">
+						<button type="submit" class="btn btn-sm btn-secondary"
+							onclick="login(this);">登入</button>
 					</div>
 				</div>
 			</div>

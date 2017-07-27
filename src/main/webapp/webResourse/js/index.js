@@ -634,284 +634,77 @@ function displayOrderList(isDelivery) {
 	});
 }
 
-/** lock canvas */
-function lockMap() {
-	/** show seat map revise option */
-	$("#saveSeatMap, #deleteTable").fadeOut();
-	// $("#imageSelection, #mapSizeOption").slideUp();
-	$("#mapSetting").slideUp();
+///** lock canvas */
+//function lockMap() {
+//	/** show seat map revise option */
+//	$("#saveSeatMap, #deleteTable").fadeOut();
+//	// $("#imageSelection, #mapSizeOption").slideUp();
+//	$("#mapSetting").slideUp();
+//
+//	/** disable draggable */
+//	$(".tableSeat").draggable("disable");
+//
+//	/** click event */
+//	$(".tableSeat").click(tableClickHandler);
+//
+//	/** hide garbage block */
+//	$("#garbageBlock").fadeOut();
+//
+//}
 
-	/** disable draggable */
-	$(".tableSeat").draggable("disable");
-
-	/** click event */
-	$(".tableSeat").click(tableClickHandler);
-
-	/** hide garbage block */
-	$("#garbageBlock").fadeOut();
-
-}
-
-function unlockMap() {
-	/** show seat map revise option */
-	$("#saveSeatMap, #deleteTable").fadeIn();
-	// $("#imageSelection, #mapSizeOption").slideDown();
-	$("#mapSetting").slideDown();
-
-	/** map width trigger */
-	$("#mapWidth").on("keypress keydown keyup", function() {
-		$("#seatMap").css("width", $(this).val());
-	});
-
-	/** map height trigger */
-	$("#mapHeight").on("keypress keydown keyup", function() {
-		$("#seatMap").css("height", $(this).val());
-	});
-
-	/** disable click event */
-	$(".tableSeat").unbind("click");
-
-	/** apply draggable */
-	$(".tableSeat").draggable("enable");
-
-	/** display garbage block */
-	$("#garbageBlock").fadeIn();
-
-	/** add remove block */
-	$("#garbageBlock").droppable({
-		drop : function(event, ui) {
-			var id = ui.draggable.attr("id");
-			$("#" + id).remove();
-
-			$("#garbageBlock").css({
-				"background-color" : "#F0F0F0"
-			});
-
-			alertify.success("刪除桌號：" + id);
-		},
-		over : function(event, ui) {
-			$("#garbageBlock").css({
-				"background-color" : "#FF5733"
-			});
-		},
-		out : function(event, ui) {
-			$("#garbageBlock").css({
-				"background-color" : "#F0F0F0"
-			});
-		}
-	});
-
-	/** remove tooltip */
-	$(".tableSeat").tooltip('destroy');
-
-}
-
-/**
- * init seat map
- */
-function initSeatMap(customerData) {
-	var action = "getSeatMap";
-
-	$.ajax({
-		url : App.URL + action,
-		async : true,
-		method : "POST",
-		success : function(response, status, jqXHR) {
-			var data = response.data[0];
-			if (data == null)
-				return;
-
-			/** set map ID */
-			var mapID = data.mapID;
-			$("#mapID").val(mapID)
-
-			/** set location */
-			var location = data.location;
-			$("#mapLocation").val(location);
-
-			/** set width */
-			var width = parseInt(data.width);
-			$("#mapWidth").val(width);
-
-			/** set height */
-			var height = parseInt(data.height);
-			$("#mapHeight").val(height);
-
-			/** resize seat map */
-			$("#seatMap").animate({
-				width : width,
-				height : height
-			}, 800);
-
-			/** set funish position */
-			$.each(data.seatPositionList, function(key, value) {
-				addTableToMap(value.displayText, value.x, value.y);
-			});
-			lockMap();
-			initInfoToSeatMap(customerData);
-		}
-	});
-
-	/** init adjust toggle */
-	$("#seatMap-toggle").bootstrapToggle();
-	$('#seatMap-toggle').change(function() {
-		var checked = $(this).prop("checked");
-		if (checked == true) {
-			unlockMap();
-		} else if (checked == false) {
-			lockMap();
-		}
-	});
-
-	// /** compoment add */
-	// $(".mapOption").click(function() {
-	//
-	// /** get table number */
-	// alertify.prompt("請輸入桌號", function(e, str) {
-	// if (e) {
-	// tableNumber = str.trim();
-	//
-	// if (tableNumber == "") {
-	// alertify.alert("桌號不可空白！");
-	// return;
-	// }
-	//
-	// /** check tableNumber duplicate */
-	// var isDuplicate = false;
-	// $(".tableSeat").each(function() {
-	// var _id = $(this).attr("id").trim();
-	// if (_id == tableNumber) {
-	// alertify.alert("桌號重複！");
-	// isDuplicate = true;
-	// }
-	// });
-	//
-	// if (!isDuplicate)
-	// addTableToMap(tableNumber, 0, 0, classStr);
-	// }
-	// }, "");
-	// });
-
-	/** disable draggable */
-	lockMap();
-}
-
-function initInfoToSeatMap(data) {
-	/** set info to seat map */
-	$(".tableSeat").each(function() {
-		var id = $(this).attr("id");
-
-		/** switch image */
-		var isDining = isTableDining(id);
-		if (isDining) {
-			$(this).removeClass("emptyTable");
-			$(this).addClass("diningTable");
-		} else {
-			$(this).removeClass("diningTable");
-			$(this).addClass("emptyTable");
-		}
-
-		/** unSend badge */
-		var customerID = getCustomerIdByTableNumber(id);
-		if (customerID == null)
-			return;
-
-		var unSendCount = 0;
-		var bookingList = data[customerID].bookingList;
-		$.each(bookingList, function(key, value) {
-			if (value.isSend == "0")
-				unSendCount++;
-		});
-		if (unSendCount > 0) {
-			var h4 = document.createElement("h4");
-			var badge = document.createElement("span");
-			$(badge).addClass("label label-danger label-pill");
-			$(badge).html(unSendCount);
-			$("<br>").appendTo($(this));
-			$(badge).appendTo(h4);
-			$(h4).appendTo($(this));
-		}
-	});
-
-}
-
-/**
- * 新增桌號至地圖
- * 
- * @param tableNumber
- */
-function addTableToMap(tableNumber, x, y, classStr) {
-
-	var className = "";
-
-	/** container */
-	var container = document.createElement("div");
-	$(container).addClass("emptyTable tableSeat disableSelection");
-	$(container).html(tableNumber);
-
-	/** set Id */
-	$(container).attr({
-		id : tableNumber
-	});
-
-	/** set position */
-	$(container).css({
-		"top" : y,
-		"left" : x
-	});
-
-	$(container).draggable({
-		containment : "#seatMap",
-		zIndex : 1
-	});
-
-	$(container).css("position", "absolute");
-
-	/** add child to map */
-	$("#seatMap").append(container);
-}
-
-/**
- * 儲存座位表
- */
-function saveSeatMap() {
-	var mapID = $("#mapID").val();
-	var mapLocation = $("#mapLocation").val();
-	var mapWidth = $("#mapWidth").val();
-	var mapHeight = $("#mapHeight").val();
-
-	/** compose container list */
-	var containerList = [];
-	$(".tableSeat").each(function() {
-		containerList.push({
-			x : $(this).position().left,
-			y : $(this).position().top,
-			displayText : $(this).attr("id"),
-		});
-	});
-
-	var postData = {
-		mapID : mapID,
-		location : mapLocation,
-		width : mapWidth,
-		height : mapHeight,
-		seatPositionList : containerList
-	}
-
-	var action = "saveSeatMap";
-	$.ajax({
-		url : App.URL + action,
-		async : true,
-		method : "POST",
-		dataType : "json",
-		contentType : 'application/json',
-		data : JSON.stringify(postData),
-		success : function(response, status, jqXHR) {
-			alertify.success("座位表儲存成功！");
-		}
-	});
-
-}
+//function unlockMap() {
+//	/** show seat map revise option */
+//	$("#saveSeatMap, #deleteTable").fadeIn();
+//	// $("#imageSelection, #mapSizeOption").slideDown();
+//	$("#mapSetting").slideDown();
+//
+//	/** map width trigger */
+//	$("#mapWidth").on("keypress keydown keyup", function() {
+//		$("#seatMap").css("width", $(this).val());
+//	});
+//
+//	/** map height trigger */
+//	$("#mapHeight").on("keypress keydown keyup", function() {
+//		$("#seatMap").css("height", $(this).val());
+//	});
+//
+//	/** disable click event */
+//	$(".tableSeat").unbind("click");
+//
+//	/** apply draggable */
+//	$(".tableSeat").draggable("enable");
+//
+//	/** display garbage block */
+//	$("#garbageBlock").fadeIn();
+//
+//	/** add remove block */
+//	$("#garbageBlock").droppable({
+//		drop : function(event, ui) {
+//			var id = ui.draggable.attr("id");
+//			$("#" + id).remove();
+//
+//			$("#garbageBlock").css({
+//				"background-color" : "#F0F0F0"
+//			});
+//
+//			alertify.success("刪除桌號：" + id);
+//		},
+//		over : function(event, ui) {
+//			$("#garbageBlock").css({
+//				"background-color" : "#FF5733"
+//			});
+//		},
+//		out : function(event, ui) {
+//			$("#garbageBlock").css({
+//				"background-color" : "#F0F0F0"
+//			});
+//		}
+//	});
+//
+//	/** remove tooltip */
+//	$(".tableSeat").tooltip('destroy');
+//
+//}
 
 /**
  * 送餐
@@ -936,10 +729,6 @@ function sendItem(bookingID, customerID) {
 
 }
 ///////////////////////////////////////////////////////////////////////////////
-var Customer = (function() {
-	
-})();
-
 /** 
  * Extends Map module. 
  * */
@@ -1120,10 +909,10 @@ var Map = (function(self) {
 	}
 
 	function mapResize(width, height) {
-		$("#seatMap").css({
+		$("#seatMap").animate({
 			"width" : width,
 			"height" : height
-		});
+		}, 500);
 	}
 	
 	/**
@@ -1147,7 +936,7 @@ var Map = (function(self) {
 			var obj = JSON.parse(data.body);
 			
 			$.each(obj, function(key, value) {
-				var map = new _Map(obj.mapID, "", obj.width, obj.height);
+				var map = new _Map(value.mapID, "", value.width, value.height);
 				if($("#mapId").val() != map.id) {
 					return true;
 				}
@@ -1156,20 +945,19 @@ var Map = (function(self) {
 				Map.saveOrUpdateMap(map);
 				
 				/** draw furnish. */
-				$.each(obj.newFurnishList, function(key, value) {
-					var newFurnish = _Furnish( //
+				$.each(value.newFurnishList, function(key, value) {
+					var newFurnish = new _Furnish( //
 							value.furnishID, //
 							value.alias, //
 							value.x, //
 							value.y, //
 							FurnishClass.getEnumNameById(value.furnishClassID) //
 						);
-					
 					Map.addFurnish(map, newFurnish, false);
 				});
 				
 				/** remove furnish */
-				$.each(obj.removeFurnishList, function(key, value) {
+				$.each(value.removeFurnishList, function(key, value) {
 					Map.removeFurnish(map.id, value, false);
 				});
 			});
@@ -1212,7 +1000,7 @@ var Map = (function(self) {
 	 * */
 	function removeFurnishFromMap(mapId, objId) {
 		if($("#mapId").val() == mapId)
-			$("#" + objId).remove();
+			$("#" + objId).fadeOut();
 	}
 	
 	/**
@@ -1290,6 +1078,11 @@ var Map = (function(self) {
 function init() {
 	/** Map init. */
 	Map._init();
+	
+	/** Menu init. */
+	Menu.init();
+	
+	
 	
 //	setInterval(function() {
 //		console.log(JSON.stringify(Furnish.getAll()));

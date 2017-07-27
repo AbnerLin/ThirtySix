@@ -13,7 +13,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.thirtySix.dto.AjaxDTO;
+import com.thirtySix.dto.AjaxRDTO;
 
 @Controller
 @RequestMapping(value = { "/auth" })
@@ -29,9 +29,9 @@ public class AuthController {
 	@ResponseBody
 	@RequestMapping(value = { "/getUserPrivilege" })
 	@PreAuthorize("isAuthenticated()")
-	public AjaxDTO getUserPrivilege(final HttpServletRequest request,
+	public AjaxRDTO getUserPrivilege(final HttpServletRequest request,
 			final HttpServletResponse response) {
-		final AjaxDTO result = new AjaxDTO();
+		final AjaxRDTO result = new AjaxRDTO();
 
 		final UserDetails userDetails = (UserDetails) SecurityContextHolder
 				.getContext().getAuthentication().getPrincipal();

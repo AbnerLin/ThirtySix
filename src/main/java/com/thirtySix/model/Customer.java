@@ -33,7 +33,10 @@ public class Customer {
 	/**
 	 * 進場時間
 	 */
-	@Column(name = "CHECKINTIME")
+	@Column(name = "CHECKINTIME", //
+			columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP", //
+			insertable = false, //
+			updatable = false)
 	private Timestamp checkInTime;
 
 	/**
@@ -91,7 +94,7 @@ public class Customer {
 	 * @return
 	 */
 	public String getCustomerID() {
-		return customerID;
+		return this.customerID;
 	}
 
 	/**
@@ -99,7 +102,7 @@ public class Customer {
 	 * 
 	 * @param customerID
 	 */
-	public void setCustomerID(String customerID) {
+	public void setCustomerID(final String customerID) {
 		this.customerID = customerID;
 	}
 
@@ -109,7 +112,7 @@ public class Customer {
 	 * @return
 	 */
 	public Furnish getFurnish() {
-		return furnish;
+		return this.furnish;
 	}
 
 	/**
@@ -117,7 +120,7 @@ public class Customer {
 	 * 
 	 * @param furnish
 	 */
-	public void setFurnish(Furnish furnish) {
+	public void setFurnish(final Furnish furnish) {
 		this.furnish = furnish;
 	}
 
@@ -127,7 +130,7 @@ public class Customer {
 	 * @return
 	 */
 	public String getCustomerName() {
-		return customerName;
+		return this.customerName;
 	}
 
 	/**
@@ -135,7 +138,7 @@ public class Customer {
 	 * 
 	 * @param customerName
 	 */
-	public void setCustomerName(String customerName) {
+	public void setCustomerName(final String customerName) {
 		this.customerName = customerName;
 	}
 
@@ -145,7 +148,7 @@ public class Customer {
 	 * @return
 	 */
 	public String getPhoneNumber() {
-		return phoneNumber;
+		return this.phoneNumber;
 	}
 
 	/**
@@ -153,7 +156,7 @@ public class Customer {
 	 * 
 	 * @param phoneNumber
 	 */
-	public void setPhoneNumber(String phoneNumber) {
+	public void setPhoneNumber(final String phoneNumber) {
 		this.phoneNumber = phoneNumber;
 	}
 
@@ -163,7 +166,7 @@ public class Customer {
 	 * @return
 	 */
 	public String getRemark() {
-		return remark;
+		return this.remark;
 	}
 
 	/**
@@ -171,7 +174,7 @@ public class Customer {
 	 * 
 	 * @param remark
 	 */
-	public void setRemark(String remark) {
+	public void setRemark(final String remark) {
 		this.remark = remark;
 	}
 
@@ -181,7 +184,7 @@ public class Customer {
 	 * @return
 	 */
 	public Timestamp getCheckInTime() {
-		return checkInTime;
+		return this.checkInTime;
 	}
 
 	/**
@@ -189,7 +192,7 @@ public class Customer {
 	 * 
 	 * @param checkInTime
 	 */
-	public void setCheckInTime(Timestamp checkInTime) {
+	public void setCheckInTime(final Timestamp checkInTime) {
 		this.checkInTime = checkInTime;
 	}
 
@@ -199,7 +202,7 @@ public class Customer {
 	 * @return
 	 */
 	public Timestamp getCheckOutTime() {
-		return checkOutTime;
+		return this.checkOutTime;
 	}
 
 	/**
@@ -207,7 +210,7 @@ public class Customer {
 	 * 
 	 * @param checkOutTime
 	 */
-	public void setCheckOutTime(Timestamp checkOutTime) {
+	public void setCheckOutTime(final Timestamp checkOutTime) {
 		this.checkOutTime = checkOutTime;
 	}
 
@@ -217,7 +220,7 @@ public class Customer {
 	 * @return
 	 */
 	public Integer getPeopleCount() {
-		return peopleCount;
+		return this.peopleCount;
 	}
 
 	/**
@@ -225,7 +228,7 @@ public class Customer {
 	 * 
 	 * @param peopleCount
 	 */
-	public void setPeopleCount(Integer peopleCount) {
+	public void setPeopleCount(final Integer peopleCount) {
 		this.peopleCount = peopleCount;
 	}
 
@@ -235,7 +238,7 @@ public class Customer {
 	 * @return
 	 */
 	public List<Booking> getBookingList() {
-		return bookingList;
+		return this.bookingList;
 	}
 
 	/**
@@ -244,7 +247,7 @@ public class Customer {
 	 * @return
 	 */
 	public String getCheckInTimeStringFormat() {
-		return checkInTimeStringFormat;
+		return this.checkInTimeStringFormat;
 	}
 
 	/**
@@ -252,7 +255,8 @@ public class Customer {
 	 * 
 	 * @param checkInTimeStringFormat
 	 */
-	public void setCheckInTimeStringFormat(String checkInTimeStringFormat) {
+	public void setCheckInTimeStringFormat(
+			final String checkInTimeStringFormat) {
 		this.checkInTimeStringFormat = checkInTimeStringFormat;
 	}
 

@@ -22,7 +22,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 public class FurnishClass {
 
 	public static enum CLASS {
-		TABLE, TREE, RESTROOM, DOOR, BAR, EMPTY_TABLE;
+		TABLE, TREE, RESTROOM, DOOR, BAR, EMPTY_TABLE, KITCHEN;
 	}
 
 	/**

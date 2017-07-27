@@ -63,4 +63,10 @@ public class MapServiceImpl implements MapService {
 		return (List<FurnishClass>) this.furnishClassRepo.findAll();
 	}
 
+	@Override
+	@Transactional
+	public void saveFurnishClass(final FurnishClass furnishClass) {
+		this.furnishClassRepo.save(furnishClass);
+	}
+
 }

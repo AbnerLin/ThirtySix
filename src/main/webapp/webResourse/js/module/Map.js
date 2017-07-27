@@ -96,7 +96,7 @@ function _Map(id, name, width, height) {
 }
 
 /**
- * Furnish module.
+ * Map module.
  */
 var Map = (function() {
 	var self = {};

@@ -11,14 +11,13 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.annotation.Secured;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.thirtySix.core.Buffer;
-import com.thirtySix.dto.AjaxDTO;
+import com.thirtySix.dto.AjaxRDTO;
 import com.thirtySix.dto.FurnishClassDTO;
 import com.thirtySix.dto.SeatMapQDTO;
 import com.thirtySix.model.Furnish;
@@ -30,7 +29,6 @@ import com.thirtySix.webSocket.WebSocketUtil;
 
 @Controller
 @RequestMapping(value = { "/map" })
-@PreAuthorize("isAuthenticated()")
 public class MapController {
 
 	@Autowired
@@ -54,9 +52,9 @@ public class MapController {
 	 */
 	@ResponseBody
 	@RequestMapping(value = { "/getFurnishClass" })
-	public AjaxDTO getFurnishClass(final HttpServletRequest request,
+	public AjaxRDTO getFurnishClass(final HttpServletRequest request,
 			final HttpServletResponse response) {
-		final AjaxDTO result = new AjaxDTO();
+		final AjaxRDTO result = new AjaxRDTO();
 
 		final Map<String, FurnishClass> furnishClass = this.buffer
 				.getFurnishClass();
@@ -94,10 +92,10 @@ public class MapController {
 			consumes = "application/json", //
 			produces = "application/json")
 	@Secured("ROLE_ADMIN")
-	public AjaxDTO saveSeatMap(final HttpServletRequest request,
+	public AjaxRDTO saveSeatMap(final HttpServletRequest request,
 			final HttpServletResponse response,
 			@RequestBody final List<SeatMapQDTO> mapList) {
-		final AjaxDTO result = new AjaxDTO();
+		final AjaxRDTO result = new AjaxRDTO();
 
 		mapList.forEach(map -> {
 			SeatMap seatMap = new SeatMap();
@@ -148,10 +146,10 @@ public class MapController {
 	 */
 	@ResponseBody
 	@RequestMapping(value = { "/getSeatMap" })
-	public AjaxDTO getSeatMap(final HttpServletRequest request,
+	public AjaxRDTO getSeatMap(final HttpServletRequest request,
 			final HttpServletResponse response) {
 
-		final AjaxDTO result = new AjaxDTO();
+		final AjaxRDTO result = new AjaxRDTO();
 
 		final List<SeatMap> mapList = this.buffer.getSeatMap().values().stream()
 				.collect(Collectors.toList());

@@ -1,6 +1,6 @@
 package com.thirtySix.dto;
 
-public class AjaxDTO {
+public class AjaxRDTO {
 	private static final int SUCCESS = 1;
 	private static final int FAIL = 0;
 
