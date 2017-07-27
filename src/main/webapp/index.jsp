@@ -42,7 +42,7 @@
 			<sec:authorize access="hasRole('ROLE_ADMIN')">
 				<!-- btn option -->
 				<div id="option" class="col-12 row">
-					<div class="col-6 text-left d-flex align-items-center justify-content-start" style="border:1px solid black;">
+					<div class="col-6 text-left d-flex align-items-center justify-content-start">
 						<div class="d-flex align-items-center">
 							<label class="switch"> <input type="checkbox"
 								id="seatMap-toggle"> <span class="slider"></span>
@@ -50,7 +50,7 @@
 						</div>
 						<div>調整</div>
 					</div>
-					<div class="col-6 d-flex align-items-center justify-content-end" style="border:1px solid black;">
+					<div class="col-6 d-flex align-items-center justify-content-end">
 						<button onclick="Map._save(this);" type="button"
 							class="default-none btn btn-secondary mapSettingTool">存檔</button>
 					</div>

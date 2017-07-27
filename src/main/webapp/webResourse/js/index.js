@@ -976,7 +976,7 @@ var Map = (function(self) {
 	};
 	
 	self.refresh = function() {
-		// TODO update map status, like table status,,,
+		// TODO update map status, like table using status,,,
 	};
 	
 	/**

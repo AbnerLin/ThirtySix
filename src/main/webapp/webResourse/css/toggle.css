@@ -58,3 +58,8 @@ input:checked+.slider:before {
 .slider.round:before {
 	border-radius: 50%;
 }
+
+/** override bootstrap <label> */
+label.switch {
+	margin: 0;
+}
