@@ -5,7 +5,7 @@
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 </head>
 <body class="text-center">
-	<%@ include file="template/orderList.jsp"%>
+	<%@ include file="orderList.jsp"%>
 
 	<table class="table">
 		<thead>

@@ -29,7 +29,7 @@
 <body style="display: none;">
 	<sec:authorize access="isAuthenticated()">
 		<%
-			response.sendRedirect("index.jsp");
+			response.sendRedirect("index");
 		%>
 	</sec:authorize>
 

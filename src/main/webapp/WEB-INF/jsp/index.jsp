@@ -28,16 +28,14 @@
 </script>
 </head>
 <body style="display: none;">
+
 	<sec:authorize access="hasRole('ROLE_ADMIN')">
 			has role admin.
 	</sec:authorize>
-	<a href="logout">logout.</a>
 
-	<!-- 	<form action="logout" method="POST"> -->
 	<button onclick="Auth.logout();" class="btn btn-sm btn-secondary">logout</button>
-	<!-- 	</form> -->
 
-	<div id="main" class="container-fluid">
+	<div id="main" class="container-fluid text-center">
 		<div id="mapBlock" class="row w-100 m-0 p-0">
 			<sec:authorize access="hasRole('ROLE_ADMIN')">
 				<!-- btn option -->
@@ -60,7 +58,7 @@
 			<div class="col-12" id="mapSetting" style="display: none;">
 				<!-- furnish selection. -->
 				<div id="imageSelection" class="col-12 p-3">
-					<%@ include file="jsp/template/mapOption.jsp"%>
+					<%@ include file="/WEB-INF/jsp/template/mapOption.jsp"%>
 				</div>
 				<!-- map size info -->
 				<div class="col-12 py-3" id="mapSizeOption">
@@ -205,11 +203,11 @@
 					<div class="tab-content">
 						<!-- order tab -->
 						<div role="tabpanel" class="tab-pane active" id="orderPageTab">
-							<%@ include file="jsp/orderPage.jsp"%>
+							<%@ include file="/WEB-INF/jsp/template/orderPage.jsp"%>
 						</div>
 						<!-- check out -->
 						<div role="tabpanel" class="tab-pane" id="checkOutTab">
-							<%@ include file="jsp/checkOutPage.jsp"%>
+							<%@ include file="/WEB-INF/jsp/template/checkOutPage.jsp"%>
 						</div>
 					</div>
 				</div>
