@@ -2,6 +2,8 @@ package com.thirtySix.model;
 
 import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 import javax.persistence.Column;
@@ -12,10 +14,14 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.PostLoad;
+import javax.persistence.PrePersist;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
 import org.hibernate.annotations.GenericGenerator;
+
+import com.thirtySix.util.TimeFormatter;
 
 @Entity
 @Table(name = "CUSTOMER")
@@ -33,10 +39,7 @@ public class Customer {
 	/**
 	 * 進場時間
 	 */
-	@Column(name = "CHECKINTIME", //
-			columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP", //
-			insertable = false, //
-			updatable = false)
+	@Column(name = "CHECKINTIME")
 	private Timestamp checkInTime;
 
 	/**
@@ -83,10 +86,37 @@ public class Customer {
 	private List<Booking> bookingList = new ArrayList<Booking>();
 
 	/**
-	 * 進場時間(字串)
+	 * check-in time in string foramt.
 	 */
 	@Transient
 	private String checkInTimeStringFormat = "";
+
+	/**
+	 * check-out time in string format.
+	 */
+	@Transient
+	private String checkOutTimeStringFormat = "";
+
+	@PrePersist
+	public void setTime() {
+		final Calendar now = Calendar.getInstance();
+		this.checkInTime = new Timestamp(now.getTimeInMillis());
+
+		setTimeFormat();
+	}
+
+	@PostLoad
+	public void setTimeFormat() {
+		final Date checkInDate = new Date(this.checkInTime.getTime());
+		this.checkInTimeStringFormat = TimeFormatter.getInstance()
+				.getTime(checkInDate);
+
+		if (this.checkOutTime != null) {
+			final Date checkOutDate = new Date(this.checkOutTime.getTime());
+			this.checkOutTimeStringFormat = TimeFormatter.getInstance()
+					.getTime(checkOutDate);
+		}
+	}
 
 	/**
 	 * 取得顧客編號

@@ -22,11 +22,11 @@ var FurnishClass = (function() {
 
 	/** <className(ENUM), obj> */
 	var data = new DataKeeper();
-	var dataUrl = "map/getFurnishClass";
+	var dataUrl = App.URL + "map/getFurnishClass";
 
 	self.init = function() {
 		return App.ajax({
-			url : App.URL + dataUrl,
+			url :  dataUrl,
 			success : function(response, status, jqXHR) {
 				$.each(response.data, function(key, value) {
 					var _data = new _FurnishClass( //
@@ -103,8 +103,8 @@ var Map = (function() {
 
 	/** <map.uuid, _Map> */
 	var mapData = new DataKeeper();
-	var dataUrl = "map/getSeatMap";
-	var dataSaveUrl = "map/saveSeatMap";
+	var dataUrl = App.URL + "map/getSeatMap";
+	var dataSaveUrl = App.URL + "map/saveSeatMap";
 
 	var saveBuffer = {};
 	var removeBuffer = {};
@@ -172,7 +172,7 @@ var Map = (function() {
 		});
 
 		return App.ajax({
-			url : App.URL + dataSaveUrl,
+			url : dataSaveUrl,
 			contentType : 'application/json',
 			data : JSON.stringify(dataList),
 			success : function() {
@@ -292,7 +292,7 @@ var Map = (function() {
 				return false;
 			}
 		});
-		
+
 		var _removeBuffer = removeBuffer[mapId] || (function() {
 			return removeBuffer[mapId] = [];
 		})();

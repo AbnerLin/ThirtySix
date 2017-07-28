@@ -1,23 +1,18 @@
 package com.thirtySix.job;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Component;
 
-import com.thirtySix.util.TimeFormatter;
+import com.thirtySix.webSocket.WebSocketUtil;
 
 @Component
 public class TimeBroadcast {
 
-	// @Autowired
-	// private TimeFormatter timeFormatter = null;
-
 	@Autowired
-	private SimpMessagingTemplate messageTemplate = null;
+	private WebSocketUtil ws = null;
 
 	// @Scheduled(cron = "*/1 * * * * *")
 	public void sendTime() {
-		this.messageTemplate.convertAndSend("/topic/time", TimeFormatter
-				.getInstance().getTime());
+		this.ws.broadcastServerTime();
 	}
 }

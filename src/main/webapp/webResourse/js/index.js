@@ -634,77 +634,77 @@ function displayOrderList(isDelivery) {
 	});
 }
 
-///** lock canvas */
-//function lockMap() {
-//	/** show seat map revise option */
-//	$("#saveSeatMap, #deleteTable").fadeOut();
-//	// $("#imageSelection, #mapSizeOption").slideUp();
-//	$("#mapSetting").slideUp();
+// /** lock canvas */
+// function lockMap() {
+// /** show seat map revise option */
+// $("#saveSeatMap, #deleteTable").fadeOut();
+// // $("#imageSelection, #mapSizeOption").slideUp();
+// $("#mapSetting").slideUp();
 //
-//	/** disable draggable */
-//	$(".tableSeat").draggable("disable");
+// /** disable draggable */
+// $(".tableSeat").draggable("disable");
 //
-//	/** click event */
-//	$(".tableSeat").click(tableClickHandler);
+// /** click event */
+// $(".tableSeat").click(tableClickHandler);
 //
-//	/** hide garbage block */
-//	$("#garbageBlock").fadeOut();
+// /** hide garbage block */
+// $("#garbageBlock").fadeOut();
 //
-//}
+// }
 
-//function unlockMap() {
-//	/** show seat map revise option */
-//	$("#saveSeatMap, #deleteTable").fadeIn();
-//	// $("#imageSelection, #mapSizeOption").slideDown();
-//	$("#mapSetting").slideDown();
+// function unlockMap() {
+// /** show seat map revise option */
+// $("#saveSeatMap, #deleteTable").fadeIn();
+// // $("#imageSelection, #mapSizeOption").slideDown();
+// $("#mapSetting").slideDown();
 //
-//	/** map width trigger */
-//	$("#mapWidth").on("keypress keydown keyup", function() {
-//		$("#seatMap").css("width", $(this).val());
-//	});
+// /** map width trigger */
+// $("#mapWidth").on("keypress keydown keyup", function() {
+// $("#seatMap").css("width", $(this).val());
+// });
 //
-//	/** map height trigger */
-//	$("#mapHeight").on("keypress keydown keyup", function() {
-//		$("#seatMap").css("height", $(this).val());
-//	});
+// /** map height trigger */
+// $("#mapHeight").on("keypress keydown keyup", function() {
+// $("#seatMap").css("height", $(this).val());
+// });
 //
-//	/** disable click event */
-//	$(".tableSeat").unbind("click");
+// /** disable click event */
+// $(".tableSeat").unbind("click");
 //
-//	/** apply draggable */
-//	$(".tableSeat").draggable("enable");
+// /** apply draggable */
+// $(".tableSeat").draggable("enable");
 //
-//	/** display garbage block */
-//	$("#garbageBlock").fadeIn();
+// /** display garbage block */
+// $("#garbageBlock").fadeIn();
 //
-//	/** add remove block */
-//	$("#garbageBlock").droppable({
-//		drop : function(event, ui) {
-//			var id = ui.draggable.attr("id");
-//			$("#" + id).remove();
+// /** add remove block */
+// $("#garbageBlock").droppable({
+// drop : function(event, ui) {
+// var id = ui.draggable.attr("id");
+// $("#" + id).remove();
 //
-//			$("#garbageBlock").css({
-//				"background-color" : "#F0F0F0"
-//			});
+// $("#garbageBlock").css({
+// "background-color" : "#F0F0F0"
+// });
 //
-//			alertify.success("刪除桌號：" + id);
-//		},
-//		over : function(event, ui) {
-//			$("#garbageBlock").css({
-//				"background-color" : "#FF5733"
-//			});
-//		},
-//		out : function(event, ui) {
-//			$("#garbageBlock").css({
-//				"background-color" : "#F0F0F0"
-//			});
-//		}
-//	});
+// alertify.success("刪除桌號：" + id);
+// },
+// over : function(event, ui) {
+// $("#garbageBlock").css({
+// "background-color" : "#FF5733"
+// });
+// },
+// out : function(event, ui) {
+// $("#garbageBlock").css({
+// "background-color" : "#F0F0F0"
+// });
+// }
+// });
 //
-//	/** remove tooltip */
-//	$(".tableSeat").tooltip('destroy');
+// /** remove tooltip */
+// $(".tableSeat").tooltip('destroy');
 //
-//}
+// }
 
 /**
  * 送餐
@@ -728,74 +728,72 @@ function sendItem(bookingID, customerID) {
 	});
 
 }
-///////////////////////////////////////////////////////////////////////////////
-/** 
- * Extends Map module. 
- * */
+// /////////////////////////////////////////////////////////////////////////////
+/**
+ * Extends Map module.
+ */
 var Map = (function(self) {
-	
+
 	self._init = function() {
 		mapSocketTrigger();
 		setFurnishOption();
 		mapSettingToggleTrigger();
 		garbageBlockTrigger();
 		mapSizeInputTrigger();
-		
-		Map.init().done(function() {
-			var mapData = Map.getAll();
-			if(mapData) {
-				loadMap(Object.keys(mapData)[0]);
-			}
-		});
-		
+
 		/** trigger map info update. */
 		App.subscribe("/map/update", function(event, map) {
 			mapUpdate(map);
 		});
-		
+
 		/** trigger furnish add */
-		App.subscribe("/furnish/add", function(event, mapId, obj){
+		App.subscribe("/furnish/add", function(event, mapId, obj) {
 			addFurnishToMap(mapId, obj);
 		});
-		
+
 		/** trigger furnish remove */
-		App.subscribe("/furnish/remove", function(event, mapId, objId){
+		App.subscribe("/furnish/remove", function(event, mapId, objId) {
 			removeFurnishFromMap(mapId, objId)
 		});
+
+		return self.init();
 	};
-	
+
 	self.refresh = function() {
 		// TODO update map status, like table using status,,,
+		console.log("map refresh....");
+		console.log(Map.getAll());
+		console.log(Customer.getAll());
 	};
-	
+
 	/**
 	 * Lock map setting.
-	 *  */
+	 */
 	self.lock = function() {
 		$(".mapSettingTool").fadeOut();
 		$("#mapSetting").slideUp();
-		
+
 		/** disable draggable */
 		$(".furnish").draggable("disable");
 
 		// TODO
-//		/** click event */
-//		$(".tableSeat").click(tableClickHandler);
+		// /** click event */
+		// $(".tableSeat").click(tableClickHandler);
 	};
-	
-	/** 
+
+	/**
 	 * Unlock map that can setting.
-	 * */
+	 */
 	self.unlock = function() {
 		$(".mapSettingTool").fadeIn();
 		$("#mapSetting").slideDown();
-		
+
 		/** enable draggable */
 		$(".furnish").draggable("enable");
-		
-		//TODO disable click event.
+
+		// TODO disable click event.
 	};
-	
+
 	/**
 	 * Map option click trigger.
 	 * 
@@ -805,18 +803,19 @@ var Map = (function(self) {
 	self.mapOptionClick = function mapOptionClick(self) {
 		var _class = $(self).attr("enum");
 		var nameable = $(self).attr("nameable") === "true";
-		
+
 		/** compose map obj. */
 		var mapId = $("#mapId").val() || (function() {
 			var id = App.uuid();
 			$("#mapId").val(id);
 			return id;
-		})(); 
-		var map = new _Map(mapId, "", $("#mapWidth").val(), $("#mapHeight").val());
-		
+		})();
+		var map = new _Map(mapId, "", $("#mapWidth").val(), $("#mapHeight")
+				.val());
+
 		/** create obj */
 		var furnish = new _Furnish(App.uuid(), furnishAlias, 0, 0, _class);
-		
+
 		var furnishAlias = "";
 		if (nameable) {
 			alertify.prompt("請輸入桌號", function(e, str) {
@@ -827,18 +826,18 @@ var Map = (function(self) {
 						App.alertError("桌號不可空白！");
 						return;
 					}
-					
+
 					var isDuplicate = false;
-					if(Map.getAllFurnish(mapId)) {
+					if (Map.getAllFurnish(mapId)) {
 						$.each(Map.getAllFurnish(mapId), function(key, value) {
-							if(furnishAlias == key) {
+							if (furnishAlias == key) {
 								isDuplicate = true;
 								return;
 							}
 						});
 					}
-						
-					if(isDuplicate) {
+
+					if (isDuplicate) {
 						App.alertError("桌號重複！");
 					} else {
 						furnish.alias = furnishAlias;
@@ -850,7 +849,7 @@ var Map = (function(self) {
 			Map.addFurnish(map, furnish, true);
 		}
 	}
-	
+
 	/**
 	 * Save decorator.
 	 * 
@@ -869,14 +868,14 @@ var Map = (function(self) {
 	 * @param mapId
 	 * @returns
 	 */
-	function loadMap(mapId) {
+	self.loadMap = function(mapId) {
 		var map = Map.getMap(mapId);
-		
+
 		$("#mapId").val(map.id);
 		$("#mapLocation").val(map.name);
 		$("#mapWidth").val(map.width);
 		$("#mapHeight").val(map.height);
-		
+
 		mapResize(map.width, map.height);
 
 		var delayEffect = 0;
@@ -886,7 +885,7 @@ var Map = (function(self) {
 			}, delayEffect += 60);
 		});
 	}
-	
+
 	/**
 	 * Trigger size input tag.
 	 * 
@@ -896,16 +895,19 @@ var Map = (function(self) {
 		$("#mapWidth, #mapHeight").on("keypress keydown keyup", function() {
 			mapResize($("#mapWidth").val(), $("#mapHeight").val());
 		});
-		
-		$("#mapWidth, #mapHeight").on("focusout", function() {
-			var mapId = $("#mapId").val() || (function() {
-				var id = App.uuid();
-				$("#mapId").val(id);
-				return id;
-			})(); 
-			var map = new _Map(mapId, $("#mapLocation").val(), $("#mapWidth").val(), $("#mapHeight").val());
-			Map.saveOrUpdateMap(map);
-		});
+
+		$("#mapWidth, #mapHeight").on(
+				"focusout",
+				function() {
+					var mapId = $("#mapId").val() || (function() {
+						var id = App.uuid();
+						$("#mapId").val(id);
+						return id;
+					})();
+					var map = new _Map(mapId, $("#mapLocation").val(), $(
+							"#mapWidth").val(), $("#mapHeight").val());
+					Map.saveOrUpdateMap(map);
+				});
 	}
 
 	function mapResize(width, height) {
@@ -914,7 +916,7 @@ var Map = (function(self) {
 			"height" : height
 		}, 500);
 	}
-	
+
 	/**
 	 * Update map info(Name, Width, Height).
 	 */
@@ -924,7 +926,7 @@ var Map = (function(self) {
 			mapResize(map.width, map.height);
 		}
 	}
-	
+
 	/**
 	 * Socket trigger for seat map.
 	 * 
@@ -932,30 +934,30 @@ var Map = (function(self) {
 	 */
 	function mapSocketTrigger() {
 		/** trigger webSocket (update seat map) */
-		WebSocket.subscribe("/topic/updateSeatMap", function(data){
+		WebSocket.subscribe("/topic/updateSeatMap", function(data) {
 			var obj = JSON.parse(data.body);
-			
+
 			$.each(obj, function(key, value) {
 				var map = new _Map(value.mapID, "", value.width, value.height);
-				if($("#mapId").val() != map.id) {
+				if ($("#mapId").val() != map.id) {
 					return true;
 				}
-				
+
 				/** redraw map and update map info */
 				Map.saveOrUpdateMap(map);
-				
+
 				/** draw furnish. */
 				$.each(value.newFurnishList, function(key, value) {
 					var newFurnish = new _Furnish( //
-							value.furnishID, //
-							value.alias, //
-							value.x, //
-							value.y, //
-							FurnishClass.getEnumNameById(value.furnishClassID) //
-						);
+					value.furnishID, //
+					value.alias, //
+					value.x, //
+					value.y, //
+					FurnishClass.getEnumNameById(value.furnishClassID) //
+					);
 					Map.addFurnish(map, newFurnish, false);
 				});
-				
+
 				/** remove furnish */
 				$.each(value.removeFurnishList, function(key, value) {
 					Map.removeFurnish(map.id, value, false);
@@ -963,23 +965,25 @@ var Map = (function(self) {
 			});
 		});
 	}
-	
+
 	/**
 	 * Set Furnish Option.
 	 * 
 	 * @returns
 	 */
 	function setFurnishOption() {
-		FurnishClass.init().done(function() {
-			var dataArray = [];
-			$.each(FurnishClass.data.getAll(), function(key, value) {
-				if (value.isVisible == true)
-					dataArray.push(value);
-			});
-			$("#mapOptionTemplate").tmpl(dataArray).appendTo("#imageSelection");
-		});
+		FurnishClass.init().done(
+				function() {
+					var dataArray = [];
+					$.each(FurnishClass.data.getAll(), function(key, value) {
+						if (value.isVisible == true)
+							dataArray.push(value);
+					});
+					$("#mapOptionTemplate").tmpl(dataArray).appendTo(
+							"#imageSelection");
+				});
 	}
-	
+
 	function mapSettingToggleTrigger() {
 		$('#seatMap-toggle').change(function() {
 			var checked = $(this).prop("checked");
@@ -990,19 +994,19 @@ var Map = (function(self) {
 			}
 		});
 	}
-	
-	/** 
+
+	/**
 	 * Remove furnish from map.
 	 * 
 	 * @param mapId
 	 * @param obj
 	 * @returns
-	 * */
+	 */
 	function removeFurnishFromMap(mapId, objId) {
-		if($("#mapId").val() == mapId)
+		if ($("#mapId").val() == mapId)
 			$("#" + objId).fadeOut();
 	}
-	
+
 	/**
 	 * Add furnish to map.
 	 * 
@@ -1011,23 +1015,25 @@ var Map = (function(self) {
 	 * @returns
 	 */
 	function addFurnishToMap(mapId, obj) {
-		if($("#mapId").val() != mapId)
+		if ($("#mapId").val() != mapId)
 			return;
 		var container = document.createElement("div");
 		$(container).html(obj.alias);
 		$(container).attr({
 			"class" : obj._class + " furnish",
 			"id" : obj.id,
-		}).css({
-			"top" : obj.y,
-			"left" : obj.x,
-			"position" : "absolute",
-			"background-image" : "url(" + FurnishClass.data.get(obj._class).imagePath + ")"
-		}).draggable({
+		}).css(
+				{
+					"top" : obj.y,
+					"left" : obj.x,
+					"position" : "absolute",
+					"background-image" : "url("
+							+ FurnishClass.data.get(obj._class).imagePath + ")"
+				}).draggable({
 			containment : "#seatMap",
 			zIndex : 1,
 			stop : function(event, ui) {
-				if(Map.getFurnish(mapId, obj.id)) {
+				if (Map.getFurnish(mapId, obj.id)) {
 					var furnish = Map.getFurnish(mapId, obj.id);
 					furnish.x = ui.position.left;
 					furnish.y = ui.position.top;
@@ -1044,15 +1050,14 @@ var Map = (function(self) {
 		else
 			self.lock();
 	}
-	
+
 	function garbageBlockTrigger() {
 		$("#garbageBlock").droppable({
 			drop : function(event, ui) {
 				var id = ui.draggable.attr("id");
-				
+
 				// TODO Check if furnish is table and whether using ..
-				
-				
+
 				Map.removeFurnish($("#mapId").val(), id, true);
 				$("#garbageBlock").css({
 					"background-color" : "#F0F0F0"
@@ -1070,21 +1075,50 @@ var Map = (function(self) {
 			}
 		});
 	}
-	
+
 	return self;
 })(Map);
 
+var Customer = (function(self) {
+
+	self._init = function() {
+		customerSocketTrigger();
+		
+		/** trigger map info update. */
+//		App.subscribe("/map/update", function(event, map) {
+//			mapUpdate(map);
+//		});
+
+		return self.init();
+	};
+	
+	/**
+	 * Trigger socket for customer.
+	 * 
+	 * @returns
+	 */
+	function customerSocketTrigger() {
+		
+	}
+
+	return self;
+})(Customer);
 
 function init() {
-	/** Map init. */
-	Map._init();
-	
 	/** Menu init. */
 	Menu.init();
-	
-	
-	
-//	setInterval(function() {
-//		console.log(JSON.stringify(Furnish.getAll()));
-//	}, 1500);
+
+	/** Customer init; Map init. */
+	$.when(Map._init(), Customer.init()).done(function() {
+		var mapData = Map.getAll();
+		if (mapData) {
+			Map.loadMap(Object.keys(mapData)[0]);
+		}
+
+		Map.refresh();
+	});
+
+	// setInterval(function() {
+	// console.log(JSON.stringify(Furnish.getAll()));
+	// }, 1500);
 }

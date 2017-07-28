@@ -57,17 +57,30 @@ public class MapServiceImpl implements MapService {
 
 	@Override
 	@Transactional
-	public void saveFurnish(final SeatMap map,
-			final List<Furnish> furnishList) {
-		/** Delete first */
-		this.furnishRepo.deleteBySeatMap(map);
-
-		/** Save */
+	public void saveFurnish(final List<Furnish> furnishList) {
+		/** Save to DB */
 		this.furnishRepo.save(furnishList);
 
 		/** Update buffer */
-		map.setFurnishList(furnishList);
-		this.mapBuffer.put(map.getMapID(), map);
+		furnishList.forEach(furnish -> {
+			this.mapBuffer.get(furnish.getSeatMap().getMapID()).getFurnishList()
+					.add(furnish);
+		});
+	}
+
+	@Override
+	@Transactional
+	public void deleteFurnish(final List<String> furnishIdList) {
+		furnishIdList.forEach(id -> {
+			/** Delete from DB */
+			this.furnishRepo.delete(id);
+
+			/** Update buffer */
+			this.mapBuffer.forEach((final String mapId, final SeatMap map) -> {
+				map.getFurnishList()
+						.removeIf(furnish -> furnish.getFurnishID().equals(id));
+			});
+		});
 	}
 
 	@Override
@@ -120,4 +133,5 @@ public class MapServiceImpl implements MapService {
 					furnishClass);
 		});
 	}
+
 }

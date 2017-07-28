@@ -80,23 +80,13 @@ public class MapServiceTest {
 			furnish.setSeatMap(map);
 			furnish.setFurnishClass(furnishClass);
 			newFurnishList.add(furnish);
-			this.mapService.saveFurnish(map, newFurnishList);
-
-			this.mapService.findAllSeatMap().entrySet().stream()
-					.map(_map -> _map.getValue())
-					.flatMap(value -> value.getFurnishList().stream())
-					.forEach(dd -> {
-						System.out.println(dd.getFurnishID());
-						System.out.println(dd.getSeatMap().getMapID() + " ---");
-						System.out.println(
-								dd.getFurnishClass().getClassID() + "ooo");
-					});
+			this.mapService.saveFurnish(newFurnishList);
 
 			final int furnishSize = (int) this.mapService.findAllSeatMap()
 					.entrySet().stream().map(_map -> _map.getValue())
 					.flatMap(value -> value.getFurnishList().stream()).count();
 
-			Assert.assertEquals(1, furnishSize);
+			Assert.assertEquals(16, furnishSize);
 		}
 	}
 }

@@ -1,6 +1,8 @@
 package com.thirtySix.service.serviceImpl;
 
-import java.util.Date;
+import java.sql.Timestamp;
+import java.util.Calendar;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -14,7 +16,6 @@ import org.springframework.stereotype.Service;
 import com.thirtySix.model.Customer;
 import com.thirtySix.repository.CustomerRepository;
 import com.thirtySix.service.CustomerService;
-import com.thirtySix.util.TimeFormatter;
 
 @Service
 public class CustomerServiceImpl implements CustomerService {
@@ -31,7 +32,6 @@ public class CustomerServiceImpl implements CustomerService {
 	public void init() {
 		/** Load dining customer */
 		this.loadDiningCustomer();
-
 	}
 
 	@Override
@@ -48,6 +48,17 @@ public class CustomerServiceImpl implements CustomerService {
 		this.diningCustomerBuffer.put(po.getCustomerID(), po);
 	}
 
+	@Override
+	public Map<String, Customer> findAllCustomer() {
+		final Map<String, Customer> result = new HashMap<String, Customer>();
+
+		this.repository.findAll().forEach(customer -> {
+			result.put(customer.getCustomerID(), customer);
+		});
+
+		return result;
+	}
+
 	/**
 	 * 載入用餐中顧客
 	 */
@@ -57,10 +68,6 @@ public class CustomerServiceImpl implements CustomerService {
 
 		this.logger.info("載入用餐中顧客...");
 		diningCustomerList.forEach(customer -> {
-			final Date date = new Date(customer.getCheckInTime().getTime());
-			customer.setCheckInTimeStringFormat(
-					TimeFormatter.getInstance().getTime(date));
-
 			this.diningCustomerBuffer.put(customer.getCustomerID(), customer);
 			this.logger.info("顧客編號" + customer.getCustomerID() + " 進場時間"
 					+ customer.getCheckInTime());
@@ -68,4 +75,19 @@ public class CustomerServiceImpl implements CustomerService {
 
 		this.logger.info("用餐中顧客共" + this.diningCustomerBuffer.size() + "組。");
 	}
+
+	@Override
+	public void checkOutCustomer(final String customerId) {
+		final Calendar now = Calendar.getInstance();
+		final Timestamp time = new Timestamp(now.getTimeInMillis());
+
+		/** Save to DB */
+		final Customer po = this.diningCustomerBuffer.get(customerId);
+		po.setCheckOutTime(time);
+		this.saveCustomer(po);
+
+		/** Update buffer */
+		this.diningCustomerBuffer.remove(customerId);
+	}
+
 }

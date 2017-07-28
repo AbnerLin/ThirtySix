@@ -17,12 +17,18 @@ public interface MapService {
 	public void saveSeatMap(SeatMap po);
 
 	/**
-	 * Save furnish.
+	 * Save furnish list.
 	 * 
-	 * @param map
-	 * @param furhish
+	 * @param furnishList
 	 */
-	public void saveFurnish(SeatMap map, List<Furnish> furnish);
+	public void saveFurnish(List<Furnish> furnishList);
+
+	/**
+	 * Delete furnish with list.
+	 * 
+	 * @param furnishIdList
+	 */
+	public void deleteFurnish(List<String> furnishIdList);
 
 	/**
 	 * Save furnish class.

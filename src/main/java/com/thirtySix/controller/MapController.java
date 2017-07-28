@@ -97,27 +97,21 @@ public class MapController {
 			if (this.mapService.findAllSeatMap().containsKey(map.getMapID())) {
 				seatMap = this.mapService.findAllSeatMap().get(map.getMapID());
 			}
+
 			seatMap.setMapID(map.getMapID());
 			seatMap.setName(map.getName());
 			seatMap.setWidth(map.getWidth());
 			seatMap.setHeight(map.getHeight());
-			final List<Furnish> furnishList = seatMap.getFurnishList();
+			/** Save map */
+			this.mapService.saveSeatMap(seatMap);
 
+			/** Save new furnish */
 			final List<Furnish> newFurnishList = this.objConverter
 					.furnishDTOtoPO(seatMap, map.getNewFurnishList());
-			furnishList.addAll(newFurnishList);
+			this.mapService.saveFurnish(newFurnishList);
 
-			map.getRemoveFurnishList().forEach(rmFurnishID -> {
-				furnishList.removeIf(furnish -> furnish.getFurnishID()
-						.equalsIgnoreCase(rmFurnishID));
-			});
-
-			/** Save to DB */
-			this.mapService.saveSeatMap(seatMap);
-			this.mapService.saveFurnish(seatMap, seatMap.getFurnishList());
-
-			/** Update to buffer */
-			this.mapService.findAllSeatMap().put(seatMap.getMapID(), seatMap);
+			/** Remove furnish */
+			this.mapService.deleteFurnish(map.getRemoveFurnishList());
 		});
 
 		/** Broadcase to client */
