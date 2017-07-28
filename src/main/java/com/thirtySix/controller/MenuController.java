@@ -10,16 +10,16 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.thirtySix.core.Buffer;
 import com.thirtySix.dto.AjaxRDTO;
 import com.thirtySix.model.ItemClass;
+import com.thirtySix.service.ItemService;
 
 @Controller
 @RequestMapping(value = { "/menu" })
 public class MenuController {
 
 	@Autowired
-	private Buffer buffer = null;
+	private ItemService itemService = null;
 
 	/**
 	 * Get Menu.
@@ -34,7 +34,7 @@ public class MenuController {
 			final HttpServletResponse response) {
 		final AjaxRDTO result = new AjaxRDTO();
 
-		final Map<String, ItemClass> menu = this.buffer.getMenu();
+		final Map<String, ItemClass> menu = this.itemService.findAllItemClass();
 		result.setStatusOK();
 		result.setData(menu);
 

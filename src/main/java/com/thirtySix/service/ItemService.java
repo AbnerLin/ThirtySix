@@ -1,6 +1,6 @@
 package com.thirtySix.service;
 
-import java.util.List;
+import java.util.Map;
 
 import com.thirtySix.model.Item;
 import com.thirtySix.model.ItemClass;
@@ -12,14 +12,14 @@ public interface ItemService {
 	 * 
 	 * @return
 	 */
-	public List<ItemClass> findAllItemClass();
+	public Map<String, ItemClass> findAllItemClass();
 
 	/**
-	 * Get item list.
+	 * Get item from Id;
 	 * 
 	 * @return
 	 */
-	public List<Item> findAllItem();
+	public Item findItem(String itemId);
 
 	/**
 	 * Save item.

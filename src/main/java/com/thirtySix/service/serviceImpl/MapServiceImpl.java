@@ -1,12 +1,15 @@
 package com.thirtySix.service.serviceImpl;
 
 import java.util.List;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
+
+import javax.annotation.PostConstruct;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.thirtySix.core.Buffer;
 import com.thirtySix.model.Furnish;
 import com.thirtySix.model.FurnishClass;
 import com.thirtySix.model.SeatMap;
@@ -27,13 +30,29 @@ public class MapServiceImpl implements MapService {
 	@Autowired
 	private FurnishClassRepository furnishClassRepo = null;
 
-	@Autowired
-	private Buffer buffer = null;
+	/** furnish class buffer <classID, furnishClass> */
+	private Map<String, FurnishClass> furnishClassBuffer = new ConcurrentHashMap<String, FurnishClass>();
+
+	/** map buffer <mapId, SeatMap> */
+	private Map<String, SeatMap> mapBuffer = new ConcurrentHashMap<String, SeatMap>();
+
+	@PostConstruct
+	public void init() {
+		/** load map */
+		this.loadMap();
+
+		/** load furnish */
+		this.loadFurnishClass();
+	}
 
 	@Override
 	@Transactional
 	public void saveSeatMap(final SeatMap po) {
+		/** Save to DB */
 		this.seatMapRepo.save(po);
+
+		/** Update Buffer */
+		this.mapBuffer.put(po.getMapID(), po);
 	}
 
 	@Override
@@ -48,27 +67,24 @@ public class MapServiceImpl implements MapService {
 
 		/** Update buffer */
 		map.setFurnishList(furnishList);
-		this.buffer.getSeatMap().put(map.getMapID(), map);
+		this.mapBuffer.put(map.getMapID(), map);
 	}
 
 	@Override
-	public List<SeatMap> findAllSeatMap() {
-		return (List<SeatMap>) this.seatMapRepo.findAll();
+	public Map<String, SeatMap> findAllSeatMap() {
+		return this.mapBuffer;
 	}
 
 	@Override
 	public FurnishClass findFurnishClass(final String classID) {
-		return this.furnishClassRepo.findOne(classID);
+		if (this.furnishClassBuffer.containsKey(classID))
+			return this.furnishClassBuffer.get(classID);
+		return null;
 	}
 
 	@Override
-	public List<Furnish> findAllFurnish() {
-		return (List<Furnish>) this.furnishRepo.findAll();
-	}
-
-	@Override
-	public List<FurnishClass> findAllFurnishClass() {
-		return (List<FurnishClass>) this.furnishClassRepo.findAll();
+	public Map<String, FurnishClass> findAllFurnishClass() {
+		return this.furnishClassBuffer;
 	}
 
 	@Override
@@ -78,8 +94,30 @@ public class MapServiceImpl implements MapService {
 		this.furnishClassRepo.save(furnishClass);
 
 		/** Update buffer */
-		this.buffer.getFurnishClass().put(furnishClass.getClassID(),
-				furnishClass);
+		this.furnishClassBuffer.put(furnishClass.getClassID(), furnishClass);
 	}
 
+	/**
+	 * Load map info.
+	 */
+	private void loadMap() {
+		final List<SeatMap> mapList = (List<SeatMap>) this.seatMapRepo
+				.findAll();
+		mapList.forEach(map -> {
+			this.mapBuffer.put(map.getMapID(), map);
+		});
+	}
+
+	/**
+	 * load furnishClass to buffer.
+	 */
+	private void loadFurnishClass() {
+		final List<FurnishClass> furnishClassList = (List<FurnishClass>) this.furnishClassRepo
+				.findAll();
+
+		furnishClassList.forEach(furnishClass -> {
+			this.furnishClassBuffer.put(furnishClass.getClassID(),
+					furnishClass);
+		});
+	}
 }

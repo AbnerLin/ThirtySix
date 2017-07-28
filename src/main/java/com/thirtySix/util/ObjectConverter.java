@@ -6,7 +6,6 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import com.thirtySix.core.Buffer;
 import com.thirtySix.dto.BookingDTO;
 import com.thirtySix.dto.CustomerDTO;
 import com.thirtySix.dto.FurnishQDTO;
@@ -17,14 +16,18 @@ import com.thirtySix.model.Booking;
 import com.thirtySix.model.Customer;
 import com.thirtySix.model.Furnish;
 import com.thirtySix.model.FurnishClass;
-import com.thirtySix.model.Item;
 import com.thirtySix.model.SeatMap;
+import com.thirtySix.service.CustomerService;
+import com.thirtySix.service.MapService;
 
 @Component
 public class ObjectConverter {
 
 	@Autowired
-	private Buffer buffer = null;
+	private MapService mapService = null;
+
+	@Autowired
+	private CustomerService customerService = null;
 
 	public Customer customerDTOtoPO(final CustomerDTO dto) {
 		final Customer po = new Customer();
@@ -46,7 +49,7 @@ public class ObjectConverter {
 
 	public List<Booking> bookingDTOtoPO(final OrderDTO order) {
 		final List<Booking> bookingList = new ArrayList<Booking>();
-		final Customer customer = this.buffer.getDiningCustomer()
+		final Customer customer = this.customerService.findDiningCustomer()
 				.get(order.getCustomerId());
 
 		for (final ItemDTO item : order.getItemList()) {
@@ -54,7 +57,7 @@ public class ObjectConverter {
 			booking.setCustomer(customer);
 			booking.setOrderTime(order.getTime());
 
-			final Item _item = this.buffer.getItemById(item.getItemId());
+			// final Item _item = this.itemService.findItem(item.getItemId());
 
 			booking.setVolume(item.getVolume());
 
@@ -103,8 +106,8 @@ public class ObjectConverter {
 			po.setName(dto.getName());
 
 			/** get furnish class */
-			final FurnishClass furnishClass = this.buffer.getFurnishClass()
-					.get(dto.getFurnishClassID());
+			final FurnishClass furnishClass = this.mapService
+					.findFurnishClass(dto.getFurnishClassID());
 
 			po.setFurnishClass(furnishClass);
 

@@ -1,7 +1,6 @@
 package com.thirtySix.controller;
 
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -16,7 +15,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.thirtySix.core.Buffer;
 import com.thirtySix.dto.AjaxRDTO;
 import com.thirtySix.dto.FurnishClassDTO;
 import com.thirtySix.dto.SeatMapQDTO;
@@ -30,9 +28,6 @@ import com.thirtySix.webSocket.WebSocketUtil;
 @Controller
 @RequestMapping(value = { "/map" })
 public class MapController {
-
-	@Autowired
-	private Buffer buffer = null;
 
 	@Autowired
 	private MapService mapService = null;
@@ -56,8 +51,8 @@ public class MapController {
 			final HttpServletResponse response) {
 		final AjaxRDTO result = new AjaxRDTO();
 
-		final Map<String, FurnishClass> furnishClass = this.buffer
-				.getFurnishClass();
+		final Map<String, FurnishClass> furnishClass = this.mapService
+				.findAllFurnishClass();
 
 		final Map<String, FurnishClassDTO> map = new HashMap<String, FurnishClassDTO>();
 		furnishClass.forEach((final String key, final FurnishClass _class) -> {
@@ -99,8 +94,8 @@ public class MapController {
 
 		mapList.forEach(map -> {
 			SeatMap seatMap = new SeatMap();
-			if (this.buffer.getSeatMap().containsKey(map.getMapID())) {
-				seatMap = this.buffer.getSeatMap().get(map.getMapID());
+			if (this.mapService.findAllSeatMap().containsKey(map.getMapID())) {
+				seatMap = this.mapService.findAllSeatMap().get(map.getMapID());
 			}
 			seatMap.setMapID(map.getMapID());
 			seatMap.setName(map.getName());
@@ -113,12 +108,8 @@ public class MapController {
 			furnishList.addAll(newFurnishList);
 
 			map.getRemoveFurnishList().forEach(rmFurnishID -> {
-				final Iterator<Furnish> iter = furnishList.iterator();
-				while (iter.hasNext()) {
-					final Furnish furnish = iter.next();
-					if (furnish.getFurnishID().equalsIgnoreCase(rmFurnishID))
-						iter.remove();
-				}
+				furnishList.removeIf(furnish -> furnish.getFurnishID()
+						.equalsIgnoreCase(rmFurnishID));
 			});
 
 			/** Save to DB */
@@ -126,7 +117,7 @@ public class MapController {
 			this.mapService.saveFurnish(seatMap, seatMap.getFurnishList());
 
 			/** Update to buffer */
-			this.buffer.getSeatMap().put(seatMap.getMapID(), seatMap);
+			this.mapService.findAllSeatMap().put(seatMap.getMapID(), seatMap);
 		});
 
 		/** Broadcase to client */
@@ -151,8 +142,8 @@ public class MapController {
 
 		final AjaxRDTO result = new AjaxRDTO();
 
-		final List<SeatMap> mapList = this.buffer.getSeatMap().values().stream()
-				.collect(Collectors.toList());
+		final List<SeatMap> mapList = this.mapService.findAllSeatMap().values()
+				.stream().collect(Collectors.toList());
 
 		result.setStatusOK();
 		result.setData(mapList);

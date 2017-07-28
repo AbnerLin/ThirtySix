@@ -6,7 +6,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-import com.thirtySix.core.Buffer;
 import com.thirtySix.model.Customer;
 import com.thirtySix.model.Furnish;
 import com.thirtySix.service.CustomerService;
@@ -22,13 +21,10 @@ public class CustomerServiceTest {
 	@Autowired
 	private MapService mapService = null;
 
-	@Autowired
-	private Buffer buffer = null;
-
 	@Test
 	public void testSave() {
-		// 0402028d-04f6-4bab-a0f7-20b626dffa88
-		final Furnish furnish = this.mapService.findAllSeatMap().stream()
+		final Furnish furnish = this.mapService.findAllSeatMap().entrySet()
+				.stream().map(map -> map.getValue())
 				.flatMap(map -> map.getFurnishList().stream())
 				.filter(tmpFurnish -> tmpFurnish.getFurnishID()
 						.equals("0402028d-04f6-4bab-a0f7-20b626dffa88"))
@@ -38,6 +34,8 @@ public class CustomerServiceTest {
 		customer.setCustomerName("Lin");
 		customer.setPeopleCount(10);
 		customer.setFurnish(furnish);
+		this.customerService.saveCustomer(customer);
 
+		// this.customerService.findDiningCustomer()
 	}
 }

@@ -1,6 +1,6 @@
 package com.thirtySix.service;
 
-import java.util.List;
+import java.util.Map;
 
 import com.thirtySix.model.Customer;
 
@@ -11,10 +11,10 @@ public interface CustomerService {
 	 * 
 	 * @return
 	 */
-	public List<Customer> findDiningCustomer();
+	public Map<String, Customer> findDiningCustomer();
 
 	/**
 	 * Save customer.
 	 */
-	// public void saveCustomer(Customer po);
+	public void saveCustomer(Customer po);
 }

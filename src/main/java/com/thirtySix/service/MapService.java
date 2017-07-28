@@ -1,6 +1,7 @@
 package com.thirtySix.service;
 
 import java.util.List;
+import java.util.Map;
 
 import com.thirtySix.model.Furnish;
 import com.thirtySix.model.FurnishClass;
@@ -35,7 +36,7 @@ public interface MapService {
 	 * 
 	 * @return
 	 */
-	public List<SeatMap> findAllSeatMap();
+	public Map<String, SeatMap> findAllSeatMap();
 
 	/**
 	 * Find furnish class by id.
@@ -50,13 +51,6 @@ public interface MapService {
 	 * 
 	 * @return
 	 */
-	public List<FurnishClass> findAllFurnishClass();
-
-	/**
-	 * Find all furnish.
-	 * 
-	 * @return
-	 */
-	public List<Furnish> findAllFurnish();
+	public Map<String, FurnishClass> findAllFurnishClass();
 
 }
