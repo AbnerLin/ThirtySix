@@ -17,12 +17,12 @@ public class CustomerServiceImpl implements CustomerService {
 
 	@Override
 	public List<Customer> findDiningCustomer() {
-		return repository.findByCheckOutTimeIsNull();
+		return this.repository.findByCheckOutTimeIsNull();
 	}
 
-	@Override
-	public void saveCustomer(Customer po) {
-		repository.save(po);
-	}
+	// @Override
+	// public void saveCustomer(Customer po) {
+	// repository.save(po);
+	// }
 
 }

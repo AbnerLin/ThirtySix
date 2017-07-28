@@ -4,7 +4,6 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import com.thirtySix.model.Booking;
 import com.thirtySix.repository.BookingRepository;
@@ -18,18 +17,18 @@ public class BookingServiceImpl implements BookingService {
 
 	@Override
 	public List<Booking> findAllBooking() {
-		return (List<Booking>) repository.findAll();
+		return (List<Booking>) this.repository.findAll();
 	}
 
-	@Override
-	@Transactional
-	public void saveBooking(List<Booking> poList) {
-		repository.save(poList);
-	}
-
-	@Override
-	public void saveBooking(Booking po) {
-		repository.save(po);
-	}
+	// @Override
+	// @Transactional
+	// public void saveBooking(List<Booking> poList) {
+	// repository.save(poList);
+	// }
+	//
+	// @Override
+	// public void saveBooking(Booking po) {
+	// repository.save(po);
+	// }
 
 }

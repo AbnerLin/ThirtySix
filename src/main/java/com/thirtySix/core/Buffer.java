@@ -39,7 +39,7 @@ public class Buffer {
 	/** 用餐中顧客Buffer <customerId, po> */
 	private Map<String, Customer> diningCustomerBuffer = new ConcurrentHashMap<String, Customer>();
 
-	/** 菜單<String, ItemClass> */
+	/** 菜單<classID, ItemClass> */
 	private Map<String, ItemClass> itemMenuBuffer = new HashMap<String, ItemClass>();
 
 	/** furnish class buffer <classID, furnishClass> */

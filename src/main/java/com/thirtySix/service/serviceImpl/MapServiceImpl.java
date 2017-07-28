@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.thirtySix.core.Buffer;
 import com.thirtySix.model.Furnish;
 import com.thirtySix.model.FurnishClass;
 import com.thirtySix.model.SeatMap;
@@ -26,6 +27,9 @@ public class MapServiceImpl implements MapService {
 	@Autowired
 	private FurnishClassRepository furnishClassRepo = null;
 
+	@Autowired
+	private Buffer buffer = null;
+
 	@Override
 	@Transactional
 	public void saveSeatMap(final SeatMap po) {
@@ -36,11 +40,15 @@ public class MapServiceImpl implements MapService {
 	@Transactional
 	public void saveFurnish(final SeatMap map,
 			final List<Furnish> furnishList) {
-		/** delete first */
+		/** Delete first */
 		this.furnishRepo.deleteBySeatMap(map);
 
-		/** save */
+		/** Save */
 		this.furnishRepo.save(furnishList);
+
+		/** Update buffer */
+		map.setFurnishList(furnishList);
+		this.buffer.getSeatMap().put(map.getMapID(), map);
 	}
 
 	@Override
@@ -66,7 +74,12 @@ public class MapServiceImpl implements MapService {
 	@Override
 	@Transactional
 	public void saveFurnishClass(final FurnishClass furnishClass) {
+		/** Save to DB */
 		this.furnishClassRepo.save(furnishClass);
+
+		/** Update buffer */
+		this.buffer.getFurnishClass().put(furnishClass.getClassID(),
+				furnishClass);
 	}
 
 }

@@ -11,14 +11,14 @@ public interface BookingService {
 	 * 
 	 * @param po
 	 */
-	public void saveBooking(Booking po);
-	
+	// public void saveBooking(Booking po);
+
 	/**
 	 * Save booking list.
 	 * 
 	 * @param poList
 	 */
-	public void saveBooking(List<Booking> poList);
+	// public void saveBooking(List<Booking> poList);
 
 	/**
 	 * List all booking entity.
