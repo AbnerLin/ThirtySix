@@ -1,6 +1,5 @@
 package com.thirtySix.controller;
 
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -16,7 +15,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.thirtySix.dto.AjaxRDTO;
-import com.thirtySix.dto.FurnishClassDTO;
 import com.thirtySix.dto.SeatMapQDTO;
 import com.thirtySix.model.Furnish;
 import com.thirtySix.model.FurnishClass;
@@ -54,22 +52,8 @@ public class MapController {
 		final Map<String, FurnishClass> furnishClass = this.mapService
 				.findAllFurnishClass();
 
-		final Map<String, FurnishClassDTO> map = new HashMap<String, FurnishClassDTO>();
-		furnishClass.forEach((final String key, final FurnishClass _class) -> {
-			final FurnishClassDTO dto = new FurnishClassDTO();
-			dto.setClassID(_class.getClassID());
-
-			if (_class.getName().equals(FurnishClass.CLASS.TABLE.name()))
-				dto.setEnable(true);
-			else
-				dto.setEnable(false);
-			dto.setDetail(_class);
-
-			map.put(_class.getClassID(), dto);
-		});
-
 		result.setStatusOK();
-		result.setData(map);
+		result.setData(furnishClass);
 
 		return result;
 	}

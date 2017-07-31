@@ -28,17 +28,19 @@ var FurnishClass = (function() {
 		return App.ajax({
 			url :  dataUrl,
 			success : function(response, status, jqXHR) {
+				console.log(response.data);
 				$.each(response.data, function(key, value) {
 					var _data = new _FurnishClass( //
-					value.detail.name, //
-					Images.URL + value.detail.imagePath, //
-					value.detail.classID, //
-					value.detail.isVisible, //
-					value.detail.isNameable //
+					value.name, //
+					Images.URL + value.imagePath, //
+					value.classID, //
+					value.isVisible, //
+					value.isNameable //
 					);
 
-					self.data.add(value.detail.name, _data);
+					self.data.add(value.name, _data);
 				});
+				
 			}
 		});
 	}

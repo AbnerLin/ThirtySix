@@ -1109,6 +1109,7 @@ var Map = (function(self) {
 
 				$("#" + id).draggable("disable");
 				
+				/** Check whether table is using. */
 				if(!Customer.getCustomerByFurnishId(id))
 					Map.removeFurnish($("#mapId").val(), id, true);
 				else {
