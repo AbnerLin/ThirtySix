@@ -204,6 +204,8 @@ var Map = (function() {
 		
 		map.furnishList.add(furnish.id, furnish);
 		
+		App.publish("/furnish/add", [ map.id, furnish ]);
+		
 		addToSaveBuffer(map, furnish);
 	};
 	

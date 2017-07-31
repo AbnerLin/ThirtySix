@@ -126,6 +126,15 @@ input[type=number]::-webkit-inner-spin-button, input[type=number]::-webkit-outer
 	cursor: pointer;
 }
 
+.disableSelection {
+	-webkit-touch-callout: none;
+	-webkit-user-select: none;
+	-khtml-user-select: none;
+	-moz-user-select: none;
+	-ms-user-select: none;
+	user-select: none;
+	outline: 0;
+}
 
 ///////////
 #orderListInfo {
@@ -150,14 +159,6 @@ input[type=number]::-webkit-inner-spin-button, input[type=number]::-webkit-outer
 	right: -10px;
 }
 
-.diningTable {
-	background-image: url("../images/table-sm.png");
-}
-
-.emptyTable {
-	background-image: url("../images/empty-table-sm.png");
-}
-
 
 .default-none {
 	display: none;
@@ -171,17 +172,6 @@ input[type=number]::-webkit-inner-spin-button, input[type=number]::-webkit-outer
 	float: left;
 	padding: 5px;
 }
-
-.disableSelection {
-	-webkit-touch-callout: none;
-	-webkit-user-select: none;
-	-khtml-user-select: none;
-	-moz-user-select: none;
-	-ms-user-select: none;
-	user-select: none;
-	outline: 0;
-}
-
 
 
 #imageSelection {

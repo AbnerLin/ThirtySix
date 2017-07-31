@@ -98,5 +98,23 @@ var Customer = (function() {
 		return customerData.getAll();
 	};
 
+	self.get = function(customerId) {
+		return customerData.get(customerId);
+	};
+
+	/**
+	 * Get _Customer by furnishId;
+	 */
+	self.getCustomerByFurnishId = function(furnishId) {
+		var result = null;
+		$.each(self.getAll(), function(key, value) {
+			if (value.furnish.id == furnishId) {
+				result = value;
+				return false;
+			}
+		});
+		return result;
+	};
+
 	return self;
 })();

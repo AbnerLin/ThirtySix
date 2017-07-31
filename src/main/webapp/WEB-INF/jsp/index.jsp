@@ -39,8 +39,9 @@
 		<div id="mapBlock" class="row w-100 m-0 p-0">
 			<sec:authorize access="hasRole('ROLE_ADMIN')">
 				<!-- btn option -->
-				<div id="option" class="col-12 row">
-					<div class="col-6 text-left d-flex align-items-center justify-content-start">
+				<div id="option" class="col-12 row" style="display: none;">
+					<div
+						class="col-6 text-left d-flex align-items-center justify-content-start">
 						<div class="d-flex align-items-center">
 							<label class="switch"> <input type="checkbox"
 								id="seatMap-toggle"> <span class="slider"></span>
@@ -94,7 +95,7 @@
 					</div>
 				</div>
 				<div class="col-12 m-0 p-0">
-					<div id="seatMap">
+					<div id="seatMap" class="disableSelection">
 						<input id="mapLocation" type="hidden" value=""> <input
 							id="mapId" type="hidden" value="">
 						<div id="garbageBlock" class="mapSettingTool">
@@ -104,124 +105,26 @@
 				</div>
 			</div>
 		</div>
-		<!-- -----------------------以下未修改 bootstrap4------------------------- -->
-		<div class="row">
-			<div id="serverTime" class="col-md-12 text-center"></div>
+	</div>
+	<!-- -----------------------以下未修改 bootstrap4------------------------- -->
+	<div class="row">
+		<div id="serverTime" class="col-md-12 text-center"></div>
+	</div>
+
+	<div class="row">
+		<!-- left -->
+		<div class="col-md-6 col-sm-12">
+			<div id="diningCustomerList"></div>
 		</div>
 
-		<div class="row">
-			<!-- left -->
-			<div class="col-md-6 col-sm-12">
-				<div id="diningCustomerList"></div>
-			</div>
-
-			<!-- right -->
-			<div class="col-md-6 col-sm-12"></div>
-		</div>
+		<!-- right -->
+		<div class="col-md-6 col-sm-12"></div>
 	</div>
 
 	<!-- Customer check in Modal -->
-	<div class="modal fade" id="checkInModal" tabindex="-1" role="dialog"
-		aria-labelledby="myModalLabel">
-		<div class="modal-dialog modal-md" role="document">
-			<div class="modal-content">
-				<div class="modal-header">
-					<button type="button" class="close" data-dismiss="modal"
-						aria-label="Close">
-						<span aria-hidden="true">&times;</span>
-					</button>
-					<h3 class="modal-title" id="myModalLabel">顧客資訊</h3>
-				</div>
-
-				<div class="modal-body text-center">
-					<h4>顧客名稱</h4>
-					<input class="form-control" type="text" id="checkInCustomerName"
-						value="路人甲" />
-					<h4>顧客電話</h4>
-					<input class="form-control" type="text" id="checkInCustomerPhone"
-						value="----------" />
-					<h4>人數</h4>
-					<div class="input-group">
-						<div class="input-group-btn">
-							<button type="button" aria-label="-1"
-								class="btn btn-success minusBtn">
-								<span class="glyphicon glyphicon-minus-sign" aria-hidden="true"></span>
-							</button>
-						</div>
-						<input id="checkInPeopleCount" class="form-control volume" min="1"
-							type="number" value="1" />
-						<div class="input-group-btn">
-							<button type="button" aria-label="+1"
-								class="btn btn-danger plusBtn">
-								<span class="glyphicon glyphicon-plus-sign" aria-hidden="true"></span>
-							</button>
-						</div>
-					</div>
-					<h4>桌號</h4>
-					<input class="form-control" disabled type="text"
-						id="checkInTableNumber" />
-				</div>
-
-				<div class="modal-footer">
-					<div class="row" id="sendOrder">
-						<button type="button" class="btn btn-danger btn-lg btn-block"
-							onclick="customerCheckIn();">
-							<span class="glyphicon glyphicon-cutlery" aria-hidden="true">
-								CheckIn!</span>
-						</button>
-					</div>
-				</div>
-			</div>
-		</div>
-	</div>
+	<%@ include file="/WEB-INF/jsp/template/checkinModal.jsp"%>
 
 	<!-- Customer Service Modal -->
-	<div class="modal fade" id="serviceModal" tabindex="-1" role="dialog"
-		aria-labelledby="myModalLabel">
-		<div class="modal-dialog modal-lg" role="document">
-			<div class="modal-content">
-
-				<div class="modal-header">
-					<button type="button" class="close" data-dismiss="modal"
-						aria-label="Close">
-						<span aria-hidden="true">&times;</span>
-					</button>
-					<h3 class="modal-title" id="myModalLabel">服務選單</h3>
-				</div>
-
-				<div class="modal-body">
-					<!-- Nav tabs -->
-					<ul class="nav nav-tabs" role="tablist">
-						<li role="presentation" class="active"><a
-							href="#orderPageTab" aria-controls="orderPageTab" role="tab"
-							data-toggle="tab">點餐</a></li>
-						<li role="presentation"><a href="#checkOutTab"
-							aria-controls="checkOutTab" role="tab" data-toggle="tab">結帳</a></li>
-					</ul>
-
-					<!-- Tab panes -->
-					<div class="tab-content">
-						<!-- order tab -->
-						<div role="tabpanel" class="tab-pane active" id="orderPageTab">
-							<%@ include file="/WEB-INF/jsp/template/orderPage.jsp"%>
-						</div>
-						<!-- check out -->
-						<div role="tabpanel" class="tab-pane" id="checkOutTab">
-							<%@ include file="/WEB-INF/jsp/template/checkOutPage.jsp"%>
-						</div>
-					</div>
-				</div>
-				<div class="modal-footer">
-					<!-- 					<div class="row" id="sendOrder"> -->
-					<!-- 						<button type="button" class="btn btn-danger btn-lg btn-block" -->
-					<!-- 							onclick="sendOrder();"> -->
-					<!-- 							<span class="glyphicon glyphicon-shopping-cart" -->
-					<!-- 								aria-hidden="true"> 出餐</span> -->
-					<!-- 						</button> -->
-					<!-- 					</div> -->
-				</div>
-			</div>
-		</div>
-	</div>
+	<%@ include file="/WEB-INF/jsp/template/customerModal.jsp"%>
 </body>
 </html>
