@@ -525,36 +525,36 @@ function sendOrder() {
 
 }
 
-/**
- * table click event handler
- */
-function tableClickHandler() {
-	var tableNumber = $(this).attr("id");
-	var dining = isTableDining(tableNumber);
-
-	/** show up modal */
-	if (dining) {
-		/** set customerId, tableNumber */
-		var customerId = getCustomerIdByTableNumber(tableNumber);
-
-		/** cache modal customerId */
-		modalShowUpCacheCustomerID = customerId;
-
-		$("#orderTableNumber").val(tableNumber);
-		$("#orderCustomerId").val(customerId);
-
-		$("#serviceModal").modal("show");
-
-		$("#service-orderHistory").removeClass("in");
-
-		/** set value into service modal */
-		setServiceInfo(diningCustomer[customerId]);
-	} else {
-		$("#checkInTableNumber").val(tableNumber);
-
-		$("#checkInModal").modal("show");
-	}
-}
+///**
+// * table click event handler
+// */
+//function tableClickHandler() {
+//	var tableNumber = $(this).attr("id");
+//	var dining = isTableDining(tableNumber);
+//
+//	/** show up modal */
+//	if (dining) {
+//		/** set customerId, tableNumber */
+//		var customerId = getCustomerIdByTableNumber(tableNumber);
+//
+//		/** cache modal customerId */
+//		modalShowUpCacheCustomerID = customerId;
+//
+//		$("#orderTableNumber").val(tableNumber);
+//		$("#orderCustomerId").val(customerId);
+//
+//		$("#serviceModal").modal("show");
+//
+//		$("#service-orderHistory").removeClass("in");
+//
+//		/** set value into service modal */
+//		setServiceInfo(diningCustomer[customerId]);
+//	} else {
+//		$("#checkInTableNumber").val(tableNumber);
+//
+//		$("#checkInModal").modal("show");
+//	}
+//}
 
 /**
  * set value into service modal
@@ -771,14 +771,15 @@ var Map = (function(self) {
 			if (Customer.getCustomerByFurnishId(furnishId)) {
 				
 				/** Click trigger. */
-				dom.click(Order.modalShow);
+				dom.unbind("click").click(Order.modalShow);
+				
 			} else if (!$("#seatMap-toggle").prop("checked")) {
 				dom.css("background-image", "url("
 						+ FurnishClass.data.get("EMPTY_TABLE").imagePath + ")");
 				dom.removeClass("TABLE").addClass("EMPTY_TABLE");
 				
 				/** Click trigger. */
-				dom.click(Customer.checkInModalShow);
+				dom.unbind("click").bind("click", Customer.checkInModalShow);
 			}
 		}
 	};
@@ -1178,7 +1179,8 @@ var Customer = (function(self) {
 	 */
 	self.checkInModalShow = function() {
 		// TODO
-		$("#checkInModal").modal("show");
+		console.log("!");
+		$("#checkInModal").modal("toggle");
 	};
 
 	/**
@@ -1241,8 +1243,11 @@ function init() {
 //	App.subscribe("/topic/time", function(event, time) {
 //		console.log(time);
 //	});
+	
+	/***************************/
 
-	// setInterval(function() {
-	// console.log(JSON.stringify(Furnish.getAll()));
-	// }, 1500);
+//	 setInterval(function() {
+//	 console.log(JSON.stringify(Furnish.getAll()));
+//	 $("#checkInModal").modal("toggle");
+//	 }, 1500);
 }
