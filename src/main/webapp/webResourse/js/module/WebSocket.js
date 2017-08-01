@@ -8,15 +8,16 @@ var WebSocket = (function() {
 	var stompClient = null;
 
 	var topic = [];
-
 	function connect() {
 		try {
 			var socket = new SockJS(wsUrl);
 			stompClient = Stomp.over(socket);
 			stompClient.connect({}, function(frame) {
-				$.each(topic, function(key, value) {
-					stompClient.subscribe(value.dest, value.callback);
-				});
+				setTimeout(function() {
+					$.each(topic, function(key, value) {
+						stompClient.subscribe(value.dest, value.callback);
+					});
+				}, 500);
 			});
 		} catch (err) {
 			console.log(err);
@@ -33,6 +34,7 @@ var WebSocket = (function() {
 			});
 
 			if(stompClient && stompClient.connected) {
+				console.log("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa");
 				stompClient.subscribe(dest, callback);
 			} else {
 				connect();

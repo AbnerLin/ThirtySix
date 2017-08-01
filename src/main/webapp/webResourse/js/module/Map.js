@@ -28,7 +28,6 @@ var FurnishClass = (function() {
 		return App.ajax({
 			url :  dataUrl,
 			success : function(response, status, jqXHR) {
-				console.log(response.data);
 				$.each(response.data, function(key, value) {
 					var _data = new _FurnishClass( //
 					value.name, //

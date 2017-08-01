@@ -1235,6 +1235,12 @@ function init() {
 			Map.loadMap(Object.keys(mapData)[0]);
 		}
 	});
+	
+	/** Subscribe server time. */
+//	App.subscribeServerTime();
+//	App.subscribe("/topic/time", function(event, time) {
+//		console.log(time);
+//	});
 
 	// setInterval(function() {
 	// console.log(JSON.stringify(Furnish.getAll()));

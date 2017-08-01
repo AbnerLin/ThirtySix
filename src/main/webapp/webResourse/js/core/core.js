@@ -61,6 +61,17 @@ var App = (function() {
 		
 		return self;
 	}
+
+		
+	/**
+	 * Note: Subscribe server time (/topic/time), before using this method, must
+	 * import WebSocket.js(js/module/WebSocket.js) first.
+	 */
+	self.subscribeServerTime = function() {
+		WebSocket.subscribe("/topic/time", function(data) {
+			self.publish("/topic/time", [ data.body ]);
+		});
+	};
 	
 	self.alertSuccess = function(msg) {
 		alertify.success(msg);
