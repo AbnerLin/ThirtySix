@@ -122,7 +122,7 @@
 	</div>
 
 	<!-- Customer check in Modal -->
-	<%@ include file="/WEB-INF/jsp/template/checkinModal.jsp"%>
+	<%@ include file="/WEB-INF/jsp/template/checkInModal.jsp"%>
 
 	<!-- Customer Service Modal -->
 	<%@ include file="/WEB-INF/jsp/template/customerModal.jsp"%>

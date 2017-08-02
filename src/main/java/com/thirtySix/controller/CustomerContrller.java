@@ -7,10 +7,13 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.thirtySix.dto.AjaxRDTO;
+import com.thirtySix.dto.CheckInInfoQDTO;
 import com.thirtySix.model.Customer;
 import com.thirtySix.service.CustomerService;
 
@@ -40,6 +43,49 @@ public class CustomerContrller {
 
 		result.setStatusOK();
 		result.setData(diningCustomer);
+
+		return result;
+	}
+
+	/**
+	 * Customer check in.
+	 * 
+	 * @param request
+	 * @param response
+	 * @param checkInInfo
+	 * @return
+	 */
+	@ResponseBody
+	@RequestMapping(value = { "/checkIn" })
+	public AjaxRDTO checkIn(final HttpServletRequest request,
+			final HttpServletResponse response,
+			@ModelAttribute final CheckInInfoQDTO checkInInfo) {
+
+		final AjaxRDTO result = new AjaxRDTO();
+
+		System.out.println(String.format("%s %s %d %s",
+				checkInInfo.getCustomerName(), checkInInfo.getCustomerPhone(),
+				checkInInfo.getPeopleCount(), checkInInfo.getFurnishId()));
+		// TODO Save DB; Update Buffer; Broadcast to other client.
+
+		return result;
+	}
+
+	/**
+	 * Customer check out.
+	 * 
+	 * @param request
+	 * @param response
+	 * @param customerId
+	 * @return
+	 */
+	@ResponseBody
+	@RequestMapping(value = { "/checkOut" })
+	public AjaxRDTO checkOut(final HttpServletRequest request,
+			final HttpServletResponse response,
+			@RequestParam final String customerId) {
+
+		final AjaxRDTO result = new AjaxRDTO();
 
 		return result;
 	}

@@ -771,15 +771,15 @@ var Map = (function(self) {
 			if (Customer.getCustomerByFurnishId(furnishId)) {
 				
 				/** Click trigger. */
-				dom.unbind("click").click(Order.modalShow);
+				dom.off("click").click(Order.modalShow);
 				
 			} else if (!$("#seatMap-toggle").prop("checked")) {
 				dom.css("background-image", "url("
 						+ FurnishClass.data.get("EMPTY_TABLE").imagePath + ")");
 				dom.removeClass("TABLE").addClass("EMPTY_TABLE");
-				
+
 				/** Click trigger. */
-				dom.unbind("click").bind("click", Customer.checkInModalShow);
+				dom.off("click").on("click", {furnishId : furnishId},Customer.checkInModal.show);
 			}
 		}
 	};
@@ -1173,22 +1173,57 @@ var Customer = (function(self) {
 		// });
 		return self.init();
 	};
-
+	
 	/**
-	 * Check in modal show.
+	 * Check In Modal.
 	 */
-	self.checkInModalShow = function() {
-		// TODO
-		console.log("!");
-		$("#checkInModal").modal("toggle");
-	};
-
-	/**
-	 * @param _Customer
-	 */
-	self.checkIn = function(customer) {
-		// TODO
-	};
+	self.checkInModal = (function() {
+		var _export = {};
+		
+		/**
+		 * Show up.
+		 */
+		_export.show = function(event) {
+			$("#checkInFurnishID").val(event.data.furnishId);
+			$("#checkInModal").modal("show");
+		};
+		
+		_export.peopleCountAddBtn = function() {
+			var peopleCount = parseInt($("#checkInPeopleCount").val());
+			peopleCount += 1;
+			$("#checkInPeopleCount").val(peopleCount);
+		};
+		
+		_export.peopleCountMinusBtn = function() {
+			var peopleCount = parseInt($("#checkInPeopleCount").val());
+			peopleCount -= 1;
+			if(peopleCount < 1)
+				peopleCount = 1;
+			$("#checkInPeopleCount").val(peopleCount);
+		};
+		
+		_export.checkIn = function() {
+			function CheckInData(customerName, customerPhone, peopleCount, furnishId) {
+				this.customerName = customerName;
+				this.customerPhone = customerPhone;
+				this.peopleCount = peopleCount;
+				this.furnishId = furnishId;
+			};
+			
+			var customerInfo = new CheckInData(
+				$("#checkInCustomerName").val(),
+				$("#checkInCustomerPhone").val(),
+				$("#checkInPeopleCount").val(),
+				$("#checkInFurnishID").val()
+			);
+			
+			App.ajax({
+				
+			});
+		};
+		
+		return _export;
+	})();
 
 	/**
 	 * @param customerId
@@ -1245,7 +1280,7 @@ function init() {
 //	});
 	
 	/***************************/
-
+	
 //	 setInterval(function() {
 //	 console.log(JSON.stringify(Furnish.getAll()));
 //	 $("#checkInModal").modal("toggle");

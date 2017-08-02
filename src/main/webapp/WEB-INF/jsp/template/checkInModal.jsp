@@ -29,31 +29,34 @@
 				</div>
 				<!-- customer people count -->
 				<div class="col-12 mt-3">
-					<h4>人數 TODO btn click handler</h4>
-					
+					<h4>人數</h4>
 					<div class="input-group">
 						<div class="input-group-btn">
-							<button type="button" aria-label="-1"
-								class="btn btn-success minusBtn">
-								<span class="glyphicon glyphicon-minus-sign" aria-hidden="true"></span>
+							<button type="button" aria-label="-1" class="btn btn-success"
+								onclick="Customer.checkInModal.peopleCountMinusBtn();"">
+								<i class="material-icons">remove</i>
 							</button>
 						</div>
 						<input id="checkInPeopleCount" class="form-control volume" min="1"
 							type="number" value="1" />
 						<div class="input-group-btn">
-							<button type="button" aria-label="+1"
-								class="btn btn-danger plusBtn">
-								<span class="glyphicon glyphicon-plus-sign" aria-hidden="true"></span>
+							<button type="button" aria-label="+1" class="btn btn-danger"
+								onclick="Customer.checkInModal.peopleCountAddBtn();">
+								<i class="material-icons">add</i>
 							</button>
 						</div>
 					</div>
 				</div>
+				<!-- furnish id -->
 				<input type="hidden" id="checkInFurnishID" />
 			</div>
 			<!-- footer -->
 			<div class="modal-footer">
-				<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-				<button type="button" class="btn btn-primary">Save changes</button>
+				<button type="button" class="btn btn-danger btn-block"
+					onclick="Customer.checkInModal.checkIn();">
+					<span class="glyphicon glyphicon-cutlery" aria-hidden="true">
+						CheckIn!</span>
+				</button>
 			</div>
 
 		</div>
