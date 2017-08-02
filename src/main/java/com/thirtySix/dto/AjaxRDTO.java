@@ -1,10 +1,10 @@
 package com.thirtySix.dto;
 
 public class AjaxRDTO {
-	private static final int SUCCESS = 1;
-	private static final int FAIL = 0;
+	private static final boolean SUCCESS = true;
+	private static final boolean FAIL = false;
 
-	private int status = FAIL;
+	private boolean status = FAIL;
 
 	private String message = "";
 
@@ -12,8 +12,8 @@ public class AjaxRDTO {
 
 	private Object data;
 
-	public int getStatus() {
-		return status;
+	public boolean getStatus() {
+		return this.status;
 	}
 
 	public void setStatusOK() {
@@ -25,26 +25,26 @@ public class AjaxRDTO {
 	}
 
 	public String getMessage() {
-		return message;
+		return this.message;
 	}
 
-	public void setMessage(String message) {
+	public void setMessage(final String message) {
 		this.message = message;
 	}
 
 	public String getAction() {
-		return action;
+		return this.action;
 	}
 
-	public void setAction(String action) {
+	public void setAction(final String action) {
 		this.action = action;
 	}
 
 	public Object getData() {
-		return data;
+		return this.data;
 	}
 
-	public void setData(Object data) {
+	public void setData(final Object data) {
 		this.data = data;
 	}
 }

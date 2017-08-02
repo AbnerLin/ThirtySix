@@ -13,12 +13,21 @@ public class WebSocketUtil {
 	private SimpMessagingTemplate messageTemplate = null;
 
 	/**
-	 * Broadcast to client to update seat map.
+	 * Broadcast to client for update seat map.
 	 * 
 	 * @param bean
 	 */
 	public void updateSeatMap(final Object bean) {
 		this.messageTemplate.convertAndSend("/topic/updateSeatMap", bean);
+	}
+
+	/**
+	 * Broadcast to client for there is new customer check in.
+	 * 
+	 * @param bean
+	 */
+	public void customerCheckIn(final Object bean) {
+		this.messageTemplate.convertAndSend("/topic/customerCheckIn", bean);
 	}
 
 	/**

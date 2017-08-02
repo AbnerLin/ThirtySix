@@ -15,7 +15,10 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.thirtySix.dto.AjaxRDTO;
 import com.thirtySix.dto.CheckInInfoQDTO;
 import com.thirtySix.model.Customer;
+import com.thirtySix.model.Furnish;
 import com.thirtySix.service.CustomerService;
+import com.thirtySix.service.MapService;
+import com.thirtySix.webSocket.WebSocketUtil;
 
 @Controller
 @RequestMapping(value = { "/customer" })
@@ -23,6 +26,12 @@ public class CustomerContrller {
 
 	@Autowired
 	private CustomerService customerService = null;
+
+	@Autowired
+	private MapService mapService = null;
+
+	@Autowired
+	private WebSocketUtil webSocket = null;
 
 	/**
 	 * Get dining customer.
@@ -63,10 +72,41 @@ public class CustomerContrller {
 
 		final AjaxRDTO result = new AjaxRDTO();
 
-		System.out.println(String.format("%s %s %d %s",
-				checkInInfo.getCustomerName(), checkInInfo.getCustomerPhone(),
-				checkInInfo.getPeopleCount(), checkInInfo.getFurnishId()));
-		// TODO Save DB; Update Buffer; Broadcast to other client.
+		/** Find whether this furnish is using ? */
+		final boolean isFurnishUsed = this.customerService.findDiningCustomer()
+				.entrySet().stream().map(map -> map.getValue())
+				.filter(customer -> customer.getFurnish()
+						.equals(checkInInfo.getFurnishId()))
+				.findAny().isPresent();
+
+		if (isFurnishUsed) {
+			result.setStatusFail();
+			result.setMessage("Furnish are using...");
+			return result;
+		}
+
+		/** Find whether the furnish is exist in seatmap */
+		final Furnish furnish = this.mapService.findAllSeatMap().entrySet()
+				.stream().map(map -> map.getValue())
+				.flatMap(value -> value.getFurnishList().stream())
+				.filter(usingFurnish -> usingFurnish.getFurnishID()
+						.equals(checkInInfo.getFurnishId()))
+				.findAny().orElse(null);
+
+		if (furnish == null) {
+			result.setStatusFail();
+			result.setMessage("Furnish not found.");
+			return result;
+		}
+
+		final Customer customer = new Customer();
+		customer.setCustomerName(checkInInfo.getCustomerName());
+		customer.setPeopleCount(checkInInfo.getPeopleCount());
+		customer.setPhoneNumber(checkInInfo.getCustomerPhone());
+		customer.setFurnish(furnish);
+
+		this.customerService.checkInCustomer(customer);
+		this.webSocket.customerCheckIn(customer);
 
 		return result;
 	}

@@ -290,4 +290,23 @@ public class Customer {
 		this.checkInTimeStringFormat = checkInTimeStringFormat;
 	}
 
+	/**
+	 * Get check out time in string format.
+	 * 
+	 * @return
+	 */
+	public String getCheckOutTimeStringFormat() {
+		return this.checkOutTimeStringFormat;
+	}
+
+	/**
+	 * Set check out time in string format.
+	 * 
+	 * @param checkOutTimeStringFormat
+	 */
+	public void setCheckOutTimeStringFormat(
+			final String checkOutTimeStringFormat) {
+		this.checkOutTimeStringFormat = checkOutTimeStringFormat;
+	}
+
 }

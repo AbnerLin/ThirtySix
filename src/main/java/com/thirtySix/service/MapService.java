@@ -38,7 +38,7 @@ public interface MapService {
 	public void saveFurnishClass(FurnishClass furnishClass);
 
 	/**
-	 * Get seat map list.
+	 * Get seat map list from buffer.
 	 * 
 	 * @return
 	 */

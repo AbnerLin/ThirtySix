@@ -20,7 +20,23 @@ function _Booking(id, orderTime, volume, deliveryTime, isSend, itemId) {
 }
 
 /**
- * Customer objcect
+ * Customer checkIn class.
+ * 
+ * @param customerName
+ * @param customerPhone
+ * @param peopleCount
+ * @param furnishId
+ * @returns
+ */
+function CheckInData(customerName, customerPhone, peopleCount, furnishId) {
+	this.customerName = customerName;
+	this.customerPhone = customerPhone;
+	this.peopleCount = peopleCount;
+	this.furnishId = furnishId;
+};
+
+/**
+ * Customer class.
  * 
  * @param id
  * @param name
@@ -33,7 +49,7 @@ function _Booking(id, orderTime, volume, deliveryTime, isSend, itemId) {
  * @returns
  */
 function _Customer(id, name, phoneNumber, remark, furnish, peopleCount,
-		checkInTime, checkOutTime, bookingList) {
+		checkInTime, checkOutTime) {
 	this.id = id;
 	this.name = name;
 	this.phoneNumber = phoneNumber;
@@ -52,6 +68,7 @@ function _Customer(id, name, phoneNumber, remark, furnish, peopleCount,
 var Customer = (function() {
 	var self = {};
 	var dataUrl = App.URL + "customer/getDiningCustomer";
+	var checkInUrl = App.URL + "customer/checkIn";
 	/** <customerId, _Customer> */
 	var customerData = new DataKeeper();
 
@@ -70,7 +87,8 @@ var Customer = (function() {
 					);
 
 					/** customer */
-					var customer = new _Customer(value.customerID, //
+					var customer = new _Customer( //
+					value.customerID, //
 					value.customerName, //
 					value.phoneNumber, //
 					value.remark, //
@@ -79,6 +97,9 @@ var Customer = (function() {
 					value.checkInTimeStringFormat, //
 					null //
 					);
+					// TODO bookingList
+					// TODO bookingList
+					// TODO bookingList
 
 					customerData.add(customer.id, customer);
 				});
@@ -86,13 +107,19 @@ var Customer = (function() {
 		});
 	};
 
-	self.addCustomer = function(customerObj) {
-		// update customerData & pulish
-	}
+	self.checkIn = function(customerObj) {
+		return App.ajax({
+			url : checkInUrl,
+			data : customerObj,
+			success : function(data, textStatus, jqHXR) {
+				App.alertSuccess("Check in 成功！");
+			}
+		});
+	};
 
-	self.removeCustomer = function(customerId) {
-		// update customerData & pulish
-	}
+	self.checkOut = function(customerId) {
+
+	};
 
 	self.getAll = function() {
 		return customerData.getAll();
@@ -115,6 +142,28 @@ var Customer = (function() {
 		});
 		return result;
 	};
+
+	/**
+	 * Update buffer & publish.
+	 * 
+	 * @param customerObj(_Customer)
+	 */
+	self.addCustomer = function(customerObj) {
+		customerData.add(customerObj.id, customerObj);
+
+		App.publish("/customer/checkIn", [ customerObj ]);
+	}
+
+	/**
+	 * Update buffer & publish.
+	 * 
+	 * @param customerId
+	 */
+	self.removeCustomer = function(customerId) {
+		customerData.remove(customerId);
+
+		App.publish("/customer/checkOut", [ customerId ]);
+	}
 
 	return self;
 })();

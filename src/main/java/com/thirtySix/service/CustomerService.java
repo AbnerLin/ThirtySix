@@ -14,7 +14,7 @@ public interface CustomerService {
 	public Map<String, Customer> findAllCustomer();
 
 	/**
-	 * Find dining customers.
+	 * Find dining customers from buffer.
 	 * 
 	 * @return
 	 */
@@ -26,9 +26,14 @@ public interface CustomerService {
 	public void saveCustomer(Customer po);
 
 	/**
-	 * Customer checkout.
+	 * Customer checkOut.
 	 * 
 	 * @param customerId
 	 */
 	public void checkOutCustomer(String customerId);
+
+	/**
+	 * Customer checkIn.
+	 */
+	public void checkInCustomer(Customer po);
 }

@@ -769,17 +769,21 @@ var Map = (function(self) {
 
 		if (dom.hasClass("TABLE") || dom.hasClass("EMPTY_TABLE")) {
 			if (Customer.getCustomerByFurnishId(furnishId)) {
+				/** css */
+				dom.css("background-image", "url("
+						+ FurnishClass.data.get("TABLE").imagePath + ")");
+				dom.removeClass("EMPTY_TABLE").addClass("TABLE");
 				
 				/** Click trigger. */
-				dom.off("click").click(Order.modalShow);
-				
+				dom.off("click").on("click", {furnishId : furnishId}, Order.modalShow);
 			} else if (!$("#seatMap-toggle").prop("checked")) {
+				/** css */
 				dom.css("background-image", "url("
 						+ FurnishClass.data.get("EMPTY_TABLE").imagePath + ")");
 				dom.removeClass("TABLE").addClass("EMPTY_TABLE");
 
 				/** Click trigger. */
-				dom.off("click").on("click", {furnishId : furnishId},Customer.checkInModal.show);
+				dom.off("click").on("click", {furnishId : furnishId}, Customer.checkInModal.show);
 			}
 		}
 	};
@@ -1167,10 +1171,14 @@ var Customer = (function(self) {
 	self._init = function() {
 		customerSocketTrigger();
 
-		/** trigger map info update. */
-		// App.subscribe("/map/update", function(event, map) {
-		// mapUpdate(map);
-		// });
+		//TODO trigger Pub/Sub (check in; check out)
+		/** trigger customer checkIn */
+		App.subscribe("/customer/checkIn", function(event, obj) {
+			/** Update seatmap */
+			var furnishId = obj.furnish.id;
+			Map.refresh(furnishId);
+		});		
+		
 		return self.init();
 	};
 	
@@ -1188,6 +1196,10 @@ var Customer = (function(self) {
 			$("#checkInModal").modal("show");
 		};
 		
+		_export.hide = function() {
+			$("#checkInModal").modal("hide");
+		};
+		
 		_export.peopleCountAddBtn = function() {
 			var peopleCount = parseInt($("#checkInPeopleCount").val());
 			peopleCount += 1;
@@ -1203,22 +1215,18 @@ var Customer = (function(self) {
 		};
 		
 		_export.checkIn = function() {
-			function CheckInData(customerName, customerPhone, peopleCount, furnishId) {
-				this.customerName = customerName;
-				this.customerPhone = customerPhone;
-				this.peopleCount = peopleCount;
-				this.furnishId = furnishId;
-			};
-			
-			var customerInfo = new CheckInData(
-				$("#checkInCustomerName").val(),
-				$("#checkInCustomerPhone").val(),
-				$("#checkInPeopleCount").val(),
-				$("#checkInFurnishID").val()
-			);
-			
-			App.ajax({
-				
+			alertify.confirm("確定進場？", function(e) {
+				if (e) {
+					var customerInfo = new CheckInData(
+							$("#checkInCustomerName").val(),
+							$("#checkInCustomerPhone").val(),
+							$("#checkInPeopleCount").val(),
+							$("#checkInFurnishID").val()
+						);
+					
+					Customer.checkIn(customerInfo);
+					Customer.checkInModal.hide();
+				}
 			});
 		};
 		
@@ -1238,7 +1246,27 @@ var Customer = (function(self) {
 	 * @returns
 	 */
 	function customerSocketTrigger() {
-		// TODO
+		/** trigger webSocket (Update customer module) */
+		WebSocket.subscribe("/topic/customerCheckIn", function(data) {
+			var obj = JSON.parse(data.body);
+			
+			var customer = new _Customer(
+				obj.customerID, //
+				obj.customerName, //
+				obj.phoneNumber, //
+				obj.remark, //
+				Map.getFurnishById(obj.furnish.furnishID), //
+				obj.peopleCount, //
+				obj.checkInTimeStringFormat,
+				obj.checkOutTimeStringFormat,
+			);
+			
+			Customer.addCustomer(customer);
+		});
+		
+		WebSocket.subscribe("/topic/customerCheckOut", function(data) {
+			
+		});
 	}
 
 	return self;
@@ -1250,10 +1278,19 @@ var Customer = (function(self) {
 Order = (function() {
 	var self = {};
 
-	self.modalShow = function() {
-		// TODO
-		$("#serviceModal").modal("show");
-	};
+	self.serviceModal = (function() {
+		var _export = {};
+		
+		/**
+		 * Show up.
+		 */
+		_export.show = function(furnishId) {
+			//TODO
+			$("#serviceModal").modal("show");
+		};
+		
+		return _export;
+	})();
 
 	return self;
 })();
@@ -1266,12 +1303,13 @@ function init() {
 	Menu.init();
 
 	/** Customer init; Map init. */
-	$.when(Map._init(), Customer.init()).done(function() {
+	$.when(Map._init(), Customer._init()).done(function() {
 		var mapData = Map.getAll();
 		if (mapData) {
 			Map.loadMap(Object.keys(mapData)[0]);
 		}
 	});
+	
 	
 	/** Subscribe server time. */
 //	App.subscribeServerTime();

@@ -244,6 +244,18 @@ var Map = (function() {
 		return self.getAllFurnish(mapId).get(funirshId);
 	};
 	
+	self.getFurnishById = function(furnishId) {
+		var result = null;
+		$.each(self.getAll(), function(key, value) {
+			var _result = value.furnishList.get(furnishId);
+			if(_result) {
+				result = _result;
+				return false;
+			}
+		});
+		return result;
+	};
+	
 	self.getMap = function(mapId) {
 		return mapData.get(mapId);
 	};

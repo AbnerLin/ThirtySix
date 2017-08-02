@@ -90,4 +90,8 @@ public class CustomerServiceImpl implements CustomerService {
 		this.diningCustomerBuffer.remove(customerId);
 	}
 
+	@Override
+	public void checkInCustomer(final Customer po) {
+		this.saveCustomer(po);
+	}
 }
