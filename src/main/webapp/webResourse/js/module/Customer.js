@@ -112,13 +112,16 @@ var Customer = (function() {
 			url : checkInUrl,
 			data : customerObj,
 			success : function(data, textStatus, jqHXR) {
-				App.alertSuccess("Check in 成功！");
+				if(data.status)
+					App.alertSuccess("Check in 成功！");
+				else
+					App.alertError(data.message);
 			}
 		});
 	};
 
 	self.checkOut = function(customerId) {
-
+		//TODO
 	};
 
 	self.getAll = function() {

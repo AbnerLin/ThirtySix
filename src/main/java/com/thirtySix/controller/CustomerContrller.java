@@ -108,6 +108,7 @@ public class CustomerContrller {
 		this.customerService.checkInCustomer(customer);
 		this.webSocket.customerCheckIn(customer);
 
+		result.setStatusOK();
 		return result;
 	}
 

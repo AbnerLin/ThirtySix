@@ -1171,13 +1171,16 @@ var Customer = (function(self) {
 	self._init = function() {
 		customerSocketTrigger();
 
-		//TODO trigger Pub/Sub (check in; check out)
 		/** trigger customer checkIn */
 		App.subscribe("/customer/checkIn", function(event, obj) {
 			/** Update seatmap */
 			var furnishId = obj.furnish.id;
 			Map.refresh(furnishId);
 		});		
+		
+		App.subscribe("/customer/checkOut", function(event, customerId) {
+			//TODO
+		});
 		
 		return self.init();
 	};
@@ -1265,7 +1268,7 @@ var Customer = (function(self) {
 		});
 		
 		WebSocket.subscribe("/topic/customerCheckOut", function(data) {
-			
+			//TODO
 		});
 	}
 
