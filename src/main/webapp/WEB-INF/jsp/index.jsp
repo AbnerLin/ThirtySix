@@ -107,24 +107,24 @@
 		</div>
 	</div>
 	<!-- -----------------------以下未修改 bootstrap4------------------------- -->
-	<div class="row">
-		<div id="serverTime" class="col-md-12 text-center"></div>
-	</div>
+	<!-- 	<div class="row"> -->
+	<!-- 		<div id="serverTime" class="col-md-12 text-center"></div> -->
+	<!-- 	</div> -->
 
-	<div class="row">
-		<!-- left -->
-		<div class="col-md-6 col-sm-12">
-			<div id="diningCustomerList"></div>
-		</div>
+	<!-- 	<div class="row"> -->
+	<!-- left -->
+	<!-- 		<div class="col-md-6 col-sm-12"> -->
+	<!-- 			<div id="diningCustomerList"></div> -->
+	<!-- 		</div> -->
 
-		<!-- right -->
-		<div class="col-md-6 col-sm-12"></div>
-	</div>
+	<!-- right -->
+	<!-- 		<div class="col-md-6 col-sm-12"></div> -->
+	<!-- 	</div> -->
 
 	<!-- Customer check in Modal -->
 	<%@ include file="/WEB-INF/jsp/template/checkInModal.jsp"%>
 
 	<!-- Customer Service Modal -->
-	<%@ include file="/WEB-INF/jsp/template/customerModal.jsp"%>
+	<%@ include file="/WEB-INF/jsp/template/serviceModal.jsp"%>
 </body>
 </html>

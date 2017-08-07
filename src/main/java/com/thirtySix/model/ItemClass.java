@@ -4,6 +4,8 @@ import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
@@ -15,6 +17,10 @@ import org.hibernate.annotations.GenericGenerator;
 @Entity
 @Table(name = "ITEMCLASS")
 public class ItemClass {
+
+	public static enum CLASS {
+		HOTPOT, MEAT, VEGETABLE, SEAFOOD, INDEPENDENT;
+	}
 
 	/**
 	 * 種類編號
@@ -32,10 +38,23 @@ public class ItemClass {
 	private String className;
 
 	/**
-	 * 種類樣式 bootstrap
+	 * Image path.
 	 */
-	@Column(name = "STYLE")
-	private String style = "panel-default";
+	@Column(name = "IMAGEPATH")
+	private String imagePath;
+
+	/**
+	 * Meal class description.
+	 */
+	@Column(name = "DESCRIPTION")
+	private String description;
+
+	/**
+	 * Meal type.
+	 */
+	@Column(name = "MEALTYPE")
+	@Enumerated(EnumType.STRING)
+	private CLASS mealType;
 
 	/**
 	 * 項目
@@ -49,7 +68,7 @@ public class ItemClass {
 	 * @return
 	 */
 	public String getClassID() {
-		return classID;
+		return this.classID;
 	}
 
 	/**
@@ -58,7 +77,7 @@ public class ItemClass {
 	 * @return
 	 */
 	public String getClassName() {
-		return className;
+		return this.className;
 	}
 
 	/**
@@ -66,26 +85,26 @@ public class ItemClass {
 	 * 
 	 * @param className
 	 */
-	public void setClassName(String className) {
+	public void setClassName(final String className) {
 		this.className = className;
 	}
 
 	/**
-	 * 取得種類樣式 (Bootstrap css)
+	 * Get the meal type.
 	 * 
 	 * @return
 	 */
-	public String getStyle() {
-		return style;
+	public CLASS getMealType() {
+		return this.mealType;
 	}
 
 	/**
-	 * 設定種類樣式(Bootstrap css)
+	 * Set the meal type.
 	 * 
-	 * @param style
+	 * @param mealType
 	 */
-	public void setStyle(String style) {
-		this.style = style;
+	public void setMealType(final CLASS mealType) {
+		this.mealType = mealType;
 	}
 
 	/**
@@ -94,7 +113,7 @@ public class ItemClass {
 	 * @return
 	 */
 	public List<Item> getItemList() {
-		return itemList;
+		return this.itemList;
 	}
 
 	/**
@@ -102,8 +121,44 @@ public class ItemClass {
 	 * 
 	 * @param itemList
 	 */
-	public void setItemList(List<Item> itemList) {
+	public void setItemList(final List<Item> itemList) {
 		this.itemList = itemList;
+	}
+
+	/**
+	 * Get image file path.
+	 * 
+	 * @return
+	 */
+	public String getImagePath() {
+		return this.imagePath;
+	}
+
+	/**
+	 * Set image file path.
+	 * 
+	 * @param imagePath
+	 */
+	public void setImagePath(final String imagePath) {
+		this.imagePath = imagePath;
+	}
+
+	/**
+	 * Get meal description.
+	 * 
+	 * @return
+	 */
+	public String getDescription() {
+		return this.description;
+	}
+
+	/**
+	 * Set meal description.
+	 * 
+	 * @param description
+	 */
+	public void setDescription(final String description) {
+		this.description = description;
 	}
 
 }

@@ -775,7 +775,7 @@ var Map = (function(self) {
 				dom.removeClass("EMPTY_TABLE").addClass("TABLE");
 				
 				/** Click trigger. */
-				dom.off("click").on("click", {furnishId : furnishId}, Order.modalShow);
+				dom.off("click").on("click", {furnishId : furnishId}, Order.serviceModal.show);
 			} else if (!$("#seatMap-toggle").prop("checked")) {
 				/** css */
 				dom.css("background-image", "url("
@@ -1287,9 +1287,10 @@ Order = (function() {
 		/**
 		 * Show up.
 		 */
-		_export.show = function(furnishId) {
+		_export.show = function(event) {
 			//TODO
 			$("#serviceModal").modal("show");
+			console.log(event.data.furnishId);
 		};
 		
 		return _export;
