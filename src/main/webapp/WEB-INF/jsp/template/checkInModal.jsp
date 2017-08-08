@@ -33,7 +33,7 @@
 					<div class="input-group">
 						<div class="input-group-btn">
 							<button type="button" aria-label="-1" class="btn btn-success"
-								onclick="Customer.checkInModal.peopleCountMinusBtn();"">
+								onclick="Customer.checkInModal.peopleCountMinusBtn();">
 								<i class="material-icons">remove</i>
 							</button>
 						</div>

@@ -148,7 +148,6 @@ function getCustomerIdByTableNumber(tableNumber) {
  * 更新用餐中顧客列表
  */
 function updateDiningCustomerList(data) {
-	// TODO ui must update..
 
 	$('#diningCustomerList').html("");
 
@@ -775,7 +774,7 @@ var Map = (function(self) {
 				dom.removeClass("EMPTY_TABLE").addClass("TABLE");
 				
 				/** Click trigger. */
-				dom.off("click").on("click", {furnishId : furnishId}, Order.serviceModal.show);
+				dom.off("click").on("click", {furnishId : furnishId}, Menu.serviceModal.show);
 			} else if (!$("#seatMap-toggle").prop("checked")) {
 				/** css */
 				dom.css("background-image", "url("
@@ -1275,12 +1274,19 @@ var Customer = (function(self) {
 	return self;
 })(Customer);
 
-/**
- * Order module.
- */
-Order = (function() {
-	var self = {};
 
+/**
+ * Extends Menu module.
+ */
+var Menu = (function(self) {
+	
+	self._init = function() {
+		self.init().done(function() {
+			loadMenu();
+			self.serviceModal.amountInputTrigger();
+		});
+	};
+	
 	self.serviceModal = (function() {
 		var _export = {};
 		
@@ -1288,23 +1294,83 @@ Order = (function() {
 		 * Show up.
 		 */
 		_export.show = function(event) {
-			//TODO
 			$("#serviceModal").modal("show");
+			//TODO
 			console.log(event.data.furnishId);
+			
+			var furnishId = event.data.furnishId;
+			
+			var customerInfo = Customer.getCustomerByFurnishId(furnishId);
+			console.log(customerInfo);
+			
+		};
+		
+		/**
+		 * Item amount plus btn trigger.
+		 */
+		_export.amountPlus = function(btn) {
+			var amount = parseInt($(btn).closest(".input-group").find(".itemAmount").val());
+			amount += 1;
+			$(btn).closest(".input-group").find(".itemAmount").val(amount);
+			_export.updateOrderList();
+		};
+		
+		/**
+		 * Item amount minus btn trigger.
+		 */
+		_export.amountMinus = function(btn) {
+			var amount = parseInt($(btn).closest(".input-group").find(".itemAmount").val());
+			amount -= 1;
+			if(amount < 0)
+				amount = 0;
+			$(btn).closest(".input-group").find(".itemAmount").val(amount);
+			_export.updateOrderList();
+		};
+		
+		/**
+		 * Trigger input amount.
+		 */
+		_export.amountInputTrigger = function() {
+			$(".itemAmount").on("input", function() {
+				_export.updateOrderList();
+			});
+		};
+		
+		/**
+		 * Update current order list.
+		 */
+		_export.updateOrderList = function() {
+			//TODO
 		};
 		
 		return _export;
 	})();
-
+	
+	/**
+	 * Load menu to page.
+	 */
+	function loadMenu() {
+		/** Load menu to page. */
+		var dataArray = [];
+		$.each(Menu.getAll(), function(key, value) {
+			$.each(value.itemMap.data, function(innerKey, innerValue) {
+				// Element must begin with letter, so Use a for begin.
+				innerValue.eleId = "a" + innerValue.id.replace(new RegExp("-", "g"), "");
+			});
+			dataArray.push(value);
+		});
+		$("#menuTemplate").tmpl(dataArray).appendTo("#itemMenu");
+	}
+	
 	return self;
-})();
+})(Menu);
 
 /**
  * Index page initialize.
  */
 function init() {
 	/** Menu init. */
-	Menu.init();
+	Menu._init();
 
 	/** Customer init; Map init. */
 	$.when(Map._init(), Customer._init()).done(function() {
@@ -1322,9 +1388,4 @@ function init() {
 //	});
 	
 	/***************************/
-	
-//	 setInterval(function() {
-//	 console.log(JSON.stringify(Furnish.getAll()));
-//	 $("#checkInModal").modal("toggle");
-//	 }, 1500);
 }
