@@ -156,6 +156,8 @@ var Customer = (function() {
 		$.each(bookingList, function(key, value) {
 			customer.bookingList.add(value.bookingID, value);
 		});
+		
+		App.publish("/customer/sendOrder", [ customerId, bookingList ]);
 	};
 
 	return self;

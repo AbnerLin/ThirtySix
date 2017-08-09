@@ -82,3 +82,7 @@
 	</li>
 </script>
 
+<script id="orderHistoryTemplate" type="text/html">
+	
+</script>
+

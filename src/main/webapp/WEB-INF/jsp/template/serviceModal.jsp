@@ -21,6 +21,9 @@
 						<li class="nav-item"><a class="nav-link active"
 							data-toggle="tab" href="#menu">菜單</a></li>
 						<li class="nav-item"><a class="nav-link" data-toggle="tab"
+							href="#orderHistory">餐點紀錄</a></li>
+						</li>
+						<li class="nav-item"><a class="nav-link" data-toggle="tab"
 							href="#checkOut">結帳</a></li>
 						</li>
 					</ul>
@@ -40,13 +43,14 @@
 									</div>
 									<div class="col-12 my-3 px-sm-0">
 										<div class="row p-3">
-											<div class="col-7 d-flex justify-content-start align-items-center">
+											<div
+												class="col-7 d-flex justify-content-start align-items-center">
 												$ <span id="totalCost">0</span>
 											</div>
 											<div class="col-5 p-0 d-flex justify-content-end">
 												<input id="orderTmpCustomerId" type="hidden" />
-												<button type="button" disabled id="sendOrderBtn" onclick="Order._sendOrder(this);"
-													class="btn btn-success">送單</button>
+												<button type="button" disabled id="sendOrderBtn"
+													onclick="Order._sendOrder(this);" class="btn btn-success">送單</button>
 											</div>
 										</div>
 									</div>
@@ -58,6 +62,41 @@
 								</div>
 							</div>
 						</div>
+
+						<!-- order history -->
+						<div class="tab-pane fade" id="orderHistory" role="tabpanel">
+							
+							
+							<table class="table">
+								<thead>
+									<tr>
+										<th>Header 1</th>
+										<th>Header 2</th>
+										<th>Header 3</th>
+									</tr>
+								</thead>
+								<tbody>
+									<tr>
+										<td class="table-active">Active</td>
+										<td class="table-success">Success</td>
+										<td>&nbsp;</td>
+									</tr>
+									<tr>
+										<td>&nbsp;</td>
+										<td class="table-info">Info</td>
+										<td>&nbsp;</td>
+									</tr>
+									<tr>
+										<td class="table-danger">Danger</td>
+										<td>&nbsp;</td>
+										<td class="table-warning">Warning</td>
+									</tr>
+								</tbody>
+							</table>
+
+
+						</div>
+
 						<!-- checkOut tab. -->
 						<div class="tab-pane fade" id="checkOut" role="tabpanel">check
 							out.</div>
