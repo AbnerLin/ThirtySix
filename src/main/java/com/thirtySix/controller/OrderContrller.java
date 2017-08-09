@@ -15,12 +15,14 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.thirtySix.dto.AjaxRDTO;
 import com.thirtySix.dto.OrderQDTO;
+import com.thirtySix.dto.OrderRDTO;
 import com.thirtySix.model.Booking;
 import com.thirtySix.model.Customer;
 import com.thirtySix.model.Item;
 import com.thirtySix.service.BookingService;
 import com.thirtySix.service.CustomerService;
 import com.thirtySix.service.ItemService;
+import com.thirtySix.webSocket.WebSocketUtil;
 
 @Controller
 @RequestMapping(value = { "/order" })
@@ -34,6 +36,9 @@ public class OrderContrller {
 
 	@Autowired
 	private BookingService bookingService;
+
+	@Autowired
+	private WebSocketUtil ws;
 
 	/**
 	 * @param request
@@ -79,7 +84,10 @@ public class OrderContrller {
 			this.bookingService.saveBooking(customer.getCustomerID(),
 					bookingList);
 
-			// TODO broadcast to all client.
+			/** Broadcast to all client. */
+			this.ws.customerSendOrder(
+					new OrderRDTO(customer.getCustomerID(), bookingList));
+
 		} else {
 			result.setStatusFail();
 			result.setMessage("Customer not found.");

@@ -37,4 +37,13 @@ public class WebSocketUtil {
 		this.messageTemplate.convertAndSend("/topic/time",
 				TimeFormatter.getInstance().getTime());
 	}
+
+	/**
+	 * Broadcast to client for customer send order.
+	 * 
+	 * @param bean
+	 */
+	public void customerSendOrder(final Object bean) {
+		this.messageTemplate.convertAndSend("/topic/customerSendOrder", bean);
+	}
 }

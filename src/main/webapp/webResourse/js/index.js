@@ -1269,6 +1269,13 @@ var Customer = (function(self) {
 		WebSocket.subscribe("/topic/customerCheckOut", function(data) {
 			//TODO
 		});
+		
+		WebSocket.subscribe("/topic/customerSendOrder", function(data) {
+			var obj = JSON.parse(data.body);
+			
+			
+			console.log(obj);
+		});
 	}
 
 	return self;

@@ -1,25 +1,4 @@
 /**
- * Booking object
- * 
- * @param id
- * @param orderTime(orderTimeStringFormat)
- * @param volume
- * @param deliveryTime(deliveryTimeStringFormat)
- * @param isSend
- * @param itemId
- * @param customerId
- * @returns
- */
-function _Booking(id, orderTime, volume, deliveryTime, isSend, itemId) {
-	this.id = id;
-	this.orderTime = orderTime;
-	this.volume = volume;
-	this.deliveryTime = deliveryTime;
-	this.isSend = isSend;
-	this.itemId = itemId;
-}
-
-/**
  * Customer checkIn class.
  * 
  * @param customerName
@@ -95,13 +74,13 @@ var Customer = (function() {
 					furnish, //
 					value.peopleCount, //
 					value.checkInTimeStringFormat, //
-					null //
+					value.checkOutTimeStringFormat //
 					);
-					// TODO bookingList
-					// TODO bookingList
-					// TODO bookingList
-
+					/** Add customer */
 					customerData.add(customer.id, customer);
+					
+					/** Set bookingList */
+					self.addBooking(value.customerID, value.bookingList);
 				});
 			}
 		});
@@ -155,7 +134,7 @@ var Customer = (function() {
 		customerData.add(customerObj.id, customerObj);
 
 		App.publish("/customer/checkIn", [ customerObj ]);
-	}
+	};
 
 	/**
 	 * Update buffer & publish.
@@ -166,7 +145,18 @@ var Customer = (function() {
 		customerData.remove(customerId);
 
 		App.publish("/customer/checkOut", [ customerId ]);
-	}
+	};
+	
+	/**
+	 * Add booking.
+	 */
+	self.addBooking = function(customerId, bookingList) {
+		var customer = self.get(customerId);
+		
+		$.each(bookingList, function(key, value) {
+			customer.bookingList.add(value.bookingID, value);
+		});
+	};
 
 	return self;
 })();
