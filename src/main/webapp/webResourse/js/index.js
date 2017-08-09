@@ -1295,14 +1295,9 @@ var Menu = (function(self) {
 		 */
 		_export.show = function(event) {
 			$("#serviceModal").modal("show");
-			//TODO
-			console.log(event.data.furnishId);
-			
 			var furnishId = event.data.furnishId;
-			
 			var customerInfo = Customer.getCustomerByFurnishId(furnishId);
-			console.log(customerInfo);
-			
+			$("#orderTmpCustomerId").val(customerInfo.id);
 		};
 		
 		/**
@@ -1368,16 +1363,10 @@ var Menu = (function(self) {
 			$(".itemOfOrder").each(function() {
 				var itemId = $(this).find(".itemIdOfOrder").val();
 				var itemAmount = parseInt($(this).find(".itemAmountOfOrder").val());
-				
-				console.log(Menu.getItemByItemId(itemId).name + "---" + Menu.getItemByItemId(itemId).price + "---" + itemAmount);
-				
 				totalCost += (Menu.getItemByItemId(itemId).price * itemAmount); 
 			});
 			
 			$("#totalCost").html(totalCost);
-			
-			//TODO Total Cost.
-//			totalCost
 		};
 		
 		return _export;
@@ -1402,6 +1391,47 @@ var Menu = (function(self) {
 	return self;
 })(Menu);
 
+
+/**
+ * Extends Order module.
+ */
+var Order = (function(self) {
+	
+	self._sendOrder = function(btn) {
+		App.showLoading($("#serviceModalContent"));
+		
+		
+		var customerId = $("#orderTmpCustomerId").val();
+		var orderList = [];
+		
+		$(".itemOfOrder").each(function() {
+			var itemId = $(this).find(".itemIdOfOrder").val();
+			var itemAmount = $(this).find(".itemAmountOfOrder").val();
+			
+			orderList.push({
+				itemId : itemId,
+				amount : itemAmount
+			});
+		});
+		
+		/** Invoke super method */
+		Order.sendOrder({
+			customerId : customerId, //
+			itemList : orderList //
+		}, $(btn)).done(function() {
+			$(".itemOfOrder").fadeOut(500, function() {
+				$(this).remove();
+			});
+			$("#totalCost").html(0);
+			$(".itemAmount").val(0);
+				
+			App.hideLoading($("#serviceModalContent"), 600);
+		});
+	};
+	
+	return self;
+})(Order);
+
 /**
  * Index page initialize.
  */
@@ -1416,7 +1446,6 @@ function init() {
 			Map.loadMap(Object.keys(mapData)[0]);
 		}
 	});
-	
 	
 	/** Subscribe server time. */
 //	App.subscribeServerTime();

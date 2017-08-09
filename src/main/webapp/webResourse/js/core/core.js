@@ -21,6 +21,7 @@ var App = (function() {
 		.script("js/module/Map.js") //
 		.script("js/module/Menu.js") //
 		.script("js/module/Customer.js") //
+		.script("js/module/Order.js") //
 		.script("https://cdnjs.cloudflare.com/ajax/libs/tether/1.4.0/js/tether.min.js") //
 		.script("https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/js/bootstrap.min.js")
 		.script("plugin/alertify/js/alertify.min.js") //

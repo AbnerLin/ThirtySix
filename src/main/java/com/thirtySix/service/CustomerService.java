@@ -14,7 +14,7 @@ public interface CustomerService {
 	public Map<String, Customer> findAllCustomer();
 
 	/**
-	 * Find dining customers from buffer.
+	 * Find dining customers from buffer. <customerId, po>
 	 * 
 	 * @return
 	 */

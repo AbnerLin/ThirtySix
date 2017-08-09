@@ -4,7 +4,7 @@
 <div class="modal fade" id="serviceModal" tabindex="-1" role="dialog"
 	aria-labelledby="serviceModal" aria-hidden="true">
 	<div class="modal-dialog modal-lg" role="document">
-		<div class="modal-content">
+		<div class="modal-content" id="serviceModalContent">
 			<!-- header -->
 			<div class="modal-header">
 				<h3 class="modal-title">服務選單</h3>
@@ -44,7 +44,8 @@
 												$ <span id="totalCost">0</span>
 											</div>
 											<div class="col-5 p-0 d-flex justify-content-end">
-												<button type="button" disabled id="sendOrderBtn" onclick=""
+												<input id="orderTmpCustomerId" type="hidden" />
+												<button type="button" disabled id="sendOrderBtn" onclick="Order._sendOrder(this);"
 													class="btn btn-success">送單</button>
 											</div>
 										</div>
