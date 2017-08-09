@@ -78,6 +78,23 @@ var Menu = (function() {
 			}
 		});
 	};
+	
+	self.getItemByItemId = function(itemId) {
+		var result = null;
+		
+		$.each(menuData.getAll(), function(key, value) {
+			var flag = true;
+			$.each(value.itemMap.data, function(innerKey, innerValue) {
+				if(innerValue.id == itemId) {
+					result = innerValue;
+					return flag = false;
+				}
+			});
+			return flag;
+		});
+		
+		return result;
+	};
 
 	self.getItemByClassId = function(classId) {
 		return menuData.get(classId);

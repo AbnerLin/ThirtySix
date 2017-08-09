@@ -21,11 +21,11 @@
 	    					    <div class="card">
 	    					    	<div class="card-header p-0" role="tab">
                         	    		<div class="row m-0">
-                        	    			<div class="col-8 p-3 itemClassBtn" data-toggle="collapse"
+                        	    			<div class="col-6 p-2 itemClassBtn" data-toggle="collapse"
                         	    				data-parent="\#{{= mealType}}List" href="\#{{= eleId}}" aria-expanded="true"
-                        	    				aria-controls="{{= mealType}}">{{= name}}</div>
+                        	    				aria-controls="{{= mealType}}">{{= name}} <p class="p-0 m-0">\$ {{= price}}</p></div>
                                 
-                        	    			<div class="input-group col-4 p-0">
+                        	    			<div class="input-group col-6 p-0">
                         	    				<div class="input-group-btn">
                         	    					<button type="button" aria-label="-1"
                         	    						class="btn btn-success btn-sm"
@@ -35,7 +35,7 @@
                         	    				</div>
                         	    				<input class="form-control itemAmount" min="0"
                         	    					type="number" value="0" />
-												<input id="{{= id}}" type="hidden" />
+												<input value="{{= id}}" class="itemId" type="hidden" />
                         	    				<div class="input-group-btn">
                         	    					<button type="button" aria-label="+1"
                         	    						class="btn btn-danger btn-sm"
@@ -52,10 +52,10 @@
                         	    		aria-labelledby="headingOne">
                         	    		<div class="card-block">
 							    			<div class="row">
-							    				<div class="col-4">
+							    				<div class="col-6">
 							    					<img class="itemImage" src="{{= imagePath}}" />
 							    				</div>
-							    				<div class="col-8">
+							    				<div class="col-6">
 							    					{{= description}}
 							    				</div>
 							    			</div>
@@ -73,15 +73,12 @@
 	{{/if}}
 </script>
 
-<script>
-	<div class="col-12">
-		<ul class="list-group">
-			<li class="list-group-item justify-content-between">
-				Use	Template to generate this. 
-				UT failed.UT failed.UT failed.UT failed.UT failed.UT failed.UT failed.UT failed.
-				<span class="badge badge-default badge-pill">2</span>
-			</li>
-		</ul>
-	</div>
+<script id="itemOfOrderTemplate" type="text/html">
+	<li class="list-group-item justify-content-between itemOfOrder" id="{{= id}}">
+		{{= name}} 
+		<span class="badge badge-default badge-pill itemAmountOfOrderText">{{= amount}}</span>
+		<input type="hidden" class="itemIdOfOrder" value="{{= id}}" />
+		<input type="hidden" class="itemAmountOfOrder" value="{{= amount}}" />
+	</li>
 </script>
 

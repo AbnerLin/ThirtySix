@@ -144,8 +144,9 @@ input[type=number]::-webkit-inner-spin-button, input[type=number]::-webkit-outer
 }
 
 .itemImage {
-	max-width: 120px;
-	max-height: 120px;
+	// max-width: 120px;
+	// max-height: 120px;
+	width: 100%;
 }
 
 ///////////

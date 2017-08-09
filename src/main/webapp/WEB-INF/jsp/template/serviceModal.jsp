@@ -14,10 +14,10 @@
 				</button>
 			</div>
 			<!-- body -->
-			<div class="modal-body  container">
-				<div class="row p-3">
+			<div class="modal-body row">
+				<div class="col-12 p-3">
 					<!-- nav -->
-					<ul class="nav nav-pills justify-content-center">
+					<ul class="nav nav-pills justify-content-start">
 						<li class="nav-item"><a class="nav-link active"
 							data-toggle="tab" href="#menu">菜單</a></li>
 						<li class="nav-item"><a class="nav-link" data-toggle="tab"
@@ -25,30 +25,36 @@
 						</li>
 					</ul>
 				</div>
-				<div class="row">
+				<div class="col-12">
 					<!-- nav-tab -->
-					<div class="tab-content col-12">
+					<div class="tab-content">
 						<!-- menu tab. -->
-						<div class="tab-pane fade show active row" id="menu"
-							role="tabpanel">
+						<div class="tab-pane fade show active" id="menu" role="tabpanel">
+							<div class="row">
+								<div class="col-12 col-sm-4 p-0">
+									<div class="col-12 pr-sm-0">
+										<p>餐點資訊</p>
+										<ul class="list-group" id="orderTmpList">
+											<!-- template -->
+										</ul>
+									</div>
+									<div class="col-12 my-3 px-sm-0">
+										<div class="row p-3">
+											<div class="col-7 d-flex justify-content-start align-items-center">
+												$ <span id="totalCost">0</span>
+											</div>
+											<div class="col-5 p-0 d-flex justify-content-end">
+												<button type="button" disabled id="sendOrderBtn" onclick=""
+													class="btn btn-success">送單</button>
+											</div>
+										</div>
+									</div>
+								</div>
 
-
-							<div class="col-12 d-flex justify-content-end">
-								<button type="button" style="display: none;" id="sendOrderBtn"
-									onclick="" class="btn btn-success">送單</button>
-							</div>
-							<div class="col-12">
-								<ul class="list-group">
-									<li class="list-group-item justify-content-between">Use
-										Template to generate this. And Use Object to Keep Order list. ?<span
-										class="badge badge-default badge-pill">2</span>
-									</li>
-								</ul>
-							</div>
-
-							<div class="col-12" id="itemMenu" role="tablist"
-								aria-multiselectable="true">
-								<%@ include file="/WEB-INF/jsp/template/menu.jsp"%>
+								<div class="col-12 col-sm-8" id="itemMenu" role="tablist"
+									aria-multiselectable="true">
+									<%@ include file="/WEB-INF/jsp/template/menu.jsp"%>
+								</div>
 							</div>
 						</div>
 						<!-- checkOut tab. -->

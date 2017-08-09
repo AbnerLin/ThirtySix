@@ -7,9 +7,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 @Controller
 public class IndexController {
 
-	// import org.apache.log4j.Logger;
-	// private Logger logger = Logger.getLogger(this.getClass());
-
 	/**
 	 * Requesting index page.
 	 * 

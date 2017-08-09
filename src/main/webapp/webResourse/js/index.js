@@ -1312,7 +1312,7 @@ var Menu = (function(self) {
 			var amount = parseInt($(btn).closest(".input-group").find(".itemAmount").val());
 			amount += 1;
 			$(btn).closest(".input-group").find(".itemAmount").val(amount);
-			_export.updateOrderList();
+			_export.updateTmpOrderList($(btn));
 		};
 		
 		/**
@@ -1324,7 +1324,7 @@ var Menu = (function(self) {
 			if(amount < 0)
 				amount = 0;
 			$(btn).closest(".input-group").find(".itemAmount").val(amount);
-			_export.updateOrderList();
+			_export.updateTmpOrderList($(btn));
 		};
 		
 		/**
@@ -1332,15 +1332,52 @@ var Menu = (function(self) {
 		 */
 		_export.amountInputTrigger = function() {
 			$(".itemAmount").on("input", function() {
-				_export.updateOrderList();
+				_export.updateTmpOrderList($(this));
 			});
 		};
 		
 		/**
 		 * Update current order list.
 		 */
-		_export.updateOrderList = function() {
-			//TODO
+		_export.updateTmpOrderList = function(element) {
+			var amount = $(element).closest(".input-group").find(".itemAmount").val();
+			var itemId = $(element).closest(".input-group").find(".itemId").val();
+			
+			var obj = {
+				id : itemId,
+				name : Menu.getItemByItemId(itemId).name,
+				amount : amount
+			};
+			
+			if($("#" + itemId).length > 0) {
+				if(amount <= 0) {
+					$("#" + itemId).remove();
+				} else {
+					$("#" + itemId).find(".itemAmountOfOrder").val(amount);
+					$("#" + itemId).find(".itemAmountOfOrderText").html(amount);	
+				}
+			} else if(amount > 0) {
+				$("#itemOfOrderTemplate").tmpl(obj).appendTo("#orderTmpList");
+				$("#sendOrderBtn").removeAttr("disabled");
+			}
+			if($(".itemAmountOfOrder").length <= 0) 
+				$("#sendOrderBtn").attr("disabled", "disabled");
+
+			/** Update total cost */
+			var totalCost = 0;
+			$(".itemOfOrder").each(function() {
+				var itemId = $(this).find(".itemIdOfOrder").val();
+				var itemAmount = parseInt($(this).find(".itemAmountOfOrder").val());
+				
+				console.log(Menu.getItemByItemId(itemId).name + "---" + Menu.getItemByItemId(itemId).price + "---" + itemAmount);
+				
+				totalCost += (Menu.getItemByItemId(itemId).price * itemAmount); 
+			});
+			
+			$("#totalCost").html(totalCost);
+			
+			//TODO Total Cost.
+//			totalCost
 		};
 		
 		return _export;
