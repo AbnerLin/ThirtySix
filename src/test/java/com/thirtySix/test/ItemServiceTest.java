@@ -52,7 +52,7 @@ public class ItemServiceTest {
 		this.itemService.saveItemClass(newItemClass);
 
 		int itemClassSize = this.itemService.findAllItemClass().size();
-		Assert.assertEquals(6, itemClassSize);
+		Assert.assertEquals(7, itemClassSize);
 
 		/** test item */
 		final String itemId1 = "49d643bb-c7d6-4f00-b49f-ceae68971e40";
@@ -71,7 +71,7 @@ public class ItemServiceTest {
 		this.itemService.deleteItemClass(itemClassID);
 
 		itemClassSize = this.itemService.findAllItemClass().size();
-		Assert.assertEquals(5, itemClassSize);
+		Assert.assertEquals(6, itemClassSize);
 	}
 
 }
