@@ -50,6 +50,7 @@ function _Order(customerId, orderList) {
 var Order = (function() {
 	var self = {};
 	var orderUrl = App.URL + "order/sendOrder";
+	
 
 	self.sendOrder = function(dataObject, btn) {
 		return App.ajax({
@@ -64,6 +65,11 @@ var Order = (function() {
 					App.alertError(data.message);
 			}
 		});
+	};
+	
+	self.deliveryDish = function(bookingId) {
+		console.log(bookingId);
+		//TODO 1. pub to topic/updateOrder to update order history.
 	};
 
 	return self;

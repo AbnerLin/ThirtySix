@@ -2,7 +2,6 @@ package com.thirtySix.model;
 
 import java.sql.Timestamp;
 import java.util.Calendar;
-import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -10,15 +9,12 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.PostLoad;
 import javax.persistence.PrePersist;
 import javax.persistence.Table;
-import javax.persistence.Transient;
 
 import org.hibernate.annotations.GenericGenerator;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.thirtySix.util.TimeFormatter;
 
 @Entity
 @Table(name = "BOOKING")
@@ -66,44 +62,17 @@ public class Booking {
 	@Column(name = "VOLUME")
 	private int volume;
 
+	@PrePersist
+	public void setTime() {
+		final Calendar now = Calendar.getInstance();
+		this.orderTime = new Timestamp(now.getTimeInMillis());
+	}
+
 	/**
 	 * 是否已出餐(1:出餐, 0:未出餐)
 	 */
 	@Column(name = "ISSEND")
 	private int isSend = 0;
-
-	/**
-	 * Order time string format.
-	 */
-	@Transient
-	private String orderTimeStringFormat;
-
-	/**
-	 * DeliveryTimeStringFormat;
-	 */
-	@Transient
-	private String deliveryTimeStringFormat;
-
-	@PrePersist
-	public void setTime() {
-		final Calendar now = Calendar.getInstance();
-		this.orderTime = new Timestamp(now.getTimeInMillis());
-
-		setTimeFormat();
-	}
-
-	@PostLoad
-	public void setTimeFormat() {
-		final Date checkInDate = new Date(this.orderTime.getTime());
-		this.orderTimeStringFormat = TimeFormatter.getInstance()
-				.getTime(checkInDate);
-
-		if (this.deliveryTime != null) {
-			final Date deliveryDate = new Date(this.deliveryTime.getTime());
-			this.deliveryTimeStringFormat = TimeFormatter.getInstance()
-					.getTime(deliveryDate);
-		}
-	}
 
 	/**
 	 * 取得訂單編號
@@ -221,42 +190,4 @@ public class Booking {
 	public void setIsSend(final int isSend) {
 		this.isSend = isSend;
 	}
-
-	/**
-	 * Get order time in string format.
-	 * 
-	 * @return
-	 */
-	public String getOrderTimeStringFormat() {
-		return this.orderTimeStringFormat;
-	}
-
-	/**
-	 * Set order time in string format.
-	 * 
-	 * @param orderTimeStringFormat
-	 */
-	public void setOrderTimeStringFormat(final String orderTimeStringFormat) {
-		this.orderTimeStringFormat = orderTimeStringFormat;
-	}
-
-	/**
-	 * Get delivery time in string format.
-	 * 
-	 * @return
-	 */
-	public String getDeliveryTimeStringFormat() {
-		return this.deliveryTimeStringFormat;
-	}
-
-	/**
-	 * Set delivery time in string format.
-	 * 
-	 * @param deliveryTimeStringFormat
-	 */
-	public void setDeliveryTimeStringFormat(
-			final String deliveryTimeStringFormat) {
-		this.deliveryTimeStringFormat = deliveryTimeStringFormat;
-	}
-
 }

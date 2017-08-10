@@ -3,7 +3,6 @@ package com.thirtySix.model;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
 
 import javax.persistence.Column;
@@ -14,14 +13,10 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
-import javax.persistence.PostLoad;
 import javax.persistence.PrePersist;
 import javax.persistence.Table;
-import javax.persistence.Transient;
 
 import org.hibernate.annotations.GenericGenerator;
-
-import com.thirtySix.util.TimeFormatter;
 
 @Entity
 @Table(name = "CUSTOMER")
@@ -85,37 +80,10 @@ public class Customer {
 	@OneToMany(fetch = FetchType.EAGER, mappedBy = "customer")
 	private List<Booking> bookingList = new ArrayList<Booking>();
 
-	/**
-	 * check-in time in string foramt.
-	 */
-	@Transient
-	private String checkInTimeStringFormat = "";
-
-	/**
-	 * check-out time in string format.
-	 */
-	@Transient
-	private String checkOutTimeStringFormat = "";
-
 	@PrePersist
 	public void setTime() {
 		final Calendar now = Calendar.getInstance();
 		this.checkInTime = new Timestamp(now.getTimeInMillis());
-
-		setTimeFormat();
-	}
-
-	@PostLoad
-	public void setTimeFormat() {
-		final Date checkInDate = new Date(this.checkInTime.getTime());
-		this.checkInTimeStringFormat = TimeFormatter.getInstance()
-				.getTime(checkInDate);
-
-		if (this.checkOutTime != null) {
-			final Date checkOutDate = new Date(this.checkOutTime.getTime());
-			this.checkOutTimeStringFormat = TimeFormatter.getInstance()
-					.getTime(checkOutDate);
-		}
 	}
 
 	/**
@@ -269,44 +237,6 @@ public class Customer {
 	 */
 	public List<Booking> getBookingList() {
 		return this.bookingList;
-	}
-
-	/**
-	 * 取得進場時間 字串格式
-	 * 
-	 * @return
-	 */
-	public String getCheckInTimeStringFormat() {
-		return this.checkInTimeStringFormat;
-	}
-
-	/**
-	 * 設定進場時間 字串格式
-	 * 
-	 * @param checkInTimeStringFormat
-	 */
-	public void setCheckInTimeStringFormat(
-			final String checkInTimeStringFormat) {
-		this.checkInTimeStringFormat = checkInTimeStringFormat;
-	}
-
-	/**
-	 * Get check out time in string format.
-	 * 
-	 * @return
-	 */
-	public String getCheckOutTimeStringFormat() {
-		return this.checkOutTimeStringFormat;
-	}
-
-	/**
-	 * Set check out time in string format.
-	 * 
-	 * @param checkOutTimeStringFormat
-	 */
-	public void setCheckOutTimeStringFormat(
-			final String checkOutTimeStringFormat) {
-		this.checkOutTimeStringFormat = checkOutTimeStringFormat;
 	}
 
 }

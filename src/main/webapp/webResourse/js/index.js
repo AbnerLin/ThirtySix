@@ -453,7 +453,12 @@ var Customer = (function(self) {
 		
 		/** trigger customer send order. */
 		App.subscribe("/customer/sendOrder", function(event, customerId, bookingList) {
-			//TODO  1. update order history.. 2. update furnish badge.
+			//TODO  2. update furnish badge.
+			
+			/** Update order history. */
+			if($("#orderTmpCustomerId").val() == customerId) {
+				$("#orderHistoryTemplate").tmpl(bookingList).appendTo("#orderHistoryTable");
+			}
 		});
 		
 		return self.init();
@@ -562,10 +567,17 @@ var Customer = (function(self) {
  */
 var Menu = (function(self) {
 	
+	/** True=> timeFromNow; False=>ahh:mm */
+	var timeDisplayData = {
+		toggle : true,
+		format : "ah:mm"
+	};
+	
 	self._init = function() {
 		self.init().done(function() {
 			loadMenu();
 			self.serviceModal.amountInputTrigger();
+			enableUpdateTime();
 		});
 	};
 	
@@ -584,7 +596,7 @@ var Menu = (function(self) {
 			$("#orderTmpCustomerId").val(customerInfo.id);
 			
 			/** Load order history to page. */
-			console.log(customerInfo);
+			loadOrderHistory(customerInfo);
 		};
 		
 		/**
@@ -657,10 +669,49 @@ var Menu = (function(self) {
 		};
 		
 		/**
+		 * Transform the time format.
+		 */
+		_export.transformTimeFormat = function(btn) {
+			timeDisplayData.toggle = $(btn).attr("aria-pressed") === "true";
+			
+			if(timeDisplayData.toggle) {
+				/** Use fromNow format. */
+				$("#serviceModal").find(".momentTime").each(function() {
+					var time = Number($(this).attr("time"));
+					$(this).html(moment(time).fromNow());
+				});
+			} else {
+				/** Use HH:MM format. */
+				$("#serviceModal").find(".momentTime").each(function() {
+					var time = Number($(this).attr("time"));
+					$(this).html(moment(time).format(timeDisplayData.format));
+				});
+			}
+		};
+		
+		/**
+		 * Hide or Show the history which was delivery.
+		 */
+		_export.toggleDeliveryDish = function(btn) {
+			var toggle = $(btn).attr("aria-pressed") === "true";
+			
+			if(!toggle)
+				$(".isSend").fadeOut();
+			else
+				$(".isSend").fadeIn();
+		};
+		
+		/**
 		 * Load order history to tab.
 		 */
 		function loadOrderHistory(customerInfo) {
+			$("#orderHistoryTable").html("");
+			var dataArray = [];
+			$.each(customerInfo.bookingList.data, function(key, value) {
+				dataArray.push(value);
+			});
 			
+			$("#orderHistoryTemplate").tmpl(dataArray).appendTo("#orderHistoryTable");
 		}
 		
 		return _export;
@@ -674,12 +725,27 @@ var Menu = (function(self) {
 		var dataArray = [];
 		$.each(Menu.getAll(), function(key, value) {
 			$.each(value.itemMap.data, function(innerKey, innerValue) {
-				// Element must begin with letter, so Use a for begin.
+				/** Element must begin with letter, so Use a for begin. */
 				innerValue.eleId = "a" + innerValue.id.replace(new RegExp("-", "g"), "");
 			});
 			dataArray.push(value);
 		});
 		$("#menuTemplate").tmpl(dataArray).appendTo("#itemMenu");
+	}
+	
+	/**
+	 * Update time text with moment.js, which element must has class "timeFromNow" and record the time as timestamp format in attr "time".
+	 */
+	function enableUpdateTime() {
+		setInterval(function(){
+			$("#serviceModal").find(".timeFromNow").each(function() {
+				var time = Number($(this).attr("time"));
+				if(timeDisplayData.toggle)
+					$(this).html(moment(time).fromNow());
+				else
+					$(this).html(moment(time).format(timeDisplayData.format));
+			});
+		}, 5000);
 	}
 	
 	return self;
@@ -693,7 +759,6 @@ var Order = (function(self) {
 	
 	self._sendOrder = function(btn) {
 		App.showLoading($("#serviceModalContent"));
-		
 		
 		var customerId = $("#orderTmpCustomerId").val();
 		var orderList = [];
@@ -748,4 +813,16 @@ function init() {
 //	});
 	
 	/***************************/
+//	$("#serverTime").html(Date.parse("1502269803722"));
+//	$("#serverTime").html(moment(Number("1502269803722")).fromNow());
+	
+//	var time = Number($(this).attr("time"));
+//	$(this).html(moment(time, "hh:mm a"));
+//	console.log(moment(1502343402057).format("ahh:mm "));
+//	console.log("!!!!!");
+//	1502343402057
+	
+	//TODO Add btn to recover the time format to absolute time. hh:mm am/pm
+	
+//	1502269665983
 }

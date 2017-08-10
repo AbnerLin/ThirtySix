@@ -82,7 +82,24 @@
 	</li>
 </script>
 
-<script id="orderHistoryTemplate" type="text/html">
-	
+<script id="orderHistoryTemplate" type="text/html">									
+	{{if isSend == 0}}
+		<tr class="table-danger" id="{{= bookingID}}">
+	{{else}}
+		<tr class="table-success isSend" id="{{= bookingID}}">
+	{{/if}}
+		<td>{{= item.name}}
+			<span class="badge badge-default badge-pill">{{= volume}}</span>
+		</td>
+		<td time="{{= orderTime}}" class="momentTime">{{= moment(orderTime).fromNow()}}</td>
+		{{if isSend == 0}}
+			<td>
+				<sec:authorize access="hasRole('ROLE_INSIDE_STAFF')">
+					<button type="button" class="btn btn-outline-info btn-sm" onclick="Order.deliveryDish('{{= bookingID}}');">出餐</button>
+				</sec:authorize>
+			</td>
+		{{else}}
+			<td time="{{= deliveryTime}}" class="momentTime">{{= moment(deliveryTime).fromNow()}}</td>
+		{{/if}}
+	</tr>
 </script>
-

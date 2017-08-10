@@ -33,10 +33,18 @@
 					<div class="tab-content">
 						<!-- menu tab. -->
 						<div class="tab-pane fade show active" id="menu" role="tabpanel">
-							<div class="row">
-								<div class="col-12 col-sm-4 p-0">
+							<div class="row d-flex flex-sm-row-reverse">
+
+								<div class="col-12 col-sm-8" id="itemMenu" role="tablist"
+									aria-multiselectable="true">
+									<%@ include file="/WEB-INF/jsp/template/menu.jsp"%>
+								</div>
+
+								<div class="col-12 col-sm-4 p-0 mt-3">
 									<div class="col-12 pr-sm-0">
-										<p>餐點資訊</p>
+										<p>
+										<h4>餐點資訊</h4>
+										</p>
 										<ul class="list-group" id="orderTmpList">
 											<!-- template -->
 										</ul>
@@ -56,41 +64,41 @@
 									</div>
 								</div>
 
-								<div class="col-12 col-sm-8" id="itemMenu" role="tablist"
-									aria-multiselectable="true">
-									<%@ include file="/WEB-INF/jsp/template/menu.jsp"%>
-								</div>
 							</div>
 						</div>
 
 						<!-- order history -->
 						<div class="tab-pane fade" id="orderHistory" role="tabpanel">
-							
-							
-							<table class="table">
-								<thead>
+
+							<div class="row">
+								<div class="col-6 pr-0">
+									<button type="button" class="btn btn-outline-info btn-block"
+										data-toggle="button" aria-pressed="false" autocomplete="off"
+										onclick="Menu.serviceModal.transformTimeFormat(this);">
+										時間切換</button>
+								</div>
+								<div class="col-6 pl-0">
+									<button type="button" class="btn btn-outline-warning btn-block"
+										data-toggle="button" aria-pressed="false" autocomplete="off"
+										onclick="Menu.serviceModal.toggleDeliveryDish(this);">
+										隱藏/顯示已送餐</button>
+								</div>
+							</div>
+							<table class="table table-bordered">
+								<thead class="thead-default">
 									<tr>
-										<th>Header 1</th>
-										<th>Header 2</th>
-										<th>Header 3</th>
+										<th class="w-20">餐點</th>
+										<th class="w-30">下單時間</th>
+										<th class="w-30">出餐時間</th>
 									</tr>
 								</thead>
-								<tbody>
-									<tr>
-										<td class="table-active">Active</td>
-										<td class="table-success">Success</td>
-										<td>&nbsp;</td>
-									</tr>
-									<tr>
-										<td>&nbsp;</td>
-										<td class="table-info">Info</td>
-										<td>&nbsp;</td>
-									</tr>
-									<tr>
-										<td class="table-danger">Danger</td>
-										<td>&nbsp;</td>
-										<td class="table-warning">Warning</td>
-									</tr>
+								<tbody id="orderHistoryTable">
+<!-- 									<tr class="table-success isSend"> -->
+<!-- 										<td class="table-active">a</td> -->
+<!-- 										<td class="table-success">2</td> -->
+<!-- 										<td>16:54:34</td> -->
+<!-- 										<td>16:54:34</td> -->
+<!-- 									</tr> -->
 								</tbody>
 							</table>
 

@@ -73,8 +73,8 @@ var Customer = (function() {
 					value.remark, //
 					furnish, //
 					value.peopleCount, //
-					value.checkInTimeStringFormat, //
-					value.checkOutTimeStringFormat //
+					value.checkInTime, //
+					value.checkOutTime //
 					);
 					/** Add customer */
 					customerData.add(customer.id, customer);

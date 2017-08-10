@@ -6,7 +6,7 @@ import java.util.Arrays;
  * User Privilege.
  */
 public enum UserRole {
-	ROLE_ADMIN(0), ROLE_STAFF(1);
+	ROLE_ADMIN(0), ROLE_STAFF(1), ROLE_INSIDE_STAFF(2);
 
 	private Integer level;
 

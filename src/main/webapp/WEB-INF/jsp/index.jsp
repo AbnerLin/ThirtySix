@@ -32,6 +32,14 @@
 	<sec:authorize access="hasRole('ROLE_ADMIN')">
 			has role admin.
 	</sec:authorize>
+	
+	<sec:authorize access="hasRole('ROLE_STAFF')">
+			has role staff.
+	</sec:authorize>
+	
+	<sec:authorize access="hasRole('ROLE_INSIDE_STAFF')">
+			has role inside staff.
+	</sec:authorize>
 
 	<button onclick="Auth.logout();" class="btn btn-sm btn-secondary">logout</button>
 
@@ -107,9 +115,9 @@
 		</div>
 	</div>
 	<!-- -----------------------以下未修改 bootstrap4------------------------- -->
-	<!-- 	<div class="row"> -->
-	<!-- 		<div id="serverTime" class="col-md-12 text-center"></div> -->
-	<!-- 	</div> -->
+	<div class="row">
+		<div id="serverTime" class="col-md-12 text-center timeFromNow" time=1502269803722></div>
+	</div>
 
 	<!-- 	<div class="row"> -->
 	<!-- left -->

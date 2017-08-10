@@ -24,6 +24,9 @@ var App = (function() {
 		.script("js/module/Customer.js") //
 		.script("https://cdnjs.cloudflare.com/ajax/libs/tether/1.4.0/js/tether.min.js") //
 		.script("https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/js/bootstrap.min.js")
+		.script("plugin/moment/moment-with-locales.js").wait(function() {
+			moment.locale("zh-tw");
+		}) //
 		.script("plugin/alertify/js/alertify.min.js") //
 		.script("plugin/bootstrap-toggle/js/bootstrap-toggle.min.js")
 		.script("plugin/jquery/js/jquery-tmpl.js")
