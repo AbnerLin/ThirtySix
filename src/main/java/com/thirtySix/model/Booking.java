@@ -20,6 +20,20 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 @Table(name = "BOOKING")
 public class Booking {
 
+	public static enum SENDSTATUS {
+		UNSEND(0), SENT(1);
+
+		private Integer value;
+
+		SENDSTATUS(final Integer value) {
+			this.value = value;
+		}
+
+		public Integer value() {
+			return this.value;
+		}
+	}
+
 	/**
 	 * 訂單編號
 	 */
@@ -72,7 +86,7 @@ public class Booking {
 	 * 是否已出餐(1:出餐, 0:未出餐)
 	 */
 	@Column(name = "ISSEND")
-	private int isSend = 0;
+	private int isSend = SENDSTATUS.UNSEND.value;
 
 	/**
 	 * 取得訂單編號

@@ -1,5 +1,7 @@
 package com.thirtySix.service.serviceImpl;
 
+import java.sql.Timestamp;
+import java.util.Calendar;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,5 +37,28 @@ public class BookingServiceImpl implements BookingService {
 		/** Update buffer */
 		this.customerService.findDiningCustomer().get(customerId)
 				.getBookingList().addAll(poList);
+	}
+
+	@Override
+	@Transactional
+	public Booking setDeliveryMeal(final String customerId,
+			final String bookingId) {
+
+		final Booking booking = this.customerService.findDiningCustomer()
+				.get(customerId).getBookingList().stream()
+				.filter(_booking -> _booking.getBookingID().equals(bookingId))
+				.findFirst().orElse(null);
+
+		final Calendar now = Calendar.getInstance();
+		final Timestamp nowTime = new Timestamp(now.getTimeInMillis());
+
+		/** Update to Buffer */
+		booking.setIsSend(Booking.SENDSTATUS.SENT.value());
+		booking.setDeliveryTime(nowTime);
+
+		/** Save to DB */
+		this.repository.save(booking);
+
+		return booking;
 	}
 }

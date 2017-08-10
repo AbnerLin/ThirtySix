@@ -20,4 +20,12 @@ public interface BookingService {
 	 */
 	public List<Booking> findAllBooking();
 
+	/**
+	 * Set the booking deliveried.
+	 * 
+	 * @param customerId
+	 * @param bookingId
+	 */
+	public Booking setDeliveryMeal(String customerId, String bookingId);
+
 }

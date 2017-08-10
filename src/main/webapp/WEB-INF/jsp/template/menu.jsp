@@ -95,7 +95,7 @@
 		{{if isSend == 0}}
 			<td>
 				<sec:authorize access="hasRole('ROLE_INSIDE_STAFF')">
-					<button type="button" class="btn btn-outline-info btn-sm" onclick="Order.deliveryDish('{{= bookingID}}');">出餐</button>
+					<button type="button" class="btn btn-outline-info btn-sm" onclick="Order._deliveryMeal('{{= bookingID}}', this);">出餐</button>
 				</sec:authorize>
 			</td>
 		{{else}}

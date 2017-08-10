@@ -46,4 +46,13 @@ public class WebSocketUtil {
 	public void customerSendOrder(final Object bean) {
 		this.messageTemplate.convertAndSend("/topic/customerSendOrder", bean);
 	}
+
+	/**
+	 * Broadcast to client for meal was deliveried.
+	 * 
+	 * @param bean
+	 */
+	public void deliveryMeal(final Object bean) {
+		this.messageTemplate.convertAndSend("/topic/deliveryMeal", bean);
+	}
 }

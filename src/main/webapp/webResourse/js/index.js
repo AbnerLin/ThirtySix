@@ -573,12 +573,19 @@ var Menu = (function(self) {
 		format : "ah:mm"
 	};
 	
+	/** Show or Hide the order whether send. */
+	var deliveryToggle = true;
+	
 	self._init = function() {
 		self.init().done(function() {
 			loadMenu();
 			self.serviceModal.amountInputTrigger();
 			enableUpdateTime();
 		});
+	};
+	
+	self.isDeliveryOrderShow = function() {
+		return deliveryToggle;
 	};
 	
 	self.serviceModal = (function() {
@@ -693,9 +700,9 @@ var Menu = (function(self) {
 		 * Hide or Show the history which was delivery.
 		 */
 		_export.toggleDeliveryDish = function(btn) {
-			var toggle = $(btn).attr("aria-pressed") === "true";
+			deliveryToggle = $(btn).attr("aria-pressed") === "true";
 			
-			if(!toggle)
+			if(!deliveryToggle)
 				$(".isSend").fadeOut();
 			else
 				$(".isSend").fadeIn();
@@ -738,7 +745,7 @@ var Menu = (function(self) {
 	 */
 	function enableUpdateTime() {
 		setInterval(function(){
-			$("#serviceModal").find(".timeFromNow").each(function() {
+			$("#serviceModal").find(".momentTime").each(function() {
 				var time = Number($(this).attr("time"));
 				if(timeDisplayData.toggle)
 					$(this).html(moment(time).fromNow());
@@ -756,6 +763,14 @@ var Menu = (function(self) {
  * Extends Order module.
  */
 var Order = (function(self) {
+	
+	self._init = function() {
+		orderSocketTrigger();
+		
+		App.subscribe("/order/delivery", function(event, customerId, booking) {
+			updateOrderHistory(customerId, booking);
+		});
+	};
 	
 	self._sendOrder = function(btn) {
 		App.showLoading($("#serviceModalContent"));
@@ -786,7 +801,38 @@ var Order = (function(self) {
 				
 			App.hideLoading($("#serviceModalContent"), 600);
 		});
+		
 	};
+	
+	self._deliveryMeal = function(bookingId, btn) {
+		var customerId = $("#orderTmpCustomerId").val();
+		Order.deliveryMeal(customerId, bookingId, $(btn));
+	};
+	
+	/**
+	 * Trigger socket.
+	 */
+	function orderSocketTrigger() {
+		WebSocket.subscribe("/topic/deliveryMeal", function(data) {
+			var obj = JSON.parse(data.body);
+			
+			Order.updateOrder(obj.customerId, obj.booking);
+		});
+	}
+	
+	/**
+	 * Update order history while inside staff delivery the meal.
+	 */
+	function updateOrderHistory(customerId, booking) {
+		if(customerId == $("#orderTmpCustomerId").val()) {
+			$("#" + booking.bookingID).replaceWith($("#orderHistoryTemplate").tmpl(booking));
+			if(!Menu.isDeliveryOrderShow()) {
+				setTimeout(function() {
+					$("#" + booking.bookingID).fadeOut();
+				}, 1000);
+			}
+		}
+	}
 	
 	return self;
 })(Order);
@@ -797,6 +843,9 @@ var Order = (function(self) {
 function init() {
 	/** Menu init. */
 	Menu._init();
+	
+	/** Order init. */
+	Order._init();
 
 	/** Customer init; Map init. */
 	$.when(Map._init(), Customer._init()).done(function() {

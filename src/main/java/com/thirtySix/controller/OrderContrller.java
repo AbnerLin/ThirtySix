@@ -8,12 +8,15 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.thirtySix.dto.AjaxRDTO;
+import com.thirtySix.dto.DeliveryMealRDTO;
 import com.thirtySix.dto.OrderQDTO;
 import com.thirtySix.dto.OrderRDTO;
 import com.thirtySix.model.Booking;
@@ -39,6 +42,32 @@ public class OrderContrller {
 
 	@Autowired
 	private WebSocketUtil ws;
+
+	/**
+	 * Delivery meal.
+	 * 
+	 * @param request
+	 * @param response
+	 * @return
+	 */
+	@ResponseBody
+	@RequestMapping(value = { "/deliveryMeal" })
+	@Secured("ROLE_INSIDE_STAFF")
+	public AjaxRDTO deliveryMeal(final HttpServletRequest request,
+			final HttpServletResponse response,
+			@RequestParam("customerId") final String customerId,
+			@RequestParam("bookingId") final String bookingId) {
+		final AjaxRDTO result = new AjaxRDTO();
+
+		/** Invoke service */
+		final Booking booking = this.bookingService.setDeliveryMeal(customerId,
+				bookingId);
+
+		/** Broadcast to all client. */
+		this.ws.deliveryMeal(new DeliveryMealRDTO(customerId, booking));
+
+		return result;
+	}
 
 	/**
 	 * @param request

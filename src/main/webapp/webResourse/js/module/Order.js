@@ -50,7 +50,7 @@ function _Order(customerId, orderList) {
 var Order = (function() {
 	var self = {};
 	var orderUrl = App.URL + "order/sendOrder";
-	
+	var devliveryMealUrl = App.URL + "order/deliveryMeal";
 
 	self.sendOrder = function(dataObject, btn) {
 		return App.ajax({
@@ -67,9 +67,28 @@ var Order = (function() {
 		});
 	};
 	
-	self.deliveryDish = function(bookingId) {
-		console.log(bookingId);
-		//TODO 1. pub to topic/updateOrder to update order history.
+	self.deliveryMeal = function(customerId, bookingId, btn) {
+		return App.ajax({
+			url : devliveryMealUrl,
+			disableButton : btn,
+			data : {
+				customerId : customerId, 
+				bookingId : bookingId
+			},
+			success : function(data, textStatus, jqXHR) {
+				if (data.status)
+					App.alertSuccess("出餐成功！");
+			}
+		});
+	};
+	
+	self.updateOrder = function(customerId, booking) {
+		var _booking = Customer.get(customerId).bookingList.get(booking.bookingID);
+		
+		_booking.deliveryTime = booking.deliveryTime;
+		_booking.isSend = booking.isSend;
+		
+		App.publish("/order/delivery", [ customerId, _booking ]);
 	};
 
 	return self;
