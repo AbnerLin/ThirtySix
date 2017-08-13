@@ -518,8 +518,9 @@ var Customer = (function(self) {
 	/**
 	 * @param customerId
 	 */
-	self.checkOut = function(customerId) {
+	self._checkOut = function(customerId) {
 		// TODO
+		console.log(customerId);
 	};
 
 	/**
@@ -604,6 +605,9 @@ var Menu = (function(self) {
 			
 			/** Load order history to page. */
 			loadOrderHistory(customerInfo);
+			
+			/** Load customer info to checkOut page. */
+			_export.loadCustomerInfo(customerInfo);
 		};
 		
 		/**
@@ -709,6 +713,25 @@ var Menu = (function(self) {
 		};
 		
 		/**
+		 * Load customer info to tab.
+		 */
+		_export.loadCustomerInfo = function(customerInfo) {
+			if(customerInfo.id == $("#orderTmpCustomerId").val()) {
+				/** Calculate should pay. */
+				var totalCost = 0;
+				$.each(customerInfo.bookingList.data, function(key, value) {
+					if(value.isSend == 1)
+						totalCost += (value.volume * Number(value.item.price));
+				});
+				customerInfo.totalCost = totalCost;
+				
+				/** Load basic info. */
+				$("#checkOutTable").html("");
+				$("#checkOutTemplate").tmpl(customerInfo).appendTo("#checkOutTable");
+			}
+		}
+		
+		/**
 		 * Load order history to tab.
 		 */
 		function loadOrderHistory(customerInfo) {
@@ -716,6 +739,16 @@ var Menu = (function(self) {
 			var dataArray = [];
 			$.each(customerInfo.bookingList.data, function(key, value) {
 				dataArray.push(value);
+			});
+			
+			/** Sort by orderTime */
+			dataArray.sort(function(a, b) {
+				if(a.orderTime < b.orderTime)
+					return -1;
+				else if(a.orderTime > b.orderTime)
+					return 1;
+				else
+					return 0;
 			});
 			
 			$("#orderHistoryTemplate").tmpl(dataArray).appendTo("#orderHistoryTable");
@@ -767,8 +800,13 @@ var Order = (function(self) {
 	self._init = function() {
 		orderSocketTrigger();
 		
+		/** Subscribe App.Pub/Sub */
 		App.subscribe("/order/delivery", function(event, customerId, booking) {
+			/** Update order history */
 			updateOrderHistory(customerId, booking);
+			
+			/** Update totalCost of checkOut page. */
+			Menu.serviceModal.loadCustomerInfo(Customer.get(customerId));
 		});
 	};
 	

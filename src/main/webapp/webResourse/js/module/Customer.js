@@ -101,6 +101,7 @@ var Customer = (function() {
 
 	self.checkOut = function(customerId) {
 		//TODO
+		console.log(customerId);
 	};
 
 	self.getAll = function() {

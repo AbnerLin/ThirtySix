@@ -1,5 +1,5 @@
 <%@ page contentType="text/html; charset=UTF-8"%>
-
+<%@ include file="/WEB-INF/jsp/template/menu.jsp"%>
 <!-- Modal -->
 <div class="modal fade" id="serviceModal" tabindex="-1" role="dialog"
 	aria-labelledby="serviceModal" aria-hidden="true">
@@ -33,81 +33,80 @@
 					<div class="tab-content">
 						<!-- menu tab. -->
 						<div class="tab-pane fade show active" id="menu" role="tabpanel">
-							<div class="row d-flex flex-sm-row-reverse">
+							<div class="card p-2">
+								<div class="row d-flex flex-sm-row-reverse">
 
-								<div class="col-12 col-sm-8" id="itemMenu" role="tablist"
-									aria-multiselectable="true">
-									<%@ include file="/WEB-INF/jsp/template/menu.jsp"%>
-								</div>
+									<div class="col-12 col-sm-8" id="itemMenu" role="tablist"
+										aria-multiselectable="true"></div>
 
-								<div class="col-12 col-sm-4 p-0 mt-3">
-									<div class="col-12 pr-sm-0">
-										<p>
-										<h4>餐點資訊</h4>
-										</p>
-										<ul class="list-group" id="orderTmpList">
-											<!-- template -->
-										</ul>
-									</div>
-									<div class="col-12 my-3 px-sm-0">
-										<div class="row p-3">
-											<div
-												class="col-7 d-flex justify-content-start align-items-center">
-												$ <span id="totalCost">0</span>
-											</div>
-											<div class="col-5 p-0 d-flex justify-content-end">
-												<input id="orderTmpCustomerId" type="hidden" />
-												<button type="button" disabled id="sendOrderBtn"
-													onclick="Order._sendOrder(this);" class="btn btn-success">送單</button>
+									<div class="col-12 col-sm-4 p-0 mt-3 mt-sm-0">
+										<div class="col-12 pr-sm-0">
+											<h4>餐點資訊</h4>
+											<ul class="list-group" id="orderTmpList">
+												<!-- template -->
+											</ul>
+										</div>
+										<div class="col-12 my-3 px-sm-0">
+											<div class="row p-3">
+												<div
+													class="col-7 d-flex justify-content-start align-items-center">
+													$ <span id="totalCost">0</span>
+												</div>
+												<div class="col-5 p-0 d-flex justify-content-end">
+													<input id="orderTmpCustomerId" type="hidden" />
+													<button type="button" disabled id="sendOrderBtn"
+														onclick="Order._sendOrder(this);" class="btn btn-success">送單</button>
+												</div>
 											</div>
 										</div>
 									</div>
-								</div>
 
+								</div>
 							</div>
 						</div>
 
 						<!-- order history -->
 						<div class="tab-pane fade" id="orderHistory" role="tabpanel">
+							<div class="card p-3">
+								<div class="row">
+									<div class="col-6 pr-0">
+										<button type="button" class="btn btn-outline-info btn-block"
+											data-toggle="button" aria-pressed="false" autocomplete="off"
+											onclick="Menu.serviceModal.transformTimeFormat(this);">
+											時間切換</button>
+									</div>
+									<div class="col-6 pl-0">
+										<button type="button"
+											class="btn btn-outline-warning btn-block"
+											data-toggle="button" aria-pressed="false" autocomplete="off"
+											onclick="Menu.serviceModal.toggleDeliveryDish(this);">
+											隱藏/顯示已送餐</button>
+									</div>
+								</div>
 
-							<div class="row">
-								<div class="col-6 pr-0">
-									<button type="button" class="btn btn-outline-info btn-block"
-										data-toggle="button" aria-pressed="false" autocomplete="off"
-										onclick="Menu.serviceModal.transformTimeFormat(this);">
-										時間切換</button>
-								</div>
-								<div class="col-6 pl-0">
-									<button type="button" class="btn btn-outline-warning btn-block"
-										data-toggle="button" aria-pressed="false" autocomplete="off"
-										onclick="Menu.serviceModal.toggleDeliveryDish(this);">
-										隱藏/顯示已送餐</button>
-								</div>
+								<table class="table table-bordered">
+									<thead class="thead-default">
+										<tr>
+											<th class="w-20">餐點</th>
+											<th class="w-30">下單時間</th>
+											<th class="w-30">出餐時間</th>
+										</tr>
+									</thead>
+									<tbody id="orderHistoryTable">
+									</tbody>
+								</table>
 							</div>
-							<table class="table table-bordered">
-								<thead class="thead-default">
-									<tr>
-										<th class="w-20">餐點</th>
-										<th class="w-30">下單時間</th>
-										<th class="w-30">出餐時間</th>
-									</tr>
-								</thead>
-								<tbody id="orderHistoryTable">
-<!-- 									<tr class="table-success isSend"> -->
-<!-- 										<td class="table-active">a</td> -->
-<!-- 										<td class="table-success">2</td> -->
-<!-- 										<td>16:54:34</td> -->
-<!-- 										<td>16:54:34</td> -->
-<!-- 									</tr> -->
-								</tbody>
-							</table>
-
-
 						</div>
 
 						<!-- checkOut tab. -->
-						<div class="tab-pane fade" id="checkOut" role="tabpanel">check
-							out.</div>
+						<div class="tab-pane fade" id="checkOut" role="tabpanel">
+							<div class="card">
+								<h3 class="card-header">顧客用餐資訊</h3>
+								<div class="card-block" id="checkOutTable">
+									<!-- template -->
+								</div>
+							</div>
+						</div>
 					</div>
 				</div>
 				<!-- footer -->

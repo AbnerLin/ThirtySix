@@ -103,3 +103,45 @@
 		{{/if}}
 	</tr>
 </script>
+
+<script id="checkOutTemplate" type="text/html">
+	<div class="row">
+		<div class="col-6">顧客姓名</div>
+		<div class="col-6">{{= name}}</div>
+	</div>
+	
+	<div class="row">
+		<div class="col-6">人數</div>
+		<div class="col-6">{{= peopleCount}}</div>
+	</div>
+	
+	<div class="row">
+		<div class="col-6">桌號</div>
+		<div class="col-6">{{= furnish.alias}}</div>
+	</div>
+	
+	<div class="row">
+		<div class="col-6">進場時間</div>
+		<div class="col-6">
+			{{= moment(checkInTime).format("YYYY/MM/DD HH:mm")}}
+		</div>
+	</div>
+
+	<div class="row">
+		<div class="col-6"><h4>消費金額</h4></div>
+		<div class="col-6">
+			<h4>
+				\$ {{= totalCost}}
+			</h4>
+		</div>
+	</div>
+	
+	<div class="row">
+		<div class="col-12 text-right">
+			<button type="button" id="sendOrderBtn"
+				onclick="Customer.checkOut('{{= id}}');" class="btn btn-success">結帳</button>
+		</div>
+	</div>
+</script>
+
+
