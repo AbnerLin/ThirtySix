@@ -46,8 +46,6 @@ var Map = (function(self) {
 				/** Click trigger. */
 				dom.off("click").on("click", {furnishId : furnishId}, Menu.serviceModal.show);
 				
-				/** Update badge */
-				self.updateBadge(furnishId);
 			} else if (!$("#seatMap-toggle").prop("checked")) {
 				/** css */
 				dom.css("background-image", "url("
@@ -57,6 +55,9 @@ var Map = (function(self) {
 				/** Click trigger. */
 				dom.off("click").on("click", {furnishId : furnishId}, Customer.checkInModal.show);
 			}
+			
+			/** Update badge */
+			self.updateBadge(furnishId);
 		}
 	};
 	
@@ -65,24 +66,28 @@ var Map = (function(self) {
 	 */
 	self.updateBadge = function(furnishId) {
 		var dom = $("#" + furnishId);
+		
 		if (dom.length > 0) {
 			var span = document.createElement("span");
 			$(span).addClass("badge badge-danger furnishBadge");
 			
 			/** Count undelivery meal. */
 			var unDeliveryMealCount = 0;
-			console.log(Customer.getCustomerByFurnishId(furnishId));
-			$.each(Customer.getCustomerByFurnishId(furnishId).bookingList.data, function(key, value) {
-				if(value.isSend == 0)
-					unDeliveryMealCount++;
-			});
+			if(Customer.getCustomerByFurnishId(furnishId)) {
+				$.each(Customer.getCustomerByFurnishId(furnishId).bookingList.data, function(key, value) {
+					if(value.isSend == 0)
+						unDeliveryMealCount++;
+				});
 			
-			if(unDeliveryMealCount > 0) {
-				if($(dom).find(".furnishBadge").length > 0) {
-					$(dom).find(".furnishBadge").html(unDeliveryMealCount);
+				if(unDeliveryMealCount > 0) {
+					if($(dom).find(".furnishBadge").length > 0) {
+						$(dom).find(".furnishBadge").html(unDeliveryMealCount);
+					} else {
+						$(dom).append(span);
+						$(span).html(unDeliveryMealCount);
+					}
 				} else {
-					$(dom).append(span);
-					$(span).html(unDeliveryMealCount);
+					$(dom).find(".furnishBadge").remove();
 				}
 			} else {
 				$(dom).find(".furnishBadge").remove();
