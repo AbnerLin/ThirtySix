@@ -1,10 +1,11 @@
 package com.thirtySix.webSocket;
 
+import java.sql.Timestamp;
+import java.util.Calendar;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Component;
-
-import com.thirtySix.util.TimeFormatter;
 
 @Component
 public class WebSocketUtil {
@@ -43,8 +44,9 @@ public class WebSocketUtil {
 	 * Broadcast Server time to all client.
 	 */
 	public void broadcastServerTime() {
-		this.messageTemplate.convertAndSend("/topic/time",
-				TimeFormatter.getInstance().getTime());
+		final Calendar now = Calendar.getInstance();
+		final Timestamp time = new Timestamp(now.getTimeInMillis());
+		this.messageTemplate.convertAndSend("/topic/time", time);
 	}
 
 	/**

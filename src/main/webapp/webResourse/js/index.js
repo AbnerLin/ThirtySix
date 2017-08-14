@@ -45,6 +45,9 @@ var Map = (function(self) {
 				
 				/** Click trigger. */
 				dom.off("click").on("click", {furnishId : furnishId}, Menu.serviceModal.show);
+				
+				/** Update badge */
+				self.updateBadge(furnishId);
 			} else if (!$("#seatMap-toggle").prop("checked")) {
 				/** css */
 				dom.css("background-image", "url("
@@ -53,6 +56,36 @@ var Map = (function(self) {
 
 				/** Click trigger. */
 				dom.off("click").on("click", {furnishId : furnishId}, Customer.checkInModal.show);
+			}
+		}
+	};
+	
+	/**
+	 * Update badge which on furnish about undelivery meal.
+	 */
+	self.updateBadge = function(furnishId) {
+		var dom = $("#" + furnishId);
+		if (dom.length > 0) {
+			var span = document.createElement("span");
+			$(span).addClass("badge badge-danger furnishBadge");
+			
+			/** Count undelivery meal. */
+			var unDeliveryMealCount = 0;
+			console.log(Customer.getCustomerByFurnishId(furnishId));
+			$.each(Customer.getCustomerByFurnishId(furnishId).bookingList.data, function(key, value) {
+				if(value.isSend == 0)
+					unDeliveryMealCount++;
+			});
+			
+			if(unDeliveryMealCount > 0) {
+				if($(dom).find(".furnishBadge").length > 0) {
+					$(dom).find(".furnishBadge").html(unDeliveryMealCount);
+				} else {
+					$(dom).append(span);
+					$(span).html(unDeliveryMealCount);
+				}
+			} else {
+				$(dom).find(".furnishBadge").remove();
 			}
 		}
 	};
@@ -346,14 +379,13 @@ var Map = (function(self) {
 		$(container).attr({
 			"class" : obj._class + " furnish",
 			"id" : obj.id,
-		}).css(
-				{
-					"top" : obj.y,
-					"left" : obj.x,
-					"position" : "absolute",
-					"background-image" : "url("
-							+ FurnishClass.data.get(obj._class).imagePath + ")"
-				}).draggable({
+		}).css({
+				"top" : obj.y,
+				"left" : obj.x,
+				"position" : "absolute",
+				"background-image" : "url("
+					+ FurnishClass.data.get(obj._class).imagePath + ")"
+		}).draggable({
 			containment : "#seatMap",
 			zIndex : 1,
 			start : function(event, ui) {
@@ -456,7 +488,8 @@ var Customer = (function(self) {
 		
 		/** trigger customer send order. */
 		App.subscribe("/customer/sendOrder", function(event, customerId, bookingList) {
-			//TODO  2. update furnish badge.
+			/** Update badge on furnish. */
+			Map.updateBadge(Customer.get(customerId).furnish.id);
 			
 			/** Update order history. */
 			if($("#orderTmpCustomerId").val() == customerId) {
@@ -821,6 +854,9 @@ var Order = (function(self) {
 			/** Update order history */
 			updateOrderHistory(customerId, booking);
 			
+			/** Update Badge on furnish. */
+			Map.updateBadge(Customer.get(customerId).furnish.id);
+			
 			/** Update totalCost of checkOut page. */
 			Menu.serviceModal.loadCustomerInfo(Customer.get(customerId));
 		});
@@ -910,22 +946,10 @@ function init() {
 	});
 	
 	/** Subscribe server time. */
-//	App.subscribeServerTime();
-//	App.subscribe("/topic/time", function(event, time) {
-//		console.log(time);
-//	});
+	App.subscribeServerTime();
+	App.subscribe("/topic/time", function(event, time) {
+		$("#serverTime").html(moment(Number(time)).format("YYYY年MM月DD日   a hh點mm分ss秒"));
+	});
 	
 	/***************************/
-//	$("#serverTime").html(Date.parse("1502269803722"));
-//	$("#serverTime").html(moment(Number("1502269803722")).fromNow());
-	
-//	var time = Number($(this).attr("time"));
-//	$(this).html(moment(time, "hh:mm a"));
-//	console.log(moment(1502343402057).format("ahh:mm "));
-//	console.log("!!!!!");
-//	1502343402057
-	
-	//TODO Add btn to recover the time format to absolute time. hh:mm am/pm
-	
-//	1502269665983
 }

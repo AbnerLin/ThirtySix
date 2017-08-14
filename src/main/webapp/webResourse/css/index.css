@@ -144,56 +144,14 @@ input[type=number]::-webkit-inner-spin-button, input[type=number]::-webkit-outer
 }
 
 .itemImage {
-	// max-width: 120px;
-	// max-height: 120px;
 	width: 100%;
 }
 
-///////////
-#orderListInfo {
-	word-wrap: break-word;
-}
-
-#sendOrder {
-	padding-left: 15px;
-	padding-right: 15px;
-}
-
-#option {
-	margin-bottom: 15px;
-}
-
-.label-pill {
-	padding-right: .6em;
-	padding-left: .6em;
-	border-radius: 10rem;
+.furnishBadge {
 	position: absolute;
-	top: -5px;
-	right: -10px;
+	top: -8px;
+	right: -8px;
+	font-size: 16px;
 }
 
 
-.default-none {
-	display: none;
-}
-
-.shortInput {
-	width: 100px;
-}
-
-.float-left {
-	float: left;
-	padding: 5px;
-}
-
-
-#imageSelection {
-	border-radius: 10px 10px 10px 10px;
-	-moz-border-radius: 10px 10px 10px 10px;
-	-webkit-border-radius: 10px 10px 10px 10px;
-	border: 1px solid #f0f0f0;
-}
-
-#orderPageInner, #checkOutTab, #customerInfoTab {
-	padding: 10px;
-}
