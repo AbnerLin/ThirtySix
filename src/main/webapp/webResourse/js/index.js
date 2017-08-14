@@ -445,10 +445,13 @@ var Customer = (function(self) {
 			/** Update seatmap */
 			var furnishId = obj.furnish.id;
 			Map.refresh(furnishId);
+			App.alertSuccess(obj.peopleCount + " 位顧客入座 " + obj.furnish.alias);
 		});		
 		
-		App.subscribe("/customer/checkOut", function(event, customerId) {
-			//TODO
+		/** trigger customer checkOut */
+		App.subscribe("/customer/checkOut", function(event, furnish) {
+			App.alertSuccess(furnish.alias + " 顧客離場！");
+			Map.refresh(furnish.id);
 		});
 		
 		/** trigger customer send order. */
@@ -519,8 +522,13 @@ var Customer = (function(self) {
 	 * @param customerId
 	 */
 	self._checkOut = function(customerId) {
-		// TODO
-		console.log(customerId);
+		alertify.confirm("確定結帳？", function(e) {
+			if (e) {
+				Menu.serviceModal.hide();
+				Customer.checkOut(customerId);
+			}
+		});
+		
 	};
 
 	/**
@@ -548,7 +556,8 @@ var Customer = (function(self) {
 		});
 		
 		WebSocket.subscribe("/topic/customerCheckOut", function(data) {
-			//TODO
+			var customerId = data.body.trim();
+			Customer.removeCustomer(customerId)
 		});
 		
 		/** trigger customer send order. */
@@ -608,6 +617,13 @@ var Menu = (function(self) {
 			
 			/** Load customer info to checkOut page. */
 			_export.loadCustomerInfo(customerInfo);
+		};
+		
+		/**
+		 * Hide.
+		 */
+		_export.hide = function() {
+			$("#serviceModal").modal("hide");
 		};
 		
 		/**

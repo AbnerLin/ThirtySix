@@ -125,8 +125,25 @@ public class CustomerContrller {
 	public AjaxRDTO checkOut(final HttpServletRequest request,
 			final HttpServletResponse response,
 			@RequestParam final String customerId) {
-
 		final AjaxRDTO result = new AjaxRDTO();
+
+		final Boolean isCustomerExists = this.customerService
+				.findDiningCustomer().entrySet().stream()
+				.map(map -> map.getValue())
+				.filter(customer -> customer.getCustomerID().equals(customerId))
+				.findAny().isPresent();
+
+		if (isCustomerExists) {
+			this.customerService.checkOutCustomer(customerId);
+
+			/** Broadcast to all client. */
+			this.webSocket.customerCheckOut(customerId);
+
+			result.setStatusOK();
+		} else {
+			result.setStatusFail();
+			result.setMessage("Customer not found!");
+		}
 
 		return result;
 	}

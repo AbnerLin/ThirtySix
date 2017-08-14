@@ -139,7 +139,7 @@
 	<div class="row">
 		<div class="col-12 text-right">
 			<button type="button" id="sendOrderBtn"
-				onclick="Customer.checkOut('{{= id}}');" class="btn btn-success">結帳</button>
+				onclick="Customer._checkOut('{{= id}}');" class="btn btn-success">結帳</button>
 		</div>
 	</div>
 </script>

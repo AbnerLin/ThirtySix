@@ -48,6 +48,8 @@ var Customer = (function() {
 	var self = {};
 	var dataUrl = App.URL + "customer/getDiningCustomer";
 	var checkInUrl = App.URL + "customer/checkIn";
+	var checkOutUrl = App.URL + "customer/checkOut";
+	
 	/** <customerId, _Customer> */
 	var customerData = new DataKeeper();
 
@@ -100,8 +102,18 @@ var Customer = (function() {
 	};
 
 	self.checkOut = function(customerId) {
-		//TODO
-		console.log(customerId);
+		return App.ajax({
+			url : checkOutUrl,
+			data : {
+				customerId : customerId
+			},
+			success : function(data, textStatus, jqHXR) {
+				if(data.status)
+					App.alertSuccess("Check out 成功！");
+				else
+					App.alertError(data.message);
+			}
+		});
 	};
 
 	self.getAll = function() {
@@ -143,9 +155,9 @@ var Customer = (function() {
 	 * @param customerId
 	 */
 	self.removeCustomer = function(customerId) {
+		var furnish = Customer.get(customerId).furnish;
 		customerData.remove(customerId);
-
-		App.publish("/customer/checkOut", [ customerId ]);
+		App.publish("/customer/checkOut", [ furnish ]);
 	};
 	
 	/**

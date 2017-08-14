@@ -31,6 +31,15 @@ public class WebSocketUtil {
 	}
 
 	/**
+	 * Broadcast to client for customer check out.
+	 * 
+	 * @param bean
+	 */
+	public void customerCheckOut(final Object bean) {
+		this.messageTemplate.convertAndSend("/topic/customerCheckOut", bean);
+	}
+
+	/**
 	 * Broadcast Server time to all client.
 	 */
 	public void broadcastServerTime() {
