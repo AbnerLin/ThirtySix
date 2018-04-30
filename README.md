@@ -1,13 +1,13 @@
 [![Build Status](https://travis-ci.org/AbnerLin/ThirtySix.svg?branch=master)](https://travis-ci.org/AbnerLin/ThirtySix) 
 # ThirtySix
-The ThirtySix is the web-base application for restaurant which can monitor meals serving status and customer check in/out from seat map in real-time without refresh page.
+The ThirtySix is the web-base application for restaurant which can monitor food delivering status and customer dining time from seat map in real-time without refresh page.
 
 ## Features
-* Customer Check-in/out.
-* Order the meal, and update the serving status.
-* Arrange seat map by self.
-* All of information about customer, meals will display on seat map in real-time dynamically.
+* Send the order.
+* Organize seats on map directly.
+* Monitoring status of restaurant, such as seat usage, customer dining time, progress of food delivering.
+* Every changes are instanly reflect on all screens.
 
 ## Explanation
-This project is just the prototype, I only implement the main flow about seat map arrange, meals serving status, and customer check in/out features. The CMS about update menu and image are not implement yet. 
+This project is just the prototype, I only implement the main flow about seat map organize, food delivering status, and information about customer monitoring. The CMS about update menu and image are not implement yet. 
 
